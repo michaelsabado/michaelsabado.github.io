@@ -100,3 +100,7 @@ body {
 .order-2 {
     order: 2;
 }
+
+.desc {
+    max-width: 350px;
+}
