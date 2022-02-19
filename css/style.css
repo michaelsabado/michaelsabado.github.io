@@ -97,7 +97,7 @@ body {
     max-width: 500px;
 }
 
-.tech img {
-    width: 100%;
-    max-width: 100px;
-}
+
+/* .tech img {
+    max-height: 50px !important;
+} */
