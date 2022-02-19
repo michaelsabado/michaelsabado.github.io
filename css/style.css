@@ -101,3 +101,7 @@ body {
 /* .tech img {
     max-height: 50px !important;
 } */
+
+.container {
+    max-width: 1100px;
+}
