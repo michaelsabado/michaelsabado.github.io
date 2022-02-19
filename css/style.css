@@ -96,3 +96,8 @@ body {
 .desc {
     max-width: 500px;
 }
+
+.tech img {
+    width: 100%;
+    max-width: 100px;
+}
