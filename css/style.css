@@ -117,14 +117,15 @@ body {
 }
 
 .back-prog {
+    overflow: hidden;
     background: #333;
-    height: 20px;
+    height: 15px;
     border-radius: 20px;
     padding: 4px;
 }
 
 .front-prog {
     background: #ddd;
-    height: 12px;
+    height: 7px;
     border-radius: 16px;
 }
