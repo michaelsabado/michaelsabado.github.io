@@ -17,6 +17,7 @@
         body {
             background-color: #eee;
             font-family: 'Space Mono', monospace;
+            /* overflow-y: hidden; */
         }
         
         #prof-pic {
@@ -39,6 +40,7 @@
         section {
             min-height: 80vh;
             margin-bottom: 300px;
+            padding-top: 100px;
         }
         
         #mybtn {
@@ -53,7 +55,7 @@
         
         @media only screen and (max-width: 750px) {
             .subs {
-                top: 0px;
+                top: 55px;
                 padding: 15px 0;
                 background-color: #eee !important;
                 z-index: 4;
@@ -65,8 +67,19 @@
 <body>
 
 
-    <div class="container px-4">
-        <section class="d-flex align-items-center" style="margin-bottom: 0; min-height: 100vh">
+    <div class="container px-4" style="position: relative;">
+        <div class="text-end py-3 " style="position: sticky; top:0; left:200px; background-color: #eee; z-index: 10;">
+            <a href="#c2" title="Education" class="text-decoration-none text-dark"><i
+                    class="fas fa-graduation-cap me-3"></i></a>
+            <a href="#c3" title="Projects" class="text-decoration-none text-dark"><i
+                    class="fas fa-project-diagram me-3"></i></a>
+            <a href="#c4" title="Awards" class="text-decoration-none text-dark"> <i class="fas fa-award me-3"></i></a>
+            <a href="#c5" title="Contact" class="text-decoration-none text-dark"> <i class="fas fa-paper-plane"></i></a>
+
+
+
+        </div>
+        <section class="d-flex align-items-center" style="margin-bottom: 0; min-height: calc(100vh - 80px); padding-top: 0px" id="c1">
             <div class="row align-items-" data-aos="zoom-in">
 
                 <div class=" col-md-3 ">
@@ -110,7 +123,7 @@
 
         </section>
         <hr style="border-top: 1px dotted black; color: white">
-        <section>
+        <section id="c2">
             <div class="h4 subs"><b>Education</b>
             </div>
             <div class="row mt-5">
@@ -183,7 +196,7 @@
         </section>
 
         <hr style="border-top: 1px dotted black; color: white">
-        <section>
+        <section id="c3">
             <div class="h4 subs"><b>Projects</b>
             </div>
             <div class="row mt-5">
@@ -280,7 +293,7 @@
         </section>
 
         <hr style="border-top: 1px dotted black; color: white">
-        <section>
+        <section id="c4">
             <div class="h4 subs"><b>Awards</b>
             </div>
             <div class="row mt-5">
@@ -354,7 +367,7 @@
         </section>
 
         <hr style="border-top: 1px dotted black; color: white">
-        <section style="margin-bottom: 0">
+        <section style="margin-bottom: 0" id="c5">
             <div class="h4 subs"><b>Contact</b>
             </div>
             <div class="row mt-5">
@@ -413,6 +426,25 @@
             event.preventDefault();
             alert('Hi there.');
         }, false);
+
+
+        // var counter = 1;
+
+        // window.addEventListener('wheel', function(event) {
+        //     if (event.deltaY < 0) {
+        //         console.log('scrolling up');
+
+        //         window.location.href = "#c" + (--counter);
+
+
+        //     } else if (event.deltaY > 0) {
+        //         console.log('scrolling down');
+
+
+        //         window.location.href = "#c" + (++counter);
+
+        //     }
+        // });
     </script>
 </body>
 
