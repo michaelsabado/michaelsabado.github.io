@@ -12,7 +12,17 @@
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?">
     <title>Michael Sabado | Web Developer</title>
-
+    <style>
+        .wrap {
+            scroll-snap-type: y mandatory;
+            overflow-y: scroll;
+        }
+        
+        .sec {
+            scroll-snap-align: start;
+            scroll-snap-stop: always;
+        }
+    </style>
 </head>
 
 <body>
@@ -35,72 +45,76 @@
 
         </div>
     </div>
+    <div class="wrap">
 
-    <div id="myBg" class="myBg" style="min-height: 100vh;">
-        <div class="py-2 px-2 position-fixed w-100" style="z-index: 10;" id="mynav">
-            <div class="container-fluid">
-                <div class="d-flex justify-content-between align-items-center">
-                    <div>
-                        <div class="d-flex align-items-center">
-                            <div class="me-3">
-                                <img src="images/mylogo.png" height="35" alt="">
-                            </div>
-                            <div>
-                                <a href="#" class="h4 text-decoration-none fw-bold text-white" style="text-shadow: 2px 2px 2px #333">SABADO <span
-                                        class="text-danger">.dev</span></a>
-                            </div>
-                        </div>
 
-                    </div>
+        <div id="myBg" class="myBg sec" style="min-height: 100vh;">
+            <div class="py-2 px-2 position-fixed w-100" style="z-index: 10;" id="mynav">
+                <div class="container-fluid">
                     <div class="d-flex justify-content-between align-items-center">
-                        <div id="menus">
-                            <a href="#about" class="h6 fw- text-decoration-none text-white ms-4">ABOUT ME</a>
-                            <a href="#projects" class="h6 fw- text-decoration-none text-white ms-4">PROJECTS</a>
+                        <div>
+                            <div class="d-flex align-items-center">
+                                <div class="me-3">
+                                    <img src="images/mylogo.png" height="35" alt="">
+                                </div>
+                                <div>
+                                    <a href="#" class="h4 text-decoration-none fw-bold text-white" style="text-shadow: 2px 2px 2px #333">SABADO <span
+                                            class="text-danger">.dev</span></a>
+                                </div>
+                            </div>
 
-                            <a href="#awards" class="h6 fw- text-decoration-none text-white ms-4">AWARDS</a>
-
-                            <a href="#contact" class="h6 fw- text-decoration-none text-white ms-4">GET IN TOUCH</a>
                         </div>
-                        <div class="ms-2">
+                        <div class="d-flex justify-content-between align-items-center">
+                            <div id="menus">
+                                <a href="#about" class="h6 fw- text-decoration-none text-white ms-4">ABOUT ME</a>
+                                <a href="#projects" class="h6 fw- text-decoration-none text-white ms-4">PROJECTS</a>
 
-                            <label for="check">
-                                <input type="checkbox" id="check" />
-                                <span></span>
-                                <span></span>
-                                <span></span>
-                            </label>
+                                <a href="#awards" class="h6 fw- text-decoration-none text-white ms-4">AWARDS</a>
+
+                                <a href="#contact" class="h6 fw- text-decoration-none text-white ms-4">GET IN TOUCH</a>
+                            </div>
+                            <div class="ms-2">
+
+                                <label for="check">
+                                    <input type="checkbox" id="check" />
+                                    <span></span>
+                                    <span></span>
+                                    <span></span>
+                                </label>
+
+                            </div>
 
                         </div>
 
                     </div>
-
-                </div>
-            </div>
-        </div>
-
-        <div class="d-flex  justify-content-center  " style="position: absolute; bottom: 0; width: 100%">
-            <div class="h4 fw-bold mb-4 text-white text-center"><i class="fas fa-chevron-up mb-3"></i><br>Hi, Let's talk.
-            </div>
-        </div>
-    </div>
-    <div id="" class="d-flex align-items-center" style="min-height: 100vh; position: relative">
-        <div class="container text-white">
-            <img src="images/about.png" data-aos="slide-up" alt="" style="position: absolute; z-index:-1; opacity: 0.02; top:50px; right:0; width: 70%">
-            <div data-aos="fade-right">
-                <div class="mydisplay-1 fw-bold">Hello.</div>
-                <div class="mydisplay-1 fw-bold">I am <span class="text-danger">Michael<span></div>
-            </div>
-
-            <div data-aos="fade-up" class="h5 float-end mt-5 text-md-end text-start text-secondary fw-light fst-italic"
-                style="max-width: 500px">
-                I am a developer specializing in building web systems & applications based in <span
-                    class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.
                 </div>
             </div>
 
-
+            <div class="d-flex  justify-content-center  " style="position: absolute; bottom: 0; width: 100%">
+                <div class="h4 fw-bold mb-4 text-white text-center"><i class="fas fa-chevron-up mb-3"></i><br>Hi, Let's talk.
+                </div>
+            </div>
         </div>
-        <div id="about" class="bg-dark" style="min-height: 100vh;">
+        <div id="" class="d-flex align-items-center sec" style="min-height: 100vh; position: relative">
+            <div class="container text-white">
+                <img src="images/about.png" data-aos="slide-up" alt="" style="position: absolute; z-index:-1; opacity: 0.02; top:50px; right:0; width: 70%">
+                <div data-aos="fade-right">
+                    <div class="mydisplay-1 fw-bold">Hello.</div>
+                    <div class="mydisplay-1 fw-bold">I am <span class="text-danger">Michael<span></div>
+                </div>
+
+                <div data-aos="fade-up"
+                    class="h5 float-end mt-5 text-md-end text-start text-secondary fw-light fst-italic"
+                    style="max-width: 500px">
+                    I am a developer specializing in building web systems & applications based in <span
+                        class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.
+                    </div>
+                </div>
+
+
+            </div>
+        </div>
+        <div id="about" class="bg-dark sec" style="min-height: 100vh;">
             <div class="container px-3 text-white" style="padding: calc(7vw + 50px) 0">
                 <div class="mydisplay-1 fw-bold text-md-end text-start" data-aos="fade-right" style="margin-bottom: 100px">
                     About<span class="text-danger">_</span>Me</div>
@@ -125,7 +139,7 @@
 
 
         </div>
-        <div id="projects" style="min-height: 100vh; background: #524d51">
+        <div id="projects" class="sec" style="min-height: 100vh; background: #524d51">
             <div class="container px-3 text-white" style="padding: calc(7vw + 50px) 0">
 
                 <div class="mydisplay-1 fw-bold text-dark" data-aos="fade-right">
@@ -424,77 +438,77 @@
                 </div>
             </div>
         </div>
-    </div>
-
-    <div id="awards" style="min-height: 100vh;">
-        <div class="container px-3 text-white" style="padding: calc(7vw + 50px) 0">
-            <div class="mydisplay-1 fw-bold text-md-end text-start" data-aos="fade-right" style="margin-bottom: 100px">
-                Awards<span class="text-danger">.</span></div>
 
 
-            <div class="row mb-5">
-                <div class="col-md-5">
-                    <img src="images/webdesign.png" alt="" data-aos="zoom-in" class="img-fluid">
+        <div id="awards" class="sec" style="min-height: 100vh;">
+            <div class="container px-3 text-white" style="padding: calc(7vw + 50px) 0">
+                <div class="mydisplay-1 fw-bold text-md-end text-start" data-aos="fade-right" style="margin-bottom: 100px">
+                    Awards<span class="text-danger">.</span></div>
+
+
+                <div class="row mb-5">
+                    <div class="col-md-5">
+                        <img src="images/webdesign.png" alt="" data-aos="zoom-in" class="img-fluid">
+                    </div>
+                    <div class="col-md-7 d-flex align-items-center justify-content-center justify-content-md-start" data-aos="fade-up">
+                        <div class="text-md-start text-center">
+                            <div class="h1 fw-bold text-danger">Champion</div>
+                            <div class="h4 fw-bold">10th IT Skills Olympics</div>
+                            <div class="h6 text-dw desc">Web Design Category</div>
+                            <div class="h6 text-dw desc">October 10, 2021</div>
+                        </div>
+
+                    </div>
                 </div>
-                <div class="col-md-7 d-flex align-items-center justify-content-center justify-content-md-start" data-aos="fade-up">
-                    <div class="text-md-start text-center">
-                        <div class="h1 fw-bold text-danger">Champion</div>
-                        <div class="h4 fw-bold">10th IT Skills Olympics</div>
-                        <div class="h6 text-dw desc">Web Design Category</div>
-                        <div class="h6 text-dw desc">October 10, 2021</div>
+
+                <div class="row my-5">
+                    <div class="col-md-7 d-flex align-items-center justify-content-center justify-content-md-end panel-1">
+                        <div class="text-md-end text-center" data-aos="fade-up">
+                            <div class="h1 fw-bold text-danger">2nd Place</div>
+                            <div class="h4 fw-bold">SYNERGY Stanford IT Learning's <br>Software Solutions</div>
+                            <div class="h6 text-dw desc">Start-Up</div>
+                            <div class="h6 text-dw desc">March 5, 2021</div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-5 panel-2">
+                        <img src="images/stanford.png" alt="" data-aos="zoom-in" class="img-fluid">
                     </div>
 
                 </div>
-            </div>
 
-            <div class="row my-5">
-                <div class="col-md-7 d-flex align-items-center justify-content-center justify-content-md-end panel-1">
-                    <div class="text-md-end text-center" data-aos="fade-up">
-                        <div class="h1 fw-bold text-danger">2nd Place</div>
-                        <div class="h4 fw-bold">SYNERGY Stanford IT Learning's <br>Software Solutions</div>
-                        <div class="h6 text-dw desc">Start-Up</div>
-                        <div class="h6 text-dw desc">March 5, 2021</div>
-                    </div>
-
-                </div>
-                <div class="col-md-5 panel-2">
-                    <img src="images/stanford.png" alt="" data-aos="zoom-in" class="img-fluid">
-                </div>
 
             </div>
 
 
         </div>
 
+        <div id="contact" class="bg-dark position-relative sec" style="min-height: 100vh;">
+            <div class="container px-3 text-white" style="padding: calc(7vw + 50px); ">
+                <div class="mydisplay-1 fw-bold " data-aos="fade-right" style="margin-bottom: 100px">
+                    Get In <span class="text-danger">Touch</span></div>
 
-    </div>
+                <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fas fa-envelope"></i> Email</div>
+                <div class="h6 mb-4" data-aos="fade-up">michaelsabado.ms04@gmail.com</div>
+                <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fas fa-mobile"></i> Phone</div>
+                <div class="h6 mb-4" data-aos="fade-up">0956 589 1878</div>
+                <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fab fa-facebook"></i> Facebook</div>
+                <div class="h6 mb-4" data-aos="fade-up">@michaelsabado.ms</div>
+                <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fab fa-instagram"></i> Instagram</div>
+                <div class="h6 mb-4" data-aos="fade-up">@michaelsabado</div>
 
-    <div id="contact" class="bg-dark position-relative" style="min-height: 100vh;">
-        <div class="container px-3 text-white" style="padding: calc(7vw + 50px); ">
-            <div class="mydisplay-1 fw-bold " data-aos="fade-right" style="margin-bottom: 100px">
-                Get In <span class="text-danger">Touch</span></div>
-
-            <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fas fa-envelope"></i> Email</div>
-            <div class="h6 mb-4" data-aos="fade-up">michaelsabado.ms04@gmail.com</div>
-            <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fas fa-mobile"></i> Phone</div>
-            <div class="h6 mb-4" data-aos="fade-up">0956 589 1878</div>
-            <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fab fa-facebook"></i> Facebook</div>
-            <div class="h6 mb-4" data-aos="fade-up">@michaelsabado.ms</div>
-            <div class="h6 fw-bold text-secondary" data-aos="fade-up"><i class="fab fa-instagram"></i> Instagram</div>
-            <div class="h6 mb-4" data-aos="fade-up">@michaelsabado</div>
-
-            <a class="btn round-1 " id="mybtn" href="CV.pdf" target="_blank">Download
+                <a class="btn round-1 " id="mybtn" href="CV.pdf" target="_blank">Download
                 CV <i class="fas fa-arrow-down"></i></a>
 
 
-        </div>
-        <div class="py-4 text-center" style="position: absolute; bottom:0; width: 100%">
-            <div class="h6 fst-italic text-muted ">Designed by Michael Sabado</div>
+            </div>
+            <div class="py-4 text-center" style="position: absolute; bottom:0; width: 100%">
+                <div class="h6 fst-italic text-muted ">Designed by Michael Sabado</div>
+            </div>
+
         </div>
 
     </div>
-
-
     <div class="loader"></div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
