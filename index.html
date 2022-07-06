@@ -79,15 +79,54 @@
                 background-color: #eee !important;
                 z-index: 4;
             }
+            .links {
+                display: none;
+            }
+        }
+        
+        #sidebar {
+            height: 100vh;
+            width: 100%;
+            position: fixed;
+            background-color: rgba(250, 250, 250, 0.5);
+            backdrop-filter: blur(20px);
+            z-index: 20;
+        }
+        
+        .s-link {
+            display: block;
+            text-decoration: none;
+            margin-top: 40px;
+            color: #333;
+        }
+        
+        .pointer {
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
+    <div id="sidebar" class="d-none">
+        <div class="container d-flex align-items-center justify-content-center" style="height: 100%">
+            <div class="text-center">
+                <div class="h5">
+                    <a class="pointer" onclick="$('#sidebar').addClass('d-none')"><i class="fas fa-times text-dark"></i></a>
+                </div>
+                <div class="sidnav-link">
 
+                    <a href="#c2" class="s-link">EDUCATION</a>
+                    <a href="#c3" class="s-link">PROJECTS</a>
+                    <a href="#c4" class="s-link">AWARDS</a>
+                    <a href="#c5" class="s-link">CONTACT</a>
+                </div>
+            </div>
+
+        </div>
+    </div>
     <div class="container px-4" style="position: relative;">
-        <div class="text-md-end text-sm-center text-center py-3 " style="position: sticky; top:0; left:200px; background-color: #eee; z-index: 10;">
+        <div class="text-md-end py-3 " style="position: sticky; top:0; left:200px; background-color: #eee; z-index: 10;">
             <!-- <a href="#c2" title="Education" class="text-decoration-none text-dark links"><i
                     class="fas fa-graduation-cap me-3"></i></a>
             <a href="#c3" title="Projects" class="text-decoration-none text-dark links"><i
@@ -95,6 +134,7 @@
             <a href="#c4" title="Awards" class="text-decoration-none text-dark links"> <i class="fas fa-award me-3"></i></a>
             <a href="#c5" title="Contact" class="text-decoration-none text-dark links"> <i class="fas fa-paper-plane"></i></a> -->
 
+            <a class="d-md-none d-sm-block d-block pointer text-dark" onclick="$('#sidebar').removeClass('d-none')"><i class="fas fa-bars"></i></a>
             <a href="#c2" title="Education" class="text-decoration-none text-dark links">Education</a>
             <a href="#c3" title="Projects" class="text-decoration-none text-dark links">Projects</a>
             <a href="#c4" title="Awards" class="text-decoration-none text-dark links">Awards</a>
@@ -469,6 +509,9 @@
             alert('Hi there.');
         }, false);
 
+        $(".s-link").click(function() {
+            $("#sidebar").addClass('d-none');
+        });
 
         // var counter = 1;
 
