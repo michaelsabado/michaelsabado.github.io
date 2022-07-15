@@ -1,11 +1,12 @@
-.fg-body {
+/* .fg-body {
     position: relative;
-}
+} */
 
-body {
+
+/* body {
     -webkit-transform-style: preserve-3d;
     -webkit-backface-visibility: hidden;
-}
+} */
 
 .fg-card {
     position: absolute;
