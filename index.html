@@ -29,6 +29,10 @@
             background: linear-gradient(45deg, #ccc 0%, #fff 35%, #ddd 65%);
             font-family: productSans;
             /* overflow-y: hidden; */
+            /* background-image: url('images/banner.png');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed; */
         }
         
         #prof-pic {
@@ -465,7 +469,7 @@
                                 <li>Web Design</li>
                             </ul>
                             <div class="project">
-                                <div class="project__card">
+                                <div class="project__card1">
                                     <!-- Content element goes here -->
                                     <a href="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png">
                                         <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" alt="" class="certs" /></a>
@@ -488,7 +492,7 @@
                                 <li>[Elixir] Start-Up</li>
                             </ul>
                             <div class="project">
-                                <div class="project__card">
+                                <div class="project__card1">
                                     <a href="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png">
                                         <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" alt="" class="certs" /></a>
                                     <!-- Content element goes here -->
@@ -577,9 +581,13 @@
     <script src="js/jquery.hover3d.min.js"></script>
     <script src="js/jquery.hover3d.js"></script>
     <script>
-        $(".project").hover3d({
+        $("#dan").hover3d({
             selector: ".project__card",
-            sensitivity: 70
+            sensitivity: 100
+        });
+        $(".project").hover3d({
+            selector: ".project__card1",
+            sensitivity: 10
         });
         $(".gallery").flipping_gallery({
             direction: "forward",
