@@ -159,14 +159,15 @@
         
         .gallery {
             margin-right: 20px !important;
+            cursor: pointer;
         }
     </style>
 </head>
 
 <body>
 
-    <div class="text-md-end py-3 mynav" style="z-index: 10">
-        <div class="container">
+    <div class=" py-3 mynav" style="z-index: 10">
+        <div class="container d-flex">
             <!-- <a href="#c2" title="Education" class="text-decoration-none text-dark links"><i
                 class="fas fa-graduation-cap me-3"></i></a>
         <a href="#c3" title="Projects" class="text-decoration-none text-dark links"><i
@@ -174,9 +175,9 @@
         <a href="#c4" title="Awards" class="text-decoration-none text-dark links"> <i class="fas fa-award me-3"></i></a>
         <a href="#c5" title="Contact" class="text-decoration-none text-dark links"> <i class="fas fa-paper-plane"></i></a> -->
             <a class="d-md-none d-sm-block d-block pointer text-dark ms-1" onclick="$('#sidebar').removeClass('d-none')"><i class="fas fa-bars"></i></a>
-            <a href="#c1" title="Education" class="text-decoration-none text-dark
-          links">About</a>
-            <a href="#c2" title="Education" class="text-decoration-none text-dark
+            <a href="#c1" title="About" class="ms-0 text-decoration-none text-dark
+          links">SABADO, Michael </a>
+            <a href="#c2" title="Education" class="ms-auto text-decoration-none text-dark
           links">Education</a>
             <a href="#c3" title="Projects" class="text-decoration-none text-dark
           links">Projects</a>
@@ -569,7 +570,8 @@
     <script src="js/jquery.hover3d.js"></script>
     <script>
         $(".project").hover3d({
-            selector: ".project__card"
+            selector: ".project__card",
+
         });
         $(".gallery").flipping_gallery({
             direction: "forward",
