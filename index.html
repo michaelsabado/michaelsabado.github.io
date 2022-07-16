@@ -92,6 +92,14 @@
         }
          */
         
+        #dan {
+            transition: transform 0.3s ease;
+        }
+        
+        #dan:hover {
+            transform: scale(106%);
+        }
+        
         @media only screen and (max-width: 768px) {
             .subs {
                 position: static;
@@ -211,14 +219,14 @@
         <section class="d-flex align-items-center" style="margin-bottom: 0;
         min-height: calc(100vh - 80px);
         padding-top: 0px;" id="c1">
-            <div class="project">
+            <div class="project" id="dan">
                 <div class="project__card">
                     <!-- Content element goes here -->
 
                     <div class="row align-items-">
                         <div class="col-md-3">
                             <div class="text-center mb-5">
-                                <img src="img/cv.jpg" alt="" class="img-fluid" id="prof-pic" />
+                                <img src="images/casual.jpg" alt="" class="img-fluid" id="prof-pic" />
                             </div>
                         </div>
                         <div class="col-md-9">
@@ -571,7 +579,7 @@
     <script>
         $(".project").hover3d({
             selector: ".project__card",
-
+            sensitivity: 70
         });
         $(".gallery").flipping_gallery({
             direction: "forward",
