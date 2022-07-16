@@ -26,7 +26,7 @@
             /* background-color: #eee; */
             /* background-color:#fff; */
             /* font-family: 'Space Mono', monospace; */
-            background: linear-gradient(55deg, #ccc 0%, #eee 51%, #ddd 85%);
+            background: linear-gradient(45deg, #ccc 0%, #fff 35%, #ddd 65%);
             font-family: productSans;
             /* overflow-y: hidden; */
         }
@@ -206,36 +206,43 @@
         </div>
     </div>
     <div class="container px-4" id="wrap" style="position: relative">
+
         <section class="d-flex align-items-center" style="margin-bottom: 0;
         min-height: calc(100vh - 80px);
         padding-top: 0px;" id="c1">
-            <div class="row align-items-">
-                <div class="col-md-3">
-                    <div class="text-center mb-5">
-                        <img src="img/cv.jpg" alt="" class="img-fluid" id="prof-pic" />
-                    </div>
-                </div>
-                <div class="col-md-9">
-                    <div class="row">
-                        <div class="col-md-8 px-3">
-                            <div class="h1">Hi,</div>
-                            <div class="h6 text-secondary lh-base">
-                                I'm Michael Sabado, a developer specializing in building web systems & applications based in
-                                <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.
+            <div class="project">
+                <div class="project__card">
+                    <!-- Content element goes here -->
+
+                    <div class="row align-items-">
+                        <div class="col-md-3">
+                            <div class="text-center mb-5">
+                                <img src="img/cv.jpg" alt="" class="img-fluid" id="prof-pic" />
                             </div>
                         </div>
-                        <div class="col-md-4"></div>
-                        <div class="col-md-8 px-3">
-                            <hr />
-                            <div class="h6 lh-base">
-                                I took up
-                                <span class="fw-bold">Bachelor of Science in Information
+                        <div class="col-md-9">
+                            <div class="row">
+                                <div class="col-md-8 px-3">
+                                    <div class="h1">Hi,</div>
+                                    <div class="h6 text-secondary lh-base">
+                                        I'm Michael Sabado, a developer specializing in building web systems & applications based in
+                                        <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.
+                                    </div>
+                                </div>
+                                <div class="col-md-4"></div>
+                                <div class="col-md-8 px-3">
+                                    <hr />
+                                    <div class="h6 lh-base">
+                                        I took up
+                                        <span class="fw-bold">Bachelor of Science in Information
                     Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
+                                    </div>
+                                </div>
+                                <div class="col-md-4 px-3">
+                                    <hr />
+                                    <div class="h6">Born: April 27, 2000</div>
+                                </div>
                             </div>
-                        </div>
-                        <div class="col-md-4 px-3">
-                            <hr />
-                            <div class="h6">Born: April 27, 2000</div>
                         </div>
                     </div>
                 </div>
@@ -448,8 +455,14 @@
                             <ul>
                                 <li>Web Design</li>
                             </ul>
-                            <a href="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png">
-                                <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" alt="" class="certs" /></a>
+                            <div class="project">
+                                <div class="project__card">
+                                    <!-- Content element goes here -->
+                                    <a href="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png">
+                                        <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" alt="" class="certs" /></a>
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-4 px-3">
@@ -465,8 +478,14 @@
                             <ul>
                                 <li>[Elixir] Start-Up</li>
                             </ul>
-                            <a href="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png">
-                                <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" alt="" class="certs" /></a>
+                            <div class="project">
+                                <div class="project__card">
+                                    <a href="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png">
+                                        <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" alt="" class="certs" /></a>
+                                    <!-- Content element goes here -->
+                                </div>
+                            </div>
+
                         </div>
 
                         <div class="col-md-4 px-3">
@@ -505,6 +524,7 @@
                 </div> -->
                 </div>
                 <div class="col-md-9">
+
                     <div class="gallery">
                         <a href="#"><img src="https://www.sololearn.com/Certificate/1014-9851145/jpg" class="img-fluid"></a>
                         <a href="#"><img src="https://www.sololearn.com/Certificate/1082-9851145/jpg" class="img-fluid"></a>
@@ -545,7 +565,12 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="js/gallery.js"></script>
+    <script src="js/jquery.hover3d.min.js"></script>
+    <script src="js/jquery.hover3d.js"></script>
     <script>
+        $(".project").hover3d({
+            selector: ".project__card"
+        });
         $(".gallery").flipping_gallery({
             direction: "forward",
             selector: "> a",
