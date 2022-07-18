@@ -1,0 +1,197 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
+
+    <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet"> -->
+    <!-- <link href="http://fonts.cdnfonts.com/css/google-sans" rel="stylesheet"> -->
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
+    <link rel="shortcut icon" type="image/x-icon" href="favicon.ico?" />
+
+    <title>Michael Sabado | Web Developer</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;700&family=Fredoka+One&display=swap');
+        body {
+            /* background-color: #eee; */
+            background-color: #1e1e20;
+            /* font-family: 'Space Mono', monospace; */
+            /* background: linear-gradient(45deg, #ccc 0%, #fff 35%, #ddd 65%); */
+            /* font-family: productSans; */
+            /* overflow-y: hidden; */
+            /* background-image: url('images/banner.png');
+            background-position: center;
+            background-size: cover;
+            background-attachment: fixed; */
+            font-family: 'Bai Jamjuree', sans-serif;
+        }
+        
+        .fw-myheader {
+            font-family: 'Bai Jamjuree', sans-serif;
+            font-weight: bold;
+        }
+        
+        .banner {
+            background-image: url('images/banner1.png');
+            background-position: center right;
+            background-size: cover;
+            /* background-attachment: fixed; */
+            min-height: 100vh;
+            max-height: 100vh;
+            display: flex;
+            align-items: end;
+            padding-bottom: 20vh;
+        }
+        
+        #name {
+            position: relative;
+            letter-spacing: 9px;
+        }
+        
+        #banner-content {
+            position: relative;
+        }
+        
+        #banner-links {
+            position: relative;
+        }
+        
+        #pos {
+            position: relative;
+            /* font-size: calc(5rem + 10vw); */
+            color: white;
+            mix-blend-mode: exclusion;
+            /* line-height: 85%; */
+            /* text-shadow: 5px 5px rgba(255, 0, 0, 0.623); */
+            /* font-weight: bold; */
+        }
+        
+        .headings {
+            position: relative;
+            /* font-size: calc(5rem + 10vw); */
+            color: white;
+            mix-blend-mode: exclusion;
+        }
+        
+        #banner-message {
+            position: relative;
+            max-width: 700px;
+        }
+        
+        #text-over {
+            position: relative;
+            top: 0px;
+            font-size: calc(50px + 15vw);
+            mix-blend-mode: lighten;
+            font-weight: bold;
+            /* text-shadow: 5px 5px 10px #fefefe; */
+        }
+        
+        nav {
+            position: fixed;
+            width: 100%;
+            color: white;
+        }
+        
+        @media only screen and (max-width: 768px) {
+            .banner {
+                background-image: url('images/banner.png');
+                background-position: center;
+                align-items: end;
+                padding-bottom: 50px;
+                /* min-height: 70vh;
+                max-height: 70vh; */
+            }
+            #banner-message {
+                max-width: auto;
+            }
+            #pos {
+                color: white;
+                line-height: 85%;
+                font-size: 50px !important;
+                /* font-weight: bold; */
+            }
+        }
+        
+        #logo {
+            mix-blend-mode: soft-light;
+        }
+        
+        .sections {
+            padding-top: 100px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <nav class="p-md-4 p-sm-2 p-2">
+        <div class="container-fluid">
+            <div class="d-flex">
+                <div>
+                    <img src="images/mlogo.PNG" height="50" alt="" id="logo">
+                </div>
+                <div>
+
+                </div>
+            </div>
+        </div>
+
+    </nav>
+    <div class="banner">
+        <div class="container">
+            <div id="text-over">developer</div>
+            <div id="banner-content">
+
+                <div id="name" class="h4 text-white fw-light text-muted">MICHAEL SABADO</div>
+
+                <div id="pos" class="fw-myheader display-1 mb-2">Full Stack Developer</div>
+                <div class="h5 text-muted mb-3" id="banner-message">Hi, I specialized in building web systems & applications based in
+                    <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.</div>
+                <div id="banner-links"><a href="" class="text-decoration-none text-white fw-bold">View Projects</a> <span class="text-muted mx-2">or</span> <a href="" class="text-decoration-none text-white fw-bold">Read About Me</a></div>
+            </div>
+
+
+
+        </div>
+
+    </div>
+    <div class="vh100" style="height: 100vh; background-color: #2c2c2e;">
+        <div class="container sections">
+            <div class="h5 text-white fw-light text-muted subheadings">Most Recent</div>
+            <div class="fw-myheader display-3 mb-2 headings">Projects</div>
+        </div>
+
+
+    </div>
+
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <script src="js/gallery.js"></script>
+    <script src="js/jquery.hover3d.min.js"></script>
+    <script src="js/jquery.hover3d.js"></script>
+
+
+
+    <script>
+        window.onscroll = () => {
+            let pos = window.scrollY;
+
+            $("#banner-content").css("top", `-${pos/3}px`);
+            // $("#banner-content").css("opacity", `${100-(pos/5)}%`);
+            $("#text-over").css("left", `-${pos/2}px`);
+            $("#name").css("left", `-${pos/6}px`);
+            $("#pos").css("left", `${pos/4}px`);
+            $("#banner-message").css("left", `${pos/2}px`);
+            $("#banner-links").css("left", `${pos/1}px`);
+        }
+    </script>
+</body>
+
+</html>
