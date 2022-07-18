@@ -107,6 +107,12 @@
             z-index: 10;
         }
         
+        .sect-heads {
+            position: relative;
+            z-index: 8;
+            mix-blend-mode: difference;
+        }
+        
         @media only screen and (max-width: 768px) {
             .banner {
                 background-image: url('images/banner.png');
@@ -144,13 +150,13 @@
             background-color: white;
             transition: 0.3s ease;
         }
-        
+        /*         
         .proj-wrap:hover {
             cursor: pointer;
             color: white;
             background-color: #555;
             -webkit-transition: background-color, color 0.1s ease-in-out;
-        }
+        } */
     </style>
 </head>
 
@@ -189,19 +195,37 @@
     </div>
     <div class="vh100" style="min-height: 100vh; background-color: #2c2c2e;">
         <div class="container sections" id="section-1">
-            <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Most Recent</div>
-            <div class="fw-myheader display-3 headings" data-aos="fade-up">Projects</div>
+            <div class="sect-heads" id="s1-head">
+                <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Most Recent</div>
+                <div class="fw-myheader display-3 headings" data-aos="fade-up">Projects</div>
+            </div>
 
-            <div class="row mt-5 g-5">
-                <div class="col-md-6">
-                    <div class="proj-wrap p-5" data-aos="zoom-in">
+
+            <div class="row mt-5 g-5 row-cols-lg-3 row-cols-md-2 row-cols-sm-12 row-cols-12">
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
                         <div class="h6">2022 - 2022</div>
                         <div class="h3 fw-bold proj-heads">Queue<br>Management<br>System</div>
 
                     </div>
                 </div>
-                <div class="col-md-6">
-                    <div class="proj-wrap p-5" data-aos="zoom-in">
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2021 - 2022</div>
+                        <div class="h3 fw-bold proj-heads">iConsult - Online<br>Health Diagnosis and<br>E-Consultation System</div>
+                    </div>
+
+
+                </div>
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2022 - 2022</div>
+                        <div class="h3 fw-bold proj-heads">Queue<br>Management<br>System</div>
+
+                    </div>
+                </div>
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
                         <div class="h6">2021 - 2022</div>
                         <div class="h3 fw-bold proj-heads">iConsult - Online<br>Health Diagnosis and<br>E-Consultation System</div>
                     </div>
@@ -246,6 +270,23 @@
             $("#banner-message").css("left", `${pos/2}px`);
             $("#banner-links").css("left", `${pos/1}px`);
             // console.log(document.getElementById("section-1").offsetLeft);
+            console.log(isInViewport(document.querySelector('#section-1')));
+            if (isInViewport(document.querySelector('#section-1')) < 0) {
+                let x = isInViewport(document.querySelector('#section-1'));
+
+
+                $("#s1-head").css("left", `-${x*-1/2}px`);
+                $("#s1-head").css("bottom", `-${x*-1}px`);
+
+            }
+        }
+
+
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 0) {
+                return rect.top;
+            } else return 0;
         }
     </script>
 </body>
