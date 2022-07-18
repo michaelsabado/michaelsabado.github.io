@@ -101,6 +101,15 @@
             /* text-shadow: 5px 5px 10px #fefefe; */
         }
         
+        #text-over1 {
+            position: relative;
+            top: 0px;
+            font-size: calc(50px + 15vw);
+            mix-blend-mode: soft-light;
+            font-weight: bold;
+            /* text-shadow: 5px 5px 10px #fefefe; */
+        }
+        
         nav {
             position: fixed;
             width: 100%;
@@ -112,6 +121,10 @@
             z-index: 8;
             /* mix-blend-mode: difference; */
             display: inline-block;
+        }
+        
+        .s2-mes {
+            font-size: calc(15px + 20vw);
         }
         
         @media only screen and (max-width: 768px) {
@@ -134,6 +147,9 @@
                 line-height: 85%;
                 font-size: 50px !important;
                 /* font-weight: bold; */
+            }
+            .s2-mes {
+                font-size: calc(15px + 40vw);
             }
         }
         
@@ -171,7 +187,8 @@
         <div class="">
             <div class="d-flex">
                 <div>
-                    <img src="images/mlogo.PNG" height="50" alt="" id="logo">
+                    <a href="#"><img src="images/mlogo.PNG" height="50" alt="" id="logo"></a>
+
                 </div>
                 <div>
 
@@ -182,7 +199,7 @@
     </nav>
     <div class="banner">
         <div class="container">
-            <div id="text-over">developer</div>
+            <div class="text-over" id="text-over">developer</div>
             <div id="banner-content">
 
                 <div id="name" class="h4 text-white fw-light text-muted">MICHAEL SABADO</div>
@@ -190,7 +207,7 @@
                 <div id="pos" class="fw-myheader display-1 mb-2">Full Stack Developer</div>
                 <div class="h5 text-muted mb-3" id="banner-message">Hi, I specialized in building web systems & applications based in
                     <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.</div>
-                <div id="banner-links"><a href="#projects" class="text-decoration-none text-white fw-bold">View Projects</a> <span class="text-muted mx-2">or</span> <a href="" class="text-decoration-none text-white fw-bold">Read About Me</a></div>
+                <div id="banner-links"><a href="#projects" class="text-decoration-none text-white fw-bold">View Projects</a> <span class="text-muted mx-2">or</span> <a href="#education" class="text-decoration-none text-white fw-bold">Read About Me</a></div>
             </div>
 
 
@@ -247,15 +264,34 @@
 
     </div>
     <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #2a2a2c;">
-        <div class="display-1 fw-bold s1-mes text-center" style="position: absolute; font-size: calc(15px + 40vw); width: 100%;">PROJECTS</div>
-        <br>
 
-        <div class="container sections" id="education">
-            <div class="sect-heads" id="s2-head">
-                <!-- <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in"></div> -->
-                <div class="fw-myheader display-3 headings" data-aos="fade-up">Education</div>
-                <div class="fw-myheader display-3 headings-outline" data-aos="fade-up">Education</div>
+
+
+        <div class="container sections position-relative" id="education">
+            <div class="display-1 fw-bold s2-mes text-nowrap" style="mix-blend-mode: overlay;position: absolute;  width: 100%;">Magna Cum Laude</div>
+            <div class="row mb-5">
+                <div class="col-md-6 align-self-center">
+                    <div id="s2-head" style="position: relative;">
+
+
+                        <div class="sect-heads mb-4">
+                            <!-- <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in"></div> -->
+                            <div class="fw-myheader display-3 headings" data-aos="fade-up">Education</div>
+                            <div class="fw-myheader display-3 headings-outline" data-aos="fade-up">Education</div>
+                        </div>
+                        <div class="h4 text-white lh-base mb-5" data-aos="fade-up">
+                            I took up
+                            <span class="fw-bold">Bachelor of Science in Information
+Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/casual1.jpg" class="img-fluid" alt="" data-aos="zoom-out">
+                </div>
             </div>
+
 
 
         </div>
@@ -263,7 +299,19 @@
 
 
     </div>
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #3e3e3f;">
 
+
+
+        <div class="container sections position-relative" id="education">
+
+
+
+        </div>
+
+
+
+    </div>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -294,7 +342,7 @@
             $("#banner-message").css("left", `${pos/2}px`);
             $("#banner-links").css("left", `${pos/1.5}px`);
             // console.log(document.getElementById("projects").offsetLeft);
-            console.log(isInViewport(document.querySelector('#projects')));
+            // console.log(isInViewport(document.querySelector('#projects')));
             if (isInViewport(document.querySelector('#projects')) < 0) {
                 let x = isInViewport(document.querySelector('#projects'));
 
@@ -303,6 +351,13 @@
                 $(".s1-mes").css("top", `${x*-1*1.5}px`);
                 // $(".s1-mes1").css("left", `${x*-1/2}px`);
                 // $("#s1-head").css("bottom", `-${x*-1}px`);
+            }
+            console.log(isInViewport(document.querySelector('#education')));
+            if (isInViewport(document.querySelector('#education')) < 0) {
+                let y = isInViewport(document.querySelector('#education'));
+
+                $(".s2-mes").css("left", `-${y*-1*3}px`);
+                $(".s2-mes").css("top", `${y*-1*1.5}px`);
             }
         }
 
