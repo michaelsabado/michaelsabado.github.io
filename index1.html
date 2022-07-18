@@ -110,7 +110,8 @@
         .sect-heads {
             position: relative;
             z-index: 8;
-            mix-blend-mode: difference;
+            /* mix-blend-mode: difference; */
+            display: inline-block;
         }
         
         @media only screen and (max-width: 768px) {
@@ -193,8 +194,12 @@
         </div>
 
     </div>
-    <div class="vh100" style="min-height: 100vh; background-color: #2c2c2e;">
+    <div class="vh100" style="position: relative;  min-height: 100vh; background-color: #2c2c2e;">
+        <!-- <div class="display-1 fw-bold s1-mes" style="top: 40vh;position: absolute; font-size: calc(100px + 15vw); overflow: hidden; width: 100%;">PROJECTS</div> -->
+        <br>
+
         <div class="container sections" id="section-1">
+
             <div class="sect-heads" id="s1-head">
                 <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Most Recent</div>
                 <div class="fw-myheader display-3 headings" data-aos="fade-up">Projects</div>
@@ -275,9 +280,9 @@
                 let x = isInViewport(document.querySelector('#section-1'));
 
 
-                $("#s1-head").css("left", `-${x*-1/2}px`);
-                $("#s1-head").css("bottom", `-${x*-1}px`);
-
+                // $(".s1-mes").css("left", `-${x*-1/2}px`);
+                // $(".s1-mes1").css("left", `${x*-1/2}px`);
+                // $("#s1-head").css("bottom", `-${x*-1}px`);
             }
         }
 
