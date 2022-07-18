@@ -155,6 +155,7 @@
                 color: white;
                 line-height: 85%;
                 font-size: 50px !important;
+                mix-blend-mode: unset;
                 /* font-weight: bold; */
             }
             .s2-mes {
@@ -445,7 +446,7 @@ Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
             let pos = window.scrollY;
 
             // $("#banner-content").css("top", `-${pos/3}px`);
-            // $("#banner-content").css("opacity", `${100-(pos/5)}%`);
+            $("#banner-content").css("opacity", `${100-(pos/5)}%`);
             $("#text-over").css("left", `-${pos/2}px`);
             $("#name").css("left", `-${pos/5.5}px`);
             $("#pos").css("left", `${pos/4}px`);
