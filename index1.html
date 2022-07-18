@@ -131,6 +131,11 @@
             font-size: calc(10px + 15vw);
         }
         
+        #cert1 {
+            position: relative;
+            top: -200px;
+        }
+        
         @media only screen and (max-width: 768px) {
             .banner {
                 background-image: url('images/banner.png');
@@ -154,6 +159,13 @@
             }
             .s2-mes {
                 font-size: calc(15px + 40vw);
+            }
+            .s3-mes {
+                font-size: calc(15px + 40vw);
+            }
+            #cert1 {
+                position: relative;
+                top: 0px;
             }
         }
         
@@ -306,19 +318,87 @@ Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
     <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #3e3e3f;">
 
 
-        <div class="container sections position-relative" id="award">
+        <div class="container sections position-relative" id="awards">
+            <div class="display-1 fw-bold s3-mes text-nowrap" style="-webkit-text-stroke: 5px #333; color: transparent; z-index: 0;position: absolute;  width: 100%; ">AWARDS AWARDS AWARDS AWARDS</div>
             <div class="sect-heads mb-4">
-                <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Check out my</div>
-                <div class="fw-myheader display-1 headings" data-aos="fade-up">Awards</div>
+                <!-- <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Check out my</div> -->
+                <div class="fw-myheader display-1 headings mb-5" data-aos="fade-in">Awards</div>
             </div>
 
+            <div class="row" style="z-index: 8;">
+                <div class="col-md-5">
+                    <div data-aos="fade-left">
+                        <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" class="img-fluid mb-3" alt="">
+                        <div class="d-flex mb-3">
+                            <div class="h5 fw-bold text-white me-5">01.</div>
+                            <div>
+                                <div class="h5 fw-bold text-white">Champion</div>
+                                <div class="h6 text-white">Web Design</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7"></div>
+                <div class="col-md-7"></div>
+                <div class="col-md-5" id="cert1">
+                    <div data-aos="fade-right">
+                        <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" class="img-fluid mb-3" alt="">
+                        <div class="d-flex mb-3">
+                            <div class="h5 fw-bold text-white me-5">02.</div>
+                            <div>
+                                <div class="h5 fw-bold text-white">2nd Place</div>
+                                <div class="h6 text-white">Start-Up</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
 
 
+    </div>
+
+
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #2a2a2c;">
+
+
+
+        <div class="container sections position-relative" id="contact">
+
+            <div class="text-center text-white mt-5 mb-5">
+                <div class="h3 text-muted">Need a developer?</div>
+                <div class="display-1">Let's get in touch</div>
+            </div>
+            <hr style="color: white; margin: 150px 0;">
+            <div class="row mt-5">
+                <div class="col-md-4">
+                    <div class="h4 fw-bold text-white">Contact<br>Information -</div>
+                    <div class="h5 text-muted">Feel free to reach me out anytime. I prefer to talk over email.</div>
+                    <a class="h6 text-white">Email: michaelsabado.ms04@gmail.com</a><br>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <div class="h4 fw-bold text-white">Follow<br>me on -</div>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">Facebook</a><br>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">Instgaram</a><br>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">LinkedIn</a><br>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="h4 fw-bold text-white">Need my<br>Resume? -</div>
+                    <a href="SABADO_CV.pdf" class="h6 text-white">Download</a><br>
+                </div>
+            </div>
         </div>
 
 
 
     </div>
+
+
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
@@ -365,6 +445,12 @@ Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
 
                 $(".s2-mes").css("left", `-${y*-1*3}px`);
                 $(".s2-mes").css("top", `${y*-1*1.5}px`);
+            }
+            if (isInViewport(document.querySelector('#awards')) < 0) {
+                let z = isInViewport(document.querySelector('#awards'));
+
+                $(".s3-mes").css("left", `-${z*-1*3}px`);
+                $(".s3-mes").css("top", `${z*-1*1.5}px`);
             }
 
         }
