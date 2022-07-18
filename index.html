@@ -7,9 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.1/css/all.min.css" rel="stylesheet" />
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="stylesheet" href="css/gallery.css">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+
     <!-- <link href="https://fonts.googleapis.com/css2?family=Space+Mono&display=swap" rel="stylesheet"> -->
     <!-- <link href="http://fonts.cdnfonts.com/css/google-sans" rel="stylesheet"> -->
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet" />
@@ -17,562 +15,389 @@
 
     <title>Michael Sabado | Web Developer</title>
     <style>
-        @font-face {
-            font-family: productSans;
-            src: url("font/Product\ Sans\ Regular.ttf");
-        }
-        
+        @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;700&family=Fredoka+One&display=swap');
         body {
             /* background-color: #eee; */
-            /* background-color:#fff; */
+            background-color: #1e1e20;
             /* font-family: 'Space Mono', monospace; */
-            background: linear-gradient(45deg, #ccc 0%, #fff 35%, #ddd 65%);
-            font-family: productSans;
+            /* background: linear-gradient(45deg, #ccc 0%, #fff 35%, #ddd 65%); */
+            /* font-family: productSans; */
             /* overflow-y: hidden; */
             /* background-image: url('images/banner.png');
             background-position: center;
             background-size: cover;
             background-attachment: fixed; */
+            font-family: 'Bai Jamjuree', sans-serif;
         }
         
-        #prof-pic {
-            -webkit-border-radius: 100%;
-            -moz-border-radius: 100%;
-            border-radius: 100%;
-            -khtml-border-radius: 100%;
-            max-width: 150px;
-            /* outline: 3px solid #fff;
-            outline-offset: 6px; */
-        }
-        
-        .container {
-            max-width: 900px;
-        }
-        
-        .schools-logo {
-            width: 70px;
-            height: auto;
-            border-radius: 100%;
-            margin-bottom: 10px;
-        }
-        
-        .subs {
-            position: sticky;
-            top: 30vh;
-            /* text-decoration: dashed underline; */
-        }
-        
-        section {
-            min-height: 80vh;
-            margin-bottom: 300px;
-            padding-top: 100px;
-        }
-        
-        #mybtn {
-            color: #777;
-            border: 2px solid #777;
-        }
-        
-        .col-md-8 {
-            padding-right: 35px !important;
-        }
-        
-        #mybtn:hover {
-            color: white;
-            background: #777;
-        }
-        
-        .links {
-            margin-left: 20px;
-            font-size: 14px;
+        .fw-myheader {
+            font-family: 'Bai Jamjuree', sans-serif;
             font-weight: bold;
         }
         
-        .links:hover {
-            color: blue !important;
+        .banner {
+            overflow-x: hidden;
+            background-image: url('images/banner1.png');
+            background-position: center right;
+            background-size: cover;
+            /* background-attachment: fixed; */
+            min-height: 100vh;
+            max-height: 100vh;
+            display: flex;
+            align-items: end;
+            padding-bottom: 20vh;
         }
-        /* .links:visited {
-            color: red !important;
-        }
-         */
         
-        #dan {
-            transition: transform 0.3s ease;
+        #name {
+            position: relative;
+            letter-spacing: 9px;
         }
         
-        #dan:hover {
-            transform: scale(106%);
+        #banner-content {
+            position: relative;
+        }
+        
+        #banner-links {
+            position: relative;
+        }
+        
+        #pos {
+            position: relative;
+            /* font-size: calc(5rem + 10vw); */
+            color: white;
+            mix-blend-mode: exclusion;
+            /* line-height: 85%; */
+            /* text-shadow: 5px 5px rgba(255, 0, 0, 0.623); */
+            /* font-weight: bold; */
+        }
+        
+        .headings {
+            position: relative;
+            /* font-size: calc(5rem + 10vw); */
+            color: white;
+            mix-blend-mode: exclusion;
+        }
+        
+        .headings-outline {
+            position: relative;
+            /* font-size: calc(5rem + 10vw); */
+            color: transparent;
+            -webkit-text-stroke-width: 1px;
+            -webkit-text-stroke-color: #666;
+            /* mix-blend-mode: exclusion; */
+        }
+        
+        #banner-message {
+            position: relative;
+            max-width: 700px;
+        }
+        
+        #text-over {
+            position: relative;
+            top: 0px;
+            font-size: calc(50px + 15vw);
+            mix-blend-mode: lighten;
+            font-weight: bold;
+            /* text-shadow: 5px 5px 10px #fefefe; */
+        }
+        
+        #text-over1 {
+            position: relative;
+            top: 0px;
+            font-size: calc(50px + 15vw);
+            mix-blend-mode: soft-light;
+            font-weight: bold;
+            /* text-shadow: 5px 5px 10px #fefefe; */
+        }
+        
+        nav {
+            position: fixed;
+            width: 100%;
+            z-index: 10;
+        }
+        
+        .sect-heads {
+            position: relative;
+            z-index: 8;
+            /* mix-blend-mode: difference; */
+            display: inline-block;
+        }
+        
+        .s2-mes {
+            font-size: calc(15px + 20vw);
+        }
+        
+        .s3-mes {
+            font-size: calc(10px + 15vw);
+        }
+        
+        #cert1 {
+            position: relative;
+            top: -200px;
         }
         
         @media only screen and (max-width: 768px) {
-            .subs {
-                position: static;
-                /* top: 55px; */
-                padding: 15px 15px;
-                /* background-color: #eee !important; */
-                background-color: rgba(0, 0, 0, 0.1);
-                backdrop-filter: blur(20px);
-                -webkit-backdrop-filter: blur(20px);
-                border-radius: 10px;
-                z-index: 4;
+            .banner {
+                background-image: url('images/banner.png');
+                background-position: center;
+                align-items: end;
+                padding-bottom: 100px;
+                /* min-height: 70vh;
+                max-height: 70vh; */
             }
-            .links {
-                display: none;
+            #name {
+                color: white !important;
             }
-            .col-md-9 {
-                margin: 0 10px 0 10px;
+            #banner-message {
+                max-width: auto;
             }
-            #c1 {
-                padding-top: 100px !important;
+            #pos {
+                color: white;
+                line-height: 85%;
+                font-size: 50px !important;
+                /* font-weight: bold; */
             }
-            section {
-                margin-bottom: 0px !important;
+            .s2-mes {
+                font-size: calc(15px + 40vw);
             }
-            #c5 {
-                min-height: 500px !important;
+            .s3-mes {
+                font-size: calc(15px + 40vw);
+            }
+            #cert1 {
+                position: relative;
+                top: 0px;
             }
         }
         
-        #sidebar {
-            height: 100vh;
-            width: 100%;
-            position: fixed;
-            background-color: rgba(250, 250, 250, 0.1);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            z-index: 20;
+        #logo {
+            mix-blend-mode: soft-light;
         }
         
-        .s-link {
-            display: block;
-            text-decoration: none;
-            margin-top: 40px;
-            color: #333;
+        .sections {
+            padding-top: 100px;
+            position: relative;
         }
         
-        .pointer {
+        .proj-heads {
+            max-width: 300px;
+        }
+        
+        .proj-wrap {
+            height: 400px;
+            background-color: white;
+            transition: 0.3s ease;
+        }
+        /*         
+        .proj-wrap:hover {
             cursor: pointer;
-        }
-        
-        .mynav {
-            position: fixed !important;
-            width: 100%;
-            background-color: rgba(250, 250, 250, 0.01);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-        }
-        
-        .certs {
-            border-radius: 7px;
-            margin-bottom: 10px;
-            width: 250px;
-            height: auto;
-        }
-        
-        .gallery {
-            margin-right: 20px !important;
-            cursor: pointer;
-        }
+            color: white;
+            background-color: #555;
+            -webkit-transition: background-color, color 0.1s ease-in-out;
+        } */
     </style>
 </head>
 
 <body>
 
-    <div class=" py-3 mynav" style="z-index: 10">
-        <div class="container d-flex">
-            <!-- <a href="#c2" title="Education" class="text-decoration-none text-dark links"><i
-                class="fas fa-graduation-cap me-3"></i></a>
-        <a href="#c3" title="Projects" class="text-decoration-none text-dark links"><i
-                class="fas fa-project-diagram me-3"></i></a>
-        <a href="#c4" title="Awards" class="text-decoration-none text-dark links"> <i class="fas fa-award me-3"></i></a>
-        <a href="#c5" title="Contact" class="text-decoration-none text-dark links"> <i class="fas fa-paper-plane"></i></a> -->
-            <a class="d-md-none d-sm-block d-block pointer text-dark ms-1" onclick="$('#sidebar').removeClass('d-none')"><i class="fas fa-bars"></i></a>
-            <a href="#c1" title="About" class="ms-0 text-decoration-none text-dark
-          links">SABADO, Michael </a>
-            <a href="#c2" title="Education" class="ms-auto text-decoration-none text-dark
-          links">Education</a>
-            <a href="#c3" title="Projects" class="text-decoration-none text-dark
-          links">Projects</a>
-            <a href="#c4" title="Awards" class="text-decoration-none text-dark links">Awards</a>
-            <a href="#c5" title="Certificates" class="text-decoration-none text-dark links">Certificates</a>
-            <a href="#c6" title="Contact" class="text-decoration-none text-dark links">Contact</a>
-        </div>
-    </div>
-    <div id="sidebar" class="d-none">
-        <div class="container d-flex align-items-center justify-content-center" style="height: 80%">
-            <div class="text-center">
-                <div class="h5">
-                    <a class="pointer" onclick="$('#sidebar').addClass('d-none')"><i
-                class="fas fa-times text-dark"></i></a>
+    <nav class="p-md-4 p-sm-2 p-2">
+        <div class="">
+            <div class="d-flex">
+                <div>
+                    <a href="#"><img src="images/mlogo.PNG" height="50" alt="" id="logo"></a>
+
                 </div>
-                <div class="sidnav-link">
-                    <a href="#c1" class="s-link">
-                        <img src="img/cv.jpg" alt="" width="40" style="border-radius:
-                40px" />
-                    </a>
-                    <a href="#c2" class="s-link">EDUCATION</a>
-                    <a href="#c3" class="s-link">PROJECTS</a>
-                    <a href="#c4" class="s-link">AWARDS</a> <a href="#c5" class="s-link">CERTIFICATES</a>
-                    <a href="#c6" class="s-link">CONTACT</a>
+                <div>
+
                 </div>
             </div>
         </div>
+
+    </nav>
+    <div class="banner">
+        <div class="container">
+            <div class="text-over" id="text-over">developer</div>
+            <div id="banner-content">
+
+                <div id="name" class="h4 text-white fw-light text-muted">MICHAEL SABADO</div>
+
+                <div id="pos" class="fw-myheader display-1 mb-2">Full Stack Developer</div>
+                <div class="h5 text-muted mb-3" id="banner-message">Hi, I specialized in building web systems & applications based in
+                    <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.</div>
+                <div id="banner-links"><a href="#projects" class="text-decoration-none text-white fw-bold">View Projects</a> <span class="text-muted mx-2">or</span> <a href="#education" class="text-decoration-none text-white fw-bold">Read About Me</a></div>
+            </div>
+
+
+
+        </div>
+
     </div>
-    <div class="container px-4" id="wrap" style="position: relative">
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #38383b;">
+        <div class="display-1 fw-bold s1-mes text-center" style="position: absolute; font-size: calc(15px + 40vw); width: 100%;">PROJECTS</div>
+        <br>
 
-        <section class="d-flex align-items-center" style="margin-bottom: 0;
-        min-height: calc(100vh - 80px);
-        padding-top: 0px;" id="c1">
-            <div class="project" id="dan">
-                <div class="project__card">
-                    <!-- Content element goes here -->
-
-                    <div class="row align-items-">
-                        <div class="col-md-3">
-                            <div class="text-center mb-5">
-                                <img src="images/casual.jpg" alt="" class="img-fluid" id="prof-pic" />
-                            </div>
-                        </div>
-                        <div class="col-md-9">
-                            <div class="row">
-                                <div class="col-md-8 px-3">
-                                    <div class="h1">Hi,</div>
-                                    <div class="h6 text-secondary lh-base">
-                                        I'm Michael Sabado, a developer specializing in building web systems & applications based in
-                                        <span class="fw-bold">Philippines</span>. Currently, I am doing freelance projects.
-                                    </div>
-                                </div>
-                                <div class="col-md-4"></div>
-                                <div class="col-md-8 px-3">
-                                    <hr />
-                                    <div class="h6 lh-base">
-                                        I took up
-                                        <span class="fw-bold">Bachelor of Science in Information
-                    Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
-                                    </div>
-                                </div>
-                                <div class="col-md-4 px-3">
-                                    <hr />
-                                    <div class="h6">Born: April 27, 2000</div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-        <hr style="border-top: 1px dotted black; color: white" />
-        <section id="c2">
-            <div class="h4 subs"><b>Education</b></div>
-            <div class="row mt-5">
-                <div class="col-md-3">
-                    <!-- <div class="h6 subs"><b>Projects</b><br>These are my recent projects I built using these technologies.
-                    </div> -->
-                </div>
-                <div class="col-md-9">
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-
-                            <div class="h6 fw-bold">
-                                College | Bachelor of Science in Information Technology
-                            </div> <img src="images/psu.png" alt="" class="schools-logo
-                  float-end">
-                            <div class="h6 text-muted">Pangasinan State University</div>
-                            <ul>
-                                <!-- <li>Magna Cum Laude</li> -->
-                                <li>President's Lister</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2018 - 2022</div>
-
-                        </div>
-                    </div>
-
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <div class="h6 fw-bold">SHS | Accountancy & Business Management</div>
-                            <img src="images/eca.jpg" alt="" class="schools-logo float-end">
-                            <div class="h6 text-muted">Eylim Christian Academy</div>
-                            <ul>
-                                <li>Class Valedictorian, 2018</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2012 - 2018</div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <div class="h6 fw-bold">Elementary</div>
-                            <img src="images/ccs.jpg" alt="" class="schools-logo float-end">
-                            <div class="h6 text-muted">Calepaan Community School</div>
-                            <ul>
-                                <li>Class Valedictorian, 2012</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2006 - 2012</div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <hr style="border-top: 1px dotted black; color: white" />
-        <section id="c3">
-            <div class="h4 subs">
-                <b>Projects</b><br />
-                <div class="h6 text-muted mb-0">
-                    Most recent projects
-                </div>
-            </div>
-
-            <div class="row mt-3">
-                <div class="col-md-3">
-                    <!-- <div class="h6 subs"><b>Projects</b><br>These are my recent projects I built using these technologies.
-                    </div> -->
-                </div>
-                <div class="col-md-9">
-                    <div class="row my-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <a class="h6 fw-bold text-decoration-none" href="https://saltnipa.psuinfo.tech">
-                  Salt & Nipa E-Commerce
-                </a>
-                            <div class="h6 text-muted">Developer, Programmer</div>
-                            <ul>
-                                <li>UI/UX Design</li>
-                                <li>Coding of User Modules</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6 badge bg-white shadow-sm text-dark">on-going</div>
-                        </div>
-                    </div>
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <a class="h6 fw-bold text-decoration-none" href="https://github.com/michaelsabado/qms">Queue Management
-                  System - PSU SAS</a>
-                            <div class="h6 text-muted">Lead Programmer, Developer</div>
-                            <ul>
-                                <li>UI/UX Design</li>
-                                <li>Database Administrator</li>
-                                <li>Coding of Processes</li>
-                                <li>Implementation</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">March'22 - June'22</div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <a class="h6 fw-bold text-decoration-none" href="https://iconsultph.rf.gd">
-                  [iConsult] Online Health Diagnosis and E-Consulation System
-                </a>
-                            <div class="h6 text-muted">Lead Programmer, Developer</div>
-                            <ul>
-                                <li>UI/UX Design</li>
-                                <li>Database Administrator</li>
-                                <li>Coding of Processes</li>
-                                <li>Implementation</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2021 - 2022</div>
-                        </div>
-                    </div>
-
-                    <div class="row my-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <a class="h6 fw-bold text-decoration-none" href="https://hinp.psuinfo.tech">
-                  Hundred Islands National Park Management System
-                </a>
-                            <div class="h6 text-muted">Programmer</div>
-                            <ul>
-                                <li>UI/UX Design</li>
-                                <li>Coding of User Modules</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2021 - 2022</div>
-                        </div>
-                    </div>
-
-                    <div class="row my-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <a class="h6 fw-bold text-decoration-none" href="https://gentest.psuinfo.tech">
-                  Online Exam/Quiz Generator with TOS and Computerized Class
-                  Record
-                </a>
-                            <div class="h6 text-muted">Developer, Programmer</div>
-                            <ul>
-                                <li>UI/UX Design</li>
-                                <li>Coding of Modules & Processes</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">2020 - 2021</div>
-                        </div>
-                    </div>
-
-                    <!-- <div class="row my-5" data-aos="fade-up">
-              <div class="col-md-8 px-3">
-                <a
-                  class="h6 fw-bold"
-                  href="https://gradeguru.000webhostapp.com"
-                >
-                  [Grade Guru] Online Gradebook System
-                </a>
-                <div class="h6 text-muted">Lead Programmer</div>
-                <ul>
-                  <li>UI/UX Design</li>
-                  <li>Database Administrator</li>
-                  <li>Coding of Modules & Processes</li>
-                </ul>
-              </div>
-
-              <div class="col-md-4 px-3">
-                <div class="h6">2019 - 2020</div>
-              </div>
-            </div> -->
-                </div>
+        <div class="container sections" id="projects">
+            <div class="sect-heads" id="s1-head">
+                <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Most Recent</div>
+                <div class="fw-myheader display-3 headings" data-aos="fade-up">Projects</div>
             </div>
 
 
-        </section>
+            <div class="row mt-5 g-5 row-cols-md-2 row-cols-12" style="margin-bottom: 100px">
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2022 - 2022</div>
+                        <div class="h3 fw-bold proj-heads">Queue Management System</div>
 
-        <hr style="border-top: 1px dotted black; color: white" />
-        <section id="c4">
-            <div class="h4 subs"><b>Awards</b></div>
-            <div class="row mt-5">
-                <div class="col-md-3">
-                    <!-- <div class="h6 subs"><b>Projects</b><br>These are my recent projects I built using these technologies.
-                    </div> -->
-                </div>
-                <div class="col-md-9">
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <div class="h6 fw-bold">10th IT Skills Olympics</div>
-                            <div class="h6 text-muted">Champion</div>
-                            <ul>
-                                <li>Web Design</li>
-                            </ul>
-                            <div class="project">
-                                <div class="project__card1">
-                                    <!-- Content element goes here -->
-                                    <a href="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png">
-                                        <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" alt="" class="certs" /></a>
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">October 10, 2021</div>
-                        </div>
-                    </div>
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <div class="h6 fw-bold">
-                                Synergy Stanford IT Learning's Software Solution
-                            </div>
-                            <div class="h6 text-muted">2nd Place</div>
-                            <ul>
-                                <li>[Elixir] Start-Up</li>
-                            </ul>
-                            <div class="project">
-                                <div class="project__card1">
-                                    <a href="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png">
-                                        <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" alt="" class="certs" /></a>
-                                    <!-- Content element goes here -->
-                                </div>
-                            </div>
-
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">March 5, 2021</div>
-                        </div>
-                    </div>
-
-                    <div class="row mb-5" data-aos="fade-up">
-                        <div class="col-md-8 px-3">
-                            <div class="h6 fw-bold">Reign Week Research Symposium</div>
-                            <div class="h6 text-muted">2nd Place</div>
-                            <ul>
-                                <li>Research Paper Presentation</li>
-                            </ul>
-                        </div>
-
-                        <div class="col-md-4 px-3">
-                            <div class="h6">November 7, 2021</div>
-                        </div>
                     </div>
                 </div>
-            </div>
-        </section>
-        <hr style="border-top: 1px dotted black; color: white" />
-        <section style=" min-height: 700px" id="c5">
-            <div class="h4 subs">
-                <b>Certificates</b><br />
-                <div class="h6 text-muted pe-5 mb-0">
-                    Tap or Scroll
-                </div>
-            </div>
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2021 - 2022</div>
+                        <div class="h3 fw-bold proj-heads">iConsult - Online Health Diagnosis and <span class="text-nowrap">E-Consultation</span> System</div>
+                    </div>
 
-            <div class="row mt-5">
-                <div class="col-md-3">
-                    <!-- <div class="h6 subs"><b>Projects</b><br>These are my recent projects I built using these technologies.
-                </div> -->
-                </div>
-                <div class="col-md-9">
 
-                    <div class="gallery">
-                        <a href="#"><img src="https://www.sololearn.com/Certificate/1014-9851145/jpg" class="img-fluid"></a>
-                        <a href="#"><img src="https://www.sololearn.com/Certificate/1082-9851145/jpg" class="img-fluid"></a>
-                        <a href="#"><img src="https://www.sololearn.com/Certificate/1059-9851145/jpg/" class="img-fluid"></a>
-                        <a href="#"><img src="https://www.sololearn.com/certificates/course/en/9851145/1060/landscape/png" class="img-fluid"></a>
+                </div>
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2021 - 2022</div>
+                        <div class="h3 fw-bold proj-heads">Hundred Islands National Park Management System</div>
+
                     </div>
                 </div>
-            </div>
-        </section>
+                <div class="col">
+                    <div class="proj-wrap p-5" data-aos="fade-up">
+                        <div class="h6">2020 - 2021</div>
+                        <div class="h3 fw-bold proj-heads">Online Exam/Quiz Generator with TOS and Computerized Class Record</div>
 
-        <hr style="border-top: 1px dotted black; color: white" />
-        <section style="margin-bottom: 0; min-height: 100vh" id="c6">
-            <div class="h4 subs"><b>Contact</b></div>
-
-            <div class="row mt-5">
-                <div class="col-md-3">
-                    <!-- <div class="h6 subs"><b>Projects</b><br>These are my recent projects I built using these technologies.
-                    </div> -->
+                    </div>
                 </div>
-                <div class="col-md-9" data-aos="fade-up">
-                    <div class="h6 text-secondary">Email</div>
-                    <div class="h6 mb-4">michaelsabado.ms04@gmail.com</div>
-                    <!-- <div class="h6  text-secondary">Phone</div> -->
-                    <!-- <div class="h6 mb-4">+63 956 589 1878</div> -->
-                    <div class="h6 text-secondary">Facebook</div>
-                    <div class="h6 mb-4">facebook.com/michaelsabado.ms</div>
-                    <div class="h6 text-secondary">Instagram</div>
-                    <div class="h6 mb-4">@michaelsabado</div>
 
-                    <a class="btn round-1" id="mybtn" href="SABADO_CV.pdf" target="_blank">Download CV <i class="fas fa-arrow-down"></i></a>
-                </div>
             </div>
-        </section>
-        <div class="text-center"></div>
+        </div>
+
+
+
     </div>
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #2a2a2c;">
+
+
+
+        <div class="container sections position-relative" id="education">
+            <div class="display-1 fw-bold s2-mes text-nowrap" style="mix-blend-mode: overlay;position: absolute;  width: 100%; z-index:8">Magna Cum Laude</div>
+            <div class="row mb-5">
+                <div class="col-md-6 align-self-center">
+                    <div id="s2-head" style="position: relative;">
+
+
+                        <div class="sect-heads mb-4">
+                            <!-- <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in"></div> -->
+                            <div class="fw-myheader display-3 headings" data-aos="fade-up">Education</div>
+                            <div class="fw-myheader display-3 headings-outline" data-aos="fade-up">Education</div>
+                        </div>
+                        <div class="h4 text-white lh-base mb-5" data-aos="fade-up">
+                            I took up
+                            <span class="fw-bold">Bachelor of Science in Information
+Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
+                        </div>
+
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <img src="images/casual1.jpg" class="img-fluid" alt="" data-aos="zoom-out">
+                </div>
+            </div>
+
+
+
+        </div>
+
+
+
+    </div>
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #3e3e3f;">
+
+
+        <div class="container sections position-relative" id="awards">
+            <div class="display-1 fw-bold s3-mes text-nowrap" style="-webkit-text-stroke: 5px #333; color: transparent; z-index: 0;position: absolute;  width: 100%; ">AWARDS AWARDS AWARDS AWARDS</div>
+            <div class="sect-heads mb-4">
+                <!-- <div class="h5 text-white fw-light text-muted subheadings" data-aos="fade-in">Check out my</div> -->
+                <div class="fw-myheader display-1 headings mb-5" data-aos="fade-in">Awards</div>
+            </div>
+
+            <div class="row" style="z-index: 8;">
+                <div class="col-md-5">
+                    <div data-aos="fade-left">
+                        <img src="certificates/CHAMPION_WEB_DESIGN_SABADO_MICHAEL.png" class="img-fluid mb-3" alt="">
+                        <div class="d-flex mb-3">
+                            <div class="h5 fw-bold text-white me-5">01.</div>
+                            <div>
+                                <div class="h5 fw-bold text-white">Champion</div>
+                                <div class="h6 text-white">Web Design</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7"></div>
+                <div class="col-md-7"></div>
+                <div class="col-md-5" id="cert1">
+                    <div data-aos="fade-right">
+                        <img src="certificates/2ND_PACE_SOFTWARE_SOLUTION_SABADO_MICHAEL.png" class="img-fluid mb-3" alt="">
+                        <div class="d-flex mb-3">
+                            <div class="h5 fw-bold text-white me-5">02.</div>
+                            <div>
+                                <div class="h5 fw-bold text-white">2nd Place</div>
+                                <div class="h6 text-white">Start-Up</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+
+
+    <div class="vh100" style="position: relative; overflow-x: hidden; overflow-y: hidden; min-height: 100vh; background-color: #2a2a2c;">
+
+
+
+        <div class="container sections position-relative" id="contact">
+
+            <div class="text-center text-white mt-5 mb-5" data-aos="slide-up">
+                <div class="h3 text-muted">Need a developer?</div>
+                <div class="display-1">Let's get in touch</div>
+            </div>
+            <hr style="color: white; margin: 150px 0;">
+            <div class="row mt-5 gy-3 mb-5" data-aos="fade-in">
+                <div class="col-md-4">
+                    <div class="h4 fw-bold text-white">Contact<br>Information -</div>
+                    <div class="h5 text-muted">Feel free to reach me out anytime. I prefer to talk over email.</div>
+                    <a class="h6 text-white">Email: michaelsabado.ms04@gmail.com</a><br>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-4">
+                    <div class="h4 fw-bold text-white">Follow<br>me on -</div>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">Facebook</a><br>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">Instagram</a><br>
+                    <a href="https://www.facebook.com/michaelsabado.ms" class="h6 text-white">LinkedIn</a><br>
+
+                </div>
+                <div class="col-md-1"></div>
+                <div class="col-md-2">
+                    <div class="h4 fw-bold text-white">Need my<br>Resume? -</div>
+                    <a href="SABADO_CV.pdf" class="h6 text-white">Download</a><br>
+                </div>
+            </div>
+        </div>
+
+
+
+    </div>
+
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
@@ -580,22 +405,10 @@
     <script src="js/gallery.js"></script>
     <script src="js/jquery.hover3d.min.js"></script>
     <script src="js/jquery.hover3d.js"></script>
+
+
+
     <script>
-        $("#dan").hover3d({
-            selector: ".project__card",
-            sensitivity: 100
-        });
-        $(".project").hover3d({
-            selector: ".project__card1",
-            sensitivity: 10
-        });
-        $(".gallery").flipping_gallery({
-            direction: "forward",
-            selector: "> a",
-            spacing: 10,
-            showMaximum: 15,
-            enableScroll: true
-        });
         AOS.init();
         document.addEventListener(
             "contextmenu",
@@ -605,26 +418,50 @@
             },
             false
         );
+        window.onscroll = () => {
+            let pos = window.scrollY;
 
-        $(".s-link").click(function() {
-            $("#sidebar").addClass("d-none");
-        });
+            // $("#banner-content").css("top", `-${pos/3}px`);
+            // $("#banner-content").css("opacity", `${100-(pos/5)}%`);
+            $("#text-over").css("left", `-${pos/2}px`);
+            $("#name").css("left", `-${pos/5.5}px`);
+            $("#pos").css("left", `${pos/4}px`);
+            $("#banner-message").css("left", `${pos/2}px`);
+            $("#banner-links").css("left", `${pos/1.5}px`);
+            // console.log(document.getElementById("projects").offsetLeft);
+            // console.log(isInViewport(document.querySelector('#projects')));
+            if (isInViewport(document.querySelector('#projects')) < 0) {
+                let x = isInViewport(document.querySelector('#projects'));
 
-        // var counter = 1;
 
-        // window.addEventListener('wheel', function(event) {
-        //     if (event.deltaY < 0) {
-        //         console.log('scrolling up');
+                $(".s1-mes").css("left", `-${x*-1/2}px`);
+                $(".s1-mes").css("top", `${x*-1*1.5}px`);
+                // $(".s1-mes1").css("left", `${x*-1/2}px`);
+                // $("#s1-head").css("bottom", `-${x*-1}px`);
+            }
+            console.log(isInViewport(document.querySelector('#education')));
+            if (isInViewport(document.querySelector('#education')) < 0) {
+                let y = isInViewport(document.querySelector('#education'));
 
-        //         window.location.href = "#c" + (--counter);
+                $(".s2-mes").css("left", `-${y*-1*3}px`);
+                $(".s2-mes").css("top", `${y*-1*1.5}px`);
+            }
+            if (isInViewport(document.querySelector('#awards')) < 0) {
+                let z = isInViewport(document.querySelector('#awards'));
 
-        //     } else if (event.deltaY > 0) {
-        //         console.log('scrolling down');
+                $(".s3-mes").css("left", `-${z*-1*3}px`);
+                $(".s3-mes").css("top", `${z*-1*1.5}px`);
+            }
 
-        //         window.location.href = "#c" + (++counter);
+        }
 
-        //     }
-        // });
+
+        function isInViewport(element) {
+            const rect = element.getBoundingClientRect();
+            if (rect.top <= 0) {
+                return rect.top;
+            } else return 0;
+        }
     </script>
 </body>
 
