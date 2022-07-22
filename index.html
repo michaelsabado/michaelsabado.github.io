@@ -225,6 +225,21 @@
             filter: grayscale(0%);
             transform: scale(101%);
         }
+        /* Applying CSS to sphere */
+        
+        .tagcloud {
+            /* display: inline-block; */
+            /* top: 100px;
+            left: 32%; */
+            font-weight: bold;
+            letter-spacing: 1px;
+            font-size: 18px;
+        }
+        /* Change color of each text in sphere on hover   */
+        
+        .tagcloud--item:hover {
+            color: #FFC300;
+        }
     </style>
 </head>
 
@@ -314,6 +329,9 @@
                 </div>
 
             </div>
+            <!-- <div class="fw-myheader h4 headings text-center text-white" data-aos="fade-up">Technologies Used</div> -->
+
+
         </div>
 
 
@@ -341,6 +359,9 @@
 Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
                         </div>
 
+                    </div>
+                    <div class="d-flex justify-content-center">
+                        <div class="Sphere mx-auto"></div>
                     </div>
                 </div>
                 <div class="col-md-6">
@@ -514,6 +535,37 @@ Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
                 return rect.top;
             } else return 0;
         }
+    </script>
+    <!-- Including the TagCloud.js script CDN in the document    -->
+    <script src="https://cdn.jsdelivr.net/npm/TagCloud@2.2.0/dist/TagCloud.min.js">
+    </script>
+    <script>
+        const Texts = [
+            'HTML', 'CSS', 'JAVASCRIPT',
+            'NODEJS', 'LARAVEL', 'MYSQL', 'JQUERY', 'PHP', 'BOOTSTRAP'
+        ];
+
+        var tagCloud = TagCloud('.Sphere', Texts, {
+
+            // Sphere radius in px
+            radius: 210,
+
+            // animation speed
+            // slow, normal, fast
+            maxSpeed: 'fast',
+            initSpeed: 'fast',
+
+            // Rolling direction [0 (top) , 90 (left), 135 (right-bottom)] 
+            direction: 135,
+
+            // interaction with mouse or not [Default true (decelerate to rolling init speed, and keep rolling with mouse).]
+            keep: true
+
+        });
+
+        // Giving color to each text in sphere
+        var color = '#f69697';
+        document.querySelector('.Sphere').style.color = color;
     </script>
 </body>
 
