@@ -16,6 +16,10 @@
     <title>Michael Sabado | Web Developer</title>
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Bai+Jamjuree:wght@400;700&family=Fredoka+One&display=swap');
+         ::selection {
+            background: red;
+        }
+        
         body {
             /* background-color: #eee; */
             background-color: #1e1e20;
@@ -135,9 +139,12 @@
             position: relative;
             top: -200px;
             margin-bottom: -200px;
-        }  #cert2 {
+        }
+        
+        #cert2 {
             position: relative;
-            top: -200px;    margin-bottom: -200px;
+            top: -200px;
+            margin-bottom: -200px;
         }
         
         @media only screen and (max-width: 768px) {
@@ -168,7 +175,8 @@
             .s3-mes {
                 font-size: calc(15px + 40vw);
             }
-            #cert1, #cert2{
+            #cert1,
+            #cert2 {
                 position: relative;
                 top: 0px;
                 margin-bottom: 0px;
@@ -435,7 +443,7 @@ Technology</span> in Pangasinan State University - Urdaneta Campus, Philippines.
                             </div>
                         </div>
                     </div>
-                </div> 
+                </div>
                 <div class="col-md-5" id="cert2">
                     <div data-aos="fade-left">
                         <img src="certificates/2ND_PLACE_RESEARCH_PRESENTATION_SABADO_MICHAEL.jpg" class="img-fluid mb-3 cert-img" alt="">
