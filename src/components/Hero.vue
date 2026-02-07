@@ -12,7 +12,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
 <template>
   <section
     id="hero"
-    class="rounded-3xl border border-slate-200/80 bg-white/70 px-6 py-6 shadow-xl shadow-slate-200/60 ring-1 ring-white/40 sm:px-8 sm:py-10 dark:border-slate-800/60 dark:bg-slate-900/30 dark:shadow-none"
+    class="rounded-3xl border border-slate-200/60 bg-white/65 px-6 py-6 shadow-lg shadow-slate-200/40 sm:px-8 sm:py-10 dark:border-slate-800/60 dark:bg-slate-900/30 dark:shadow-none"
   >
     <div class="grid gap-10 sm:gap-12 lg:grid-cols-[1.2fr,0.8fr]">
       <div class="order-2 space-y-8 text-pretty lg:order-1">
@@ -80,7 +80,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
             class="h-full w-full bg-gradient-to-br from-slate-800 via-slate-900 to-slate-950"
           ></div>
         </div>
-        <div
+        <!-- <div
           class="absolute inset-0 bg-gradient-to-t from-slate-950/85 via-slate-900/25 to-transparent"
         ></div>
         <div
@@ -88,7 +88,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
         ></div>
         <div
           class="absolute -left-10 bottom-10 hidden h-24 w-24 rounded-full border border-brand-400/40 blur-3xl sm:block"
-        ></div>
+        ></div> -->
         <div
           class="relative flex h-full flex-col items-center justify-end gap-3 p-6 text-center sm:p-8"
         >
@@ -101,12 +101,6 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
           <!-- <p class="text-sm text-white/80">
             {{ profile.location }}
           </p> -->
-          <div
-            v-if="!hasHeroImage"
-            class="mt-4 inline-flex w-full max-w-xs items-center justify-center rounded-2xl border border-dashed border-white/50 px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80"
-          >
-            Photo coming soon
-          </div>
         </div>
       </div>
     </div>
