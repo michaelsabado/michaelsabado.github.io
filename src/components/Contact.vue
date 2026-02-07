@@ -10,7 +10,7 @@ const mailto = `mailto:${profile.contact.email}`
       <div class="space-y-6 text-pretty">
         <p class="section-heading">Contact</p>
         <h2
-          class="text-xl font-semibold tracking-tight text-slate-900 text-balance sm:text-3xl dark:text-white"
+          class="text-3xl font-semibold tracking-tight text-slate-900 text-balance dark:text-white"
         >
           Build with me.
         </h2>

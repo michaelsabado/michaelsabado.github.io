@@ -21,9 +21,9 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
         </p>
         <div class="space-y-4">
           <h1
-            class="text-3xl font-semibold tracking-tight text-slate-900 text-balance sm:text-4xl lg:text-5xl xl:text-6xl dark:text-white"
+            class="text-5xl font-semibold tracking-tight text-slate-900 text-balance lg:text-5xl xl:text-6xl dark:text-white"
           >
-            Hi, it's {{ profile.nickname }}
+            Hi, it's {{ profile.nickname }}.
           </h1>
           <p
             class="text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300"
