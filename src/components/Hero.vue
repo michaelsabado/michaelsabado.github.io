@@ -12,10 +12,10 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
 <template>
   <section
     id="hero"
-    class="rounded-3xl border border-slate-200/80 bg-white/70 px-4 py-10 shadow-xl shadow-slate-200/60 ring-1 ring-white/40 sm:px-6 md:px-8 dark:border-slate-800/60 dark:bg-slate-900/30 dark:shadow-none"
+    class="rounded-3xl border border-slate-200/80 bg-white/70 px-6 py-6 shadow-xl shadow-slate-200/60 ring-1 ring-white/40 sm:px-8 sm:py-10 dark:border-slate-800/60 dark:bg-slate-900/30 dark:shadow-none"
   >
     <div class="grid gap-10 sm:gap-12 lg:grid-cols-[1.2fr,0.8fr]">
-      <div class="space-y-8 text-pretty">
+      <div class="order-2 space-y-8 text-pretty lg:order-1">
         <p
           v-if="profile.availabilityTag"
           class="inline-flex items-center gap-2 rounded-full border border-slate-200 px-4 py-1 text-xs font-semibold uppercase tracking-[0.4em] text-slate-500 dark:border-slate-800 dark:text-slate-400"
@@ -65,7 +65,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
       </div>
 
       <div
-        class="relative min-h-[320px] overflow-hidden rounded-3xl border border-slate-200/80 bg-slate-900 text-white shadow-card sm:min-h-[360px] dark:border-slate-800"
+        class="order-1 relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden rounded-full text-white shadow-card sm:max-w-[360px] lg:order-2 lg:max-w-[420px]"
       >
         <div class="absolute inset-0">
           <img
@@ -89,16 +89,18 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
         <div
           class="absolute -left-10 bottom-10 hidden h-24 w-24 rounded-full border border-brand-400/40 blur-3xl sm:block"
         ></div>
-        <div class="relative flex h-full flex-col justify-end gap-3 p-6 sm:p-8">
+        <div
+          class="relative flex h-full flex-col items-center justify-end gap-3 p-6 text-center sm:p-8"
+        >
           <!-- <p class="text-xs font-semibold uppercase tracking-[0.4em] text-white/70">
             Focus
           </p>
           <p class="text-lg font-semibold text-white sm:text-2xl">
             Calm interfaces for complex products
           </p> -->
-          <p class="text-sm text-white/80">
-            {{ profile.location }} · {{ profile.availability }}
-          </p>
+          <!-- <p class="text-sm text-white/80">
+            {{ profile.location }}
+          </p> -->
           <div
             v-if="!hasHeroImage"
             class="mt-4 inline-flex w-full max-w-xs items-center justify-center rounded-2xl border border-dashed border-white/50 px-4 py-3 text-xs font-semibold uppercase tracking-[0.3em] text-white/80"

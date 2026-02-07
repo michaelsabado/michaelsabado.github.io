@@ -5,7 +5,7 @@ import { skills } from '../data/skills'
 <template>
   <section
     id="skills"
-    class="space-y-8 rounded-3xl border border-slate-200/70 bg-white/60 px-4 py-10 sm:px-6 md:px-8 dark:border-slate-800/70 dark:bg-slate-900/40"
+    class="space-y-8 rounded-3xl border border-slate-200/70 bg-white/60 px-6 py-6 sm:px-8 sm:py-8 md:px-10 md:py-10 dark:border-slate-800/70 dark:bg-slate-900/40"
   >
     <div class="flex flex-col gap-3">
       <p class="section-heading">Skills</p>
