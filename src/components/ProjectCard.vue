@@ -30,7 +30,7 @@ const displayIndex = computed(() => props.index + 1)
           class="flex items-center gap-4 text-xs uppercase tracking-[0.35em] text-slate-400 dark:text-slate-500"
         >
           <span
-            class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-[0.8rem] font-semibold text-slate-700 dark:border-slate-700 dark:text-slate-200"
+            class="grid h-9 w-9 place-items-center rounded-full border border-slate-200 text-center text-[0.8rem] font-semibold leading-none tracking-normal text-slate-700 dark:border-slate-700 dark:text-slate-200"
           >
             {{ displayIndex }}
           </span>

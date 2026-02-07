@@ -31,9 +31,17 @@ export const profile = {
     availability: null,
     note: 'Open to opportunities and collaborations. Share a short brief, and I’ll follow up promptly.',
     socials: [
-      { label: 'LinkedIn', url: 'https://www.linkedin.com/in/michael-sabado-212a36147/' },
-      { label: 'GitHub', url: 'https://github.com/michaelsabado' },
-      { label: 'Instagram', url: 'https://www.instagram.com/mike.dev2k/' },
+      {
+        label: 'LinkedIn',
+        url: 'https://www.linkedin.com/in/michael-sabado-212a36147/',
+        icon: 'linkedin',
+      },
+      { label: 'GitHub', url: 'https://github.com/michaelsabado', icon: 'github' },
+      {
+        label: 'Instagram',
+        url: 'https://www.instagram.com/mike.dev2k/',
+        icon: 'instagram',
+      },
     ],
   },
 }
