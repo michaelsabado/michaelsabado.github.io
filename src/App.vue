@@ -11,9 +11,7 @@ import Footer from './components/Footer.vue'
 </script>
 
 <template>
-  <div
-    class="min-h-screen bg-gradient-to-b from-slate-100 via-white to-slate-100 text-slate-900 dark:from-slate-950 dark:via-slate-900 dark:to-slate-950 dark:text-slate-100"
-  >
+  <div class="min-h-screen text-slate-900 dark:text-slate-100">
     <Navbar />
     <main
       class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-24 pt-28 sm:gap-12 sm:px-6 lg:gap-16 lg:px-0 lg:pt-32"

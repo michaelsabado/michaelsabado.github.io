@@ -21,11 +21,29 @@
       BlinkMacSystemFont,
       'Segoe UI',
       sans-serif;
-    @apply min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 ease-out;
+    @apply min-h-screen text-slate-900 antialiased transition-colors duration-300 ease-out;
+    background-color: #f8fafc;
+    background-image:
+      radial-gradient(rgba(148, 163, 184, 0.25) 1px, transparent 1px),
+      radial-gradient(rgba(148, 163, 184, 0.1) 1px, transparent 1px);
+    background-position:
+      0 0,
+      16px 16px;
+    background-size: 32px 32px;
+    background-attachment: fixed;
   }
 
   .dark body {
-    @apply bg-slate-950 text-slate-100;
+    @apply text-slate-100;
+    background-color: #020617;
+    background-image:
+      radial-gradient(rgba(71, 85, 105, 0.45) 1px, transparent 1px),
+      radial-gradient(rgba(71, 85, 105, 0.2) 1px, transparent 1px);
+    background-position:
+      0 0,
+      16px 16px;
+    background-size: 32px 32px;
+    background-attachment: fixed;
   }
 
   /* Ensure anchor jumps account for the fixed navbar height */
