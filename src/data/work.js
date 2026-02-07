@@ -1,6 +1,6 @@
 export const workExperience = [
   {
-    company: 'YNS Philippines INC.',
+    company: 'YNS Philippines Inc. - Makati City, Philippines',
     period: '2022 — Present',
     techStack: [
       'PHP (Laravel)',
@@ -38,7 +38,7 @@ export const workExperience = [
     ],
   },
   {
-    company: 'PASCALIA Asia Vietnam',
+    company: 'PASCALIA Asia - Ho Chi Minh City, Vietnam',
     period: '2025 — 2026',
     techStack: [
       'PHP (Laravel)',
