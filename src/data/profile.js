@@ -33,7 +33,7 @@ export const profile = {
     socials: [
       { label: 'LinkedIn', url: 'https://www.linkedin.com/in/michael-sabado-212a36147/' },
       { label: 'GitHub', url: 'https://github.com/michaelsabado' },
-      { label: 'Instagram', url: 'https://www.instagram.com/michaelsabado' },
+      { label: 'Instagram', url: 'https://www.instagram.com/mike.dev2k/' },
     ],
   },
 }
