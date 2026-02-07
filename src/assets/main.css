@@ -1,0 +1,63 @@
+@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  color-scheme: light;
+}
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+
+  body {
+    font-family:
+      'Space Grotesk',
+      system-ui,
+      -apple-system,
+      BlinkMacSystemFont,
+      'Segoe UI',
+      sans-serif;
+    @apply min-h-screen bg-slate-50 text-slate-900 antialiased transition-colors duration-300 ease-out;
+  }
+
+  .dark body {
+    @apply bg-slate-950 text-slate-100;
+  }
+
+  /* Ensure anchor jumps account for the fixed navbar height */
+  section[id] {
+    scroll-margin-top: 7.5rem;
+  }
+
+  @media (min-width: 1024px) {
+    section[id] {
+      scroll-margin-top: 8.5rem;
+    }
+  }
+
+  ::selection {
+    @apply bg-brand-200 text-slate-900;
+  }
+}
+
+@layer components {
+  .btn {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-transparent px-5 py-3 text-sm font-semibold tracking-wide transition-colors duration-200;
+  }
+
+  .btn-primary {
+    @apply btn bg-brand-500 text-white shadow-lg shadow-brand-500/40 hover:bg-brand-600 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-brand-500;
+  }
+
+  .btn-ghost {
+    @apply btn border-slate-200 bg-white/60 text-slate-900 hover:border-slate-300 hover:bg-white dark:border-slate-800/80 dark:bg-slate-900/40 dark:text-slate-100 dark:hover:border-slate-700 dark:hover:bg-slate-900;
+  }
+
+  .section-heading {
+    @apply text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400;
+  }
+}
