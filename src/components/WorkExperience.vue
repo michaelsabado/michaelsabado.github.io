@@ -21,16 +21,16 @@ import { workExperience } from '../data/work'
 
     <div class="relative space-y-10">
       <span
-        class="pointer-events-none absolute left-8 top-0 hidden h-full w-px -translate-x-1/2 bg-slate-200 md:block dark:bg-slate-800"
+        class="pointer-events-none absolute left-4 top-0 h-full w-px -translate-x-1/2 bg-slate-200 md:block dark:bg-slate-800"
       ></span>
 
       <article
         v-for="company in workExperience"
         :key="company.company"
-        class="relative rounded-3xl border border-slate-200/80 bg-white/90 p-6 shadow-card transition-all md:pl-16 dark:border-slate-800/80 dark:bg-slate-900/70"
+        class="relative transition-all pl-12"
       >
         <span
-          class="pointer-events-none absolute left-8 top-8 hidden h-4 w-4 -translate-x-1/2 rounded-full border-4 border-white bg-brand-500 shadow-[0_0_0_8px_rgba(14,165,233,0.2)] md:block dark:border-slate-900"
+          class="pointer-events-none absolute left-4 top-8 h-4 w-4 -translate-x-1/2 rounded-full border-4 border-white bg-brand-500 shadow-[0_0_0_8px_rgba(14,165,233,0.2)] md:block dark:border-slate-900"
         ></span>
 
         <div class="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">

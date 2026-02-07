@@ -5,7 +5,7 @@ import { skills } from '../data/skills'
 <template>
   <section
     id="skills"
-    class="space-y-8 rounded-3xl border border-slate-200/70 bg-white/60 px-6 py-6 sm:px-8 sm:py-8 md:px-10 md:py-10 dark:border-slate-800/70 dark:bg-slate-900/40"
+    class="space-y-8"
   >
     <div class="flex flex-col gap-3">
       <p class="section-heading">Skills</p>
@@ -26,17 +26,17 @@ import { skills } from '../data/skills'
         :key="skill.title"
         class="flex flex-col rounded-2xl border border-slate-200/80 bg-white/80 p-5 shadow-sm transition hover:-translate-y-1 hover:shadow-card sm:p-6 dark:border-slate-800/80 dark:bg-slate-900/60"
       >
-        <h3 class="text-xl font-semibold text-slate-900 dark:text-white">
+        <h3 class="text-l font-semibold text-slate-900 dark:text-white">
           {{ skill.title }}
         </h3>
-        <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">
+        <!-- <p class="mt-3 text-sm text-slate-500 dark:text-slate-400">
           {{ skill.description }}
-        </p>
+        </p> -->
         <div class="mt-5 flex flex-wrap gap-2">
           <span
             v-for="item in skill.items"
             :key="item"
-            class="rounded-full border border-slate-200/80 px-3 py-1 text-xs font-medium uppercase tracking-widest text-slate-600 dark:border-slate-700 dark:text-slate-300"
+            class="rounded-full border border-slate-200/80 px-3 py-1 text-xs font-medium tracking-widest text-slate-600 dark:border-slate-700 dark:text-slate-300"
           >
             {{ item }}
           </span>

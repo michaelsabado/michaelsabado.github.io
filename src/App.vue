@@ -16,11 +16,11 @@ import Footer from './components/Footer.vue'
     <main
       class="mx-auto flex w-full max-w-6xl flex-col gap-10 px-4 pb-24 pt-28 sm:gap-12 sm:px-6 lg:gap-16 lg:px-0 lg:pt-32"
     >
-      <Hero />
-      <About />
-      <Skills />
-      <Projects />
-      <WorkExperience />
+      <Hero class="mb-20" />
+      <About class="mb-20" />
+      <Skills class="mb-20" />
+      <Projects class="mb-20" />
+      <WorkExperience class="mb-20" />
       <Contact />
       <DownloadCV />
     </main>

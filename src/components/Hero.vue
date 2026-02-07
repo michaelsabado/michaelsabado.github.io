@@ -10,10 +10,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
 </script>
 
 <template>
-  <section
-    id="hero"
-    class="rounded-3xl border border-slate-200/60 bg-white/65 px-6 py-6 shadow-lg shadow-slate-200/40 sm:px-8 sm:py-10 dark:border-slate-800/60 dark:bg-slate-900/30 dark:shadow-none"
-  >
+  <section id="hero">
     <div class="grid gap-10 sm:gap-12 lg:grid-cols-[1.2fr,0.8fr]">
       <div class="order-2 space-y-8 text-pretty lg:order-1">
         <p
@@ -26,7 +23,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
           <h1
             class="text-3xl font-semibold tracking-tight text-slate-900 text-balance sm:text-4xl lg:text-5xl xl:text-6xl dark:text-white"
           >
-            Hi, I’m {{ profile.nickname }}.
+            Hi, it's {{ profile.nickname }}
           </h1>
           <p
             class="text-base leading-relaxed text-slate-600 sm:text-lg dark:text-slate-300"
@@ -53,7 +50,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
             class="rounded-2xl border border-slate-200/80 bg-white/70 px-4 py-5 text-center shadow-sm dark:border-slate-800/80 dark:bg-slate-900/60"
           >
             <dt
-              class="text-xs uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"
+              class="text-[0.6rem] uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400"
             >
               {{ metric.label }}
             </dt>
@@ -65,7 +62,7 @@ const hasHeroImage = computed(() => Boolean(heroImageSrc.value))
       </div>
 
       <div
-        class="order-1 relative mx-auto aspect-square w-full max-w-[320px] overflow-hidden rounded-full text-white shadow-card sm:max-w-[360px] lg:order-2 lg:max-w-[420px]"
+        class="order-1 relative mx-auto aspect-square w-full max-w-[200px] overflow-hidden rounded-full text-white shadow-card sm:max-w-[250px] lg:order-2 lg:max-w-[350px]"
       >
         <div class="absolute inset-0">
           <img

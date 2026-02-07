@@ -83,7 +83,7 @@ const displayIndex = computed(() => props.index + 1)
           </div>
         </div>
 
-        <div class="flex flex-col gap-3 sm:flex-row">
+        <!-- <div class="flex flex-col gap-3 sm:flex-row">
           <a
             v-if="project.github"
             :href="project.github"
@@ -102,7 +102,7 @@ const displayIndex = computed(() => props.index + 1)
           >
             Live demo
           </a>
-        </div>
+        </div> -->
       </div>
 
       <div class="lg:w-[42%] space-y-4">
