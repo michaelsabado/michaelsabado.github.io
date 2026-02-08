@@ -1,0 +1,838 @@
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="description" content="Comprehensive Vue.js cheatsheet covering setup, directives, components, reactivity, router, and state management." />
+  <meta name="color-scheme" content="light dark" />
+  <title>Vue.js Cheatsheet</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <script>
+    tailwind.config = {
+      darkMode: 'media',
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui'],
+            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+          },
+          colors: {
+            accent: {
+              50: '#ecfeff',
+              500: '#0ea5e9',
+              600: '#0284c7',
+            },
+            warn: {
+              50: '#fff1f2',
+              500: '#f43f5e',
+            },
+          },
+          boxShadow: {
+            card: '0 18px 45px -25px rgba(15,23,42,0.45)',
+          },
+        },
+      },
+    };
+  </script>
+  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
+  <style>
+    pre {
+      white-space: pre-wrap;
+      word-break: break-word;
+      overflow-x: auto;
+      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    }
+  </style>
+</head>
+<body class="min-h-full bg-slate-50 font-sans text-slate-900 antialiased selection:bg-accent-50 selection:text-slate-900 dark:bg-slate-950 dark:text-slate-100 dark:selection:bg-accent-600/30 dark:selection:text-white">
+  <div class="relative overflow-hidden">
+    <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"></div>
+    <main class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10">
+      <header class="rounded-3xl border border-white/70 bg-white/80 p-8 shadow-card backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70">
+        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Reference</p>
+        <h1 class="mt-4 text-4xl font-semibold text-slate-900 dark:text-white sm:text-5xl">Vue.js Cheatsheet</h1>
+        <p class="mt-4 max-w-3xl text-lg text-slate-600 dark:text-slate-300">Comprehensive reference for Vue 3 (Composition & Options API), directives, components, events, and state management. Copy-ready snippets, mobile-friendly, and dark-mode aware.</p>
+        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-300">
+          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-accent-500"></span>Vue 3.4+</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-emerald-500"></span>Composition & Options API</span>
+          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-warn-500"></span>Pitfalls highlighted</span>
+        </div>
+      </header>
+
+      <section class="mt-12 rounded-2xl border border-white/70 bg-white/80 p-6 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Table of contents</p>
+        <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
+          <a href="#setup" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Vue Setup</a>
+          <a href="#template" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Template Syntax</a>
+          <a href="#components" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Components</a>
+          <a href="#reactivity" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Reactivity</a>
+          <a href="#lifecycle" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Lifecycle Hooks</a>
+          <a href="#methods" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Methods & Computed</a>
+          <a href="#events" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Event Handling</a>
+          <a href="#conditionals" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Conditional Rendering & Lists</a>
+          <a href="#forms" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Forms & v-model</a>
+          <a href="#computed-watch" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Computed & Watch</a>
+          <a href="#slots" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Slots</a>
+          <a href="#router" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Vue Router</a>
+          <a href="#state" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">State Management</a>
+          <a href="#composition-utils" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Composition Utilities</a>
+          <a href="#directives" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Directives & Helpers</a>
+          <a href="#tips" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Tips & Gotchas</a>
+        </div>
+      </section>
+
+      <section id="setup" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">01</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Vue Setup</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Bootstrapping apps via CDN or build tooling.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">CDN quick start</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;div id="app"&gt;{{ message }}&lt;/div&gt;
+&lt;script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"&gt;&lt;/script&gt;
+&lt;script&gt;
+const { createApp } = Vue;
+createApp({
+  data: () => ({ message: 'Hello Vue' })
+}).mount('#app');
+&lt;/script&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use for prototypes or embeds; no bundling.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Vite + Vue</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">npm create vite@latest my-app -- --template vue
+cd my-app && npm install && npm run dev</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Modern tooling with HMR, TypeScript, tests. Keep app structure: <span class="font-mono">App.vue</span> + <span class="font-mono">/components</span>.</p>
+          </article>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Single File Component anatomy</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;template&gt;
+  &lt;Button :label="count" @click="increment" /&gt;
+&lt;/template&gt;
+
+&lt;script setup&gt;
+import Button from './Button.vue';
+const count = ref(0);
+const increment = () => count.value++;
+&lt;/script&gt;
+
+&lt;style scoped&gt;
+button { font-weight: 600; }
+&lt;/style&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">&lt;script setup&gt;</span> for concise components.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Mounting</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { createApp } from 'vue';
+import App from './App.vue';
+
+createApp(App)
+  .provide('apiBase', 'https://api.example.com')
+  .mount('#app');</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Chain plugins (.use), directives (.directive), or mixins before <span class="font-mono">mount()</span>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="template" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">02</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Template Syntax & Directives</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Interpolation, bindings, and logic with full modifier coverage.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Interpolation</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;h1&gt;Hello {{ user.name.toUpperCase() }}!&lt;/h1&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Only expressions allowed (no statements). Auto-escapes HTML.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-bind / :</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;img :src="avatarUrl" :alt="`Avatar of ${user.name}`" /&gt;
+&lt;component :is="dynamicComponent" /&gt;
+&lt;MyButton v-bind="buttonProps" /&gt;</pre>
+            <ul class="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Arguments: <span class="font-mono">v-bind:class</span>, <span class="font-mono">:[dynamicAttr]</span>.</li>
+              <li>Modifiers: <span class="font-mono">.prop</span> force DOM property, <span class="font-mono">.camel</span> convert to camelCase, <span class="font-mono">.attr</span> explicit attribute (default).</li>
+              <li>When to use: reactive attribute/prop binding, dynamic component selection.</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-on / @</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;button @click.stop="save" @mouseenter="hover = true" /&gt;
+&lt;input @keyup.enter="submit" /&gt;
+&lt;form @submit.prevent="submit" /&gt;</pre>
+            <p class="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Native events</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300">click, dblclick, contextmenu, input, change, focus, blur, submit, keydown, keyup, keypress, mouseenter, mouseleave, mousemove, wheel, touchstart, touchend, drag, drop, scroll.</p>
+            <p class="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Modifiers</p>
+            <p class="text-sm text-slate-600 dark:text-slate-300"><span class="font-mono">.stop</span> stopPropagation · <span class="font-mono">.prevent</span> preventDefault · <span class="font-mono">.capture</span> add capture listener · <span class="font-mono">.once</span> auto-remove · <span class="font-mono">.passive</span> passive mode (no preventDefault) · <span class="font-mono">.self</span> only when target is element itself · <span class="font-mono">.exact</span> exact modifier key match · key modifiers (<span class="font-mono">.enter</span>, <span class="font-mono">.esc</span>, <span class="font-mono">.ctrl</span>, <span class="font-mono">.shift</span>, <span class="font-mono">.alt</span>, <span class="font-mono">.meta</span>) · <span class="font-mono">.left/.right/.middle</span> mouse buttons · <span class="font-mono">.native</span> legacy when listening on child component root.</p>
+          </article>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Conditional rendering</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;p v-if="status === 'success'"&gt;Done&lt;/p&gt;
+&lt;p v-else-if="status === 'loading'"&gt;Loading...&lt;/p&gt;
+&lt;p v-else&gt;Failed&lt;/p&gt;
+&lt;p v-show="isVisible"&gt;Display toggled via CSS (no destroy).&lt;/p&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">v-if</span> for expensive DOM, <span class="font-mono">v-show</span> for frequent toggles.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-for</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;li v-for="(todo, index) in todos" :key="todo.id"&gt;
+  {{ index + 1 }}. {{ todo.title }}
+&lt;/li&gt;
+&lt;template v-for="(value, key) in stats" :key="key"&gt;...&lt;/template&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Provide unique <span class="font-mono">:key</span>; avoid using index unless data is static.</p>
+          </article>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-model</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input v-model.trim="form.email" /&gt;
+&lt;input type="number" v-model.number="form.age" /&gt;
+&lt;textarea v-model.lazy="bio" /&gt;
+&lt;MyInput v-model="search" /&gt;
+&lt;MySlider v-model:value="range" /&gt;
+&lt;MyToggle v-model:checked="isOn" v-model:label="label" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Modifiers: <span class="font-mono">.lazy</span> update on change, <span class="font-mono">.trim</span> auto-trim strings, <span class="font-mono">.number</span> cast to number. Arguments (<span class="font-mono">v-model:prop</span>) allow multiple two-way bindings. Components can define <span class="font-mono">modelValue</span>/<span class="font-mono">update:modelValue</span> or <span class="font-mono">defineModel</span>.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Directive summary</p>
+            <table class="mt-3 w-full text-left text-sm text-slate-600 dark:text-slate-300">
+              <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+                <tr>
+                  <th class="py-2 pr-3">Directive</th>
+                  <th class="py-2 pr-3">Key options</th>
+                  <th class="py-2">Use case</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr class="border-t border-slate-100 dark:border-slate-800">
+                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-html</td>
+                  <td class="py-2 pr-3">Inject raw HTML (sanitize yourself).</td>
+                  <td class="py-2">Use for trusted markdown output.</td>
+                </tr>
+                <tr class="border-t border-slate-100 dark:border-slate-800">
+                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-text</td>
+                  <td class="py-2 pr-3">Sets <span class="font-mono">textContent</span>.</td>
+                  <td class="py-2">Shorthand for plain text injection.</td>
+                </tr>
+                <tr class="border-t border-slate-100 dark:border-slate-800">
+                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-memo</td>
+                  <td class="py-2 pr-3">Cache subtree until dependency array changes.</td>
+                  <td class="py-2">Optimize expensive static blocks.</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+        </div>
+      </section>
+
+      <section id="components" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">03</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Components</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Registration, props, emits, and slots.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Registration</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// main.js global
+createApp(App)
+  .component('BaseButton', BaseButton)
+  .mount('#app');
+
+// Local
+import BaseCard from './BaseCard.vue';
+export default {
+  components: { BaseCard }
+};</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Prefer auto-import or local registration to reduce bundle size.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Props</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const props = defineProps({
+  label: { type: String, required: true },
+  count: { type: Number, default: 0 },
+  config: { type: Object, default: () => ({}) }
+});</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Validate types, provide defaults via factory for objects/arrays. Use <span class="font-mono">defineEmits</span> for TypeScript inference.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Emits + .sync</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const emit = defineEmits({
+  submit: (payload) => payload !== null,
+  'update:modelValue': (val) => typeof val === 'string'
+});
+
+emit('submit', formData);
+
+&lt;MyDialog v-model="isOpen" @submit="save" /&gt;
+&lt;MyDialog :visible="isOpen" @update:visible="isOpen = $event" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">.sync sugar became <span class="font-mono">v-model:prop</span>.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Slots</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Modal&gt;
+  &lt;template #header&gt;Title&lt;/template&gt;
+  Default content
+  &lt;template #footer&gt;
+    &lt;button @click="close"&gt;Close&lt;/button&gt;
+  &lt;/template&gt;
+&lt;/Modal&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Named slots via <span class="font-mono">#name</span>. Provide fallback using slot content inside component.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Scoped slot</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;List :items="users"&gt;
+  &lt;template #default="{ item, index }"&gt;
+    {{ index + 1 }} - {{ item.name }}
+  &lt;/template&gt;
+&lt;/List&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Expose slot props from child via <span class="font-mono">&lt;slot :item="item" /&gt;</span>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="reactivity" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">04</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Reactivity (Composition API)</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">State containers, derived values, and effects.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">ref</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const count = ref(0);
+count.value++;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Holds primitive or complex value. Unwrapped in templates.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">reactive</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const state = reactive({ user: null, loading: false });
+state.loading = true;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Proxy-based; mutate directly. Use <span class="font-mono">toRefs()</span> when spreading into components.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">computed</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const fullName = computed(() => `${user.value.first} ${user.value.last}`);</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Cached until dependencies change. Can be writable via getter/setter.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">watch</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">watch(() => route.params.id, (id, prev) => {
+  fetchUser(id);
+}, {
+  immediate: true,
+  deep: false,
+  flush: 'pre'
+});</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Options: <span class="font-mono">immediate</span>, <span class="font-mono">deep</span>, <span class="font-mono">flush</span> ('pre' | 'post' | 'sync'), <span class="font-mono">onTrack/onTrigger</span> dev hooks.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">watchEffect</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">watchEffect((onCleanup) => {
+  const stop = subscribeToChannel(channelId.value);
+  onCleanup(() => stop());
+});</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Auto tracks dependencies inside callback. Good for syncing imperative APIs.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="lifecycle" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">05</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Lifecycle Hooks</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Composition helpers and Options API equivalents.</p>
+          </div>
+        </div>
+        <div class="mt-6 overflow-x-auto rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+          <table class="min-w-full text-left text-sm text-slate-600 dark:text-slate-300">
+            <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
+              <tr>
+                <th class="py-2 pr-4">Hook</th>
+                <th class="py-2 pr-4">Composition API</th>
+                <th class="py-2 pr-4">Options API</th>
+                <th class="py-2">Usage</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before mount</td>
+                <td class="py-2 pr-4 font-mono">onBeforeMount()</td>
+                <td class="py-2 pr-4 font-mono">beforeMount</td>
+                <td class="py-2">Access props, avoid DOM.</td>
+              </tr>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Mounted</td>
+                <td class="py-2 pr-4 font-mono">onMounted()</td>
+                <td class="py-2 pr-4 font-mono">mounted</td>
+                <td class="py-2">DOM available, start subscriptions.</td>
+              </tr>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before update</td>
+                <td class="py-2 pr-4 font-mono">onBeforeUpdate()</td>
+                <td class="py-2 pr-4 font-mono">beforeUpdate</td>
+                <td class="py-2">Read pre-patch DOM.</td>
+              </tr>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Updated</td>
+                <td class="py-2 pr-4 font-mono">onUpdated()</td>
+                <td class="py-2 pr-4 font-mono">updated</td>
+                <td class="py-2">Interact with post-patch DOM.</td>
+              </tr>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before unmount</td>
+                <td class="py-2 pr-4 font-mono">onBeforeUnmount()</td>
+                <td class="py-2 pr-4 font-mono">beforeUnmount</td>
+                <td class="py-2">Cleanup timers, listeners.</td>
+              </tr>
+              <tr class="border-t border-slate-100 dark:border-slate-800">
+                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Unmounted</td>
+                <td class="py-2 pr-4 font-mono">onUnmounted()</td>
+                <td class="py-2 pr-4 font-mono">unmounted</td>
+                <td class="py-2">Detach services, sockets.</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        <div class="mt-6 rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+          <p class="font-semibold text-slate-900 dark:text-white">Example</p>
+          <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { onMounted, onUnmounted } from 'vue';
+const interval = ref();
+
+onMounted(() => {
+  interval.value = setInterval(fetchStats, 5000);
+});
+
+onUnmounted(() => clearInterval(interval.value));</pre>
+        </div>
+      </section>
+
+      <section id="methods" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">06</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Methods & Computed</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Encapsulate business logic and derived state.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Methods</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const increment = () => count.value++;
+
+export default {
+  methods: {
+    increment() {
+      this.count++;
+    }
+  }
+};</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use for actions that may receive arguments or have side effects.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Computed vs method</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const filtered = computed(() => items.value.filter(matches));
+
+&lt;div v-for="item in filtered" :key="item.id" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Computed caches until dependencies change; methods re-run on each render. Use computed for derived data without side effects.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="events" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">07</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Event Handling</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Native events, modifiers, and component communication.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Native events</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li><span class="font-semibold">Keyboard</span>: <span class="font-mono">@keyup.enter</span>, <span class="font-mono">@keydown.ctrl.s</span>.</li>
+              <li><span class="font-semibold">Form</span>: <span class="font-mono">@submit.prevent</span>, <span class="font-mono">@change</span>, <span class="font-mono">@input</span>.</li>
+              <li><span class="font-semibold">Mouse</span>: <span class="font-mono">@click.stop</span>, <span class="font-mono">@dblclick</span>, <span class="font-mono">@contextmenu.prevent</span>.</li>
+              <li><span class="font-semibold">Focus</span>: <span class="font-mono">@focus</span>, <span class="font-mono">@blur</span>.</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Modifiers quick lookup</p>
+            <table class="mt-3 w-full text-left text-sm text-slate-600 dark:text-slate-300">
+              <tbody>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.stop</td>
+                  <td class="py-1">stopPropagation()</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.prevent</td>
+                  <td class="py-1">preventDefault()</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.once</td>
+                  <td class="py-1">Listener runs once</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.self</td>
+                  <td class="py-1">Only if event.target === currentTarget</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.passive</td>
+                  <td class="py-1">Hint for scroll performance</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.capture</td>
+                  <td class="py-1">Use capture phase</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.exact</td>
+                  <td class="py-1">Exact modifier combination</td>
+                </tr>
+                <tr>
+                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.native</td>
+                  <td class="py-1">Listen on child root (compat)</td>
+                </tr>
+              </tbody>
+            </table>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Custom events</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// Child
+const emit = defineEmits(['submit']);
+const handleClick = () => emit('submit', form.value);
+
+// Parent
+&lt;FormCard @submit="save" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Document events for consumers. Use <span class="font-mono">defineEmits</span> for TS types.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="conditionals" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">08</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Conditional Rendering & Lists</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Control DOM output and iterate data safely.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-if vs v-show</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Alert v-if="error" :message="error" /&gt;
+&lt;Tooltip v-show="hover" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">v-if removes DOM entirely (costly but ensures teardown). v-show toggles CSS <span class="font-mono">display</span>; perfect for frequent toggles.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Loop best practices</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li>Always supply stable <span class="font-mono">:key</span> (primary key, slug).</li>
+              <li>Use <span class="font-mono">v-for="(value, key, index) in object"</span> for objects.</li>
+              <li>Avoid nested <span class="font-mono">v-for</span> with same key to prevent patch conflicts.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="forms" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">09</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Forms & v-model</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Two-way binding patterns for every input type.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Text inputs</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input v-model.trim="form.email" type="email" /&gt;
+&lt;textarea v-model.lazy="form.notes" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">.trim</span> to strip whitespace; <span class="font-mono">.lazy</span> to update on blur/change.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Checkbox & radio</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input type="checkbox" v-model="form.agree" /&gt;
+&lt;input type="checkbox" value="dark" v-model="form.themes" /&gt;
+&lt;input type="radio" value="monthly" v-model="plan" /&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Checkbox supports boolean or array. For radios, ensure same <span class="font-mono">name</span>.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Select</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;select v-model.number="form.countryId"&gt;
+  &lt;option :value="null" disabled&gt;Select...&lt;/option&gt;
+  &lt;option v-for="c in countries" :value="c.id" :key="c.id"&gt;
+    {{ c.name }}
+  &lt;/option&gt;
+&lt;/select&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">multiple</span> with array binding for multi-select.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="computed-watch" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">10</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Computed & Watch</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Pick the right tool for derived state or side effects.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Computed cheat</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use when output is deterministic & derived from reactive sources.</li>
+              <li>Writable variant: <span class="font-mono">computed({ get, set })</span> for two-way formatting.</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">watch options</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li><span class="font-semibold">Sources</span>: single ref, getter fn, array of sources.</li>
+              <li><span class="font-mono">deep: true</span> for nested objects (expensive, prefer specific watchers).</li>
+              <li><span class="font-mono">flush: 'post'</span> to run after DOM update for animation hooks.</li>
+              <li><span class="font-mono">immediate: true</span> run once instantly.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="slots" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">11</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Slots</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Reusable component content injection.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Default slot</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Card&gt;Body content&lt;/Card&gt;</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Named slot</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Card&gt;
+  &lt;template #header&gt;Header&lt;/template&gt;
+  Main content
+&lt;/Card&gt;</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Scoped slot</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;DataTable :rows="rows"&gt;
+  &lt;template #cell-name="{ row }"&gt;
+    {{ row.first }} {{ row.last }}
+  &lt;/template&gt;
+&lt;/DataTable&gt;</pre>
+          </article>
+        </div>
+      </section>
+
+      <section id="router" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">12</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Vue Router Basics</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Navigation, dynamic routes, and views.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Setup</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { createRouter, createWebHistory } from 'vue-router';
+import Home from './pages/Home.vue';
+import User from './pages/User.vue';
+
+const routes = [
+  { path: '/', component: Home },
+  { path: '/users/:id', name: 'user', component: User, props: true }
+];
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes,
+  scrollBehavior: () => ({ top: 0 })
+});
+
+createApp(App).use(router).mount('#app');</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Usage</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;router-link :to="{ name: 'user', params: { id: 42 } }"&gt;
+  Profile
+&lt;/router-link&gt;
+&lt;router-view v-slot="{ Component }"&gt;
+  &lt;transition name="fade"&gt;
+    &lt;component :is="Component" /&gt;
+  &lt;/transition&gt;
+&lt;/router-view&gt;</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Grab current route via <span class="font-mono">const route = useRoute()</span>; push via <span class="font-mono">const router = useRouter()</span>.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="state" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">13</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">State Management (Vuex / Pinia)</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Centralized stores for complex apps.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Pinia store</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { defineStore } from 'pinia';
+export const useUserStore = defineStore('user', {
+  state: () => ({ user: null }),
+  getters: {
+    isAdmin: (state) => state.user?.role === 'admin'
+  },
+  actions: {
+    async fetchUser() {
+      this.user = await api.me();
+    }
+  }
+});
+
+const store = useUserStore();
+store.fetchUser();</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Vuex (legacy)</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const store = createStore({
+  state: () => ({ count: 0 }),
+  mutations: {
+    increment(state) { state.count++; }
+  },
+  actions: {
+    incrementAsync({ commit }) {
+      setTimeout(() => commit('increment'), 250);
+    }
+  },
+  getters: {
+    double: (state) => state.count * 2
+  }
+});</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Pinia is the recommended store for Vue 3 (lighter API, TS friendly).</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="composition-utils" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">14</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Composition API Utilities</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Patterns for dependency injection and script setup ergonomics.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">provide / inject</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// parent
+provide('theme', ref('dark'));
+
+// child
+const theme = inject('theme', ref('light'));</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use symbols for type safety; default value used if provider missing.</p>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">defineProps / defineEmits / defineExpose</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const props = defineProps<{ label: string }>();
+const emit = defineEmits<{ (e: 'select', value: string): void }>();
+
+const focus = () => input.value?.focus();
+defineExpose({ focus });</pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Works only inside <span class="font-mono">&lt;script setup&gt;</span>. Expose methods for parent refs.</p>
+          </article>
+        </div>
+      </section>
+
+      <section id="directives" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">15</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Common Directives / Helpers</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Less-used utilities worth remembering.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-3">
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-pre</p>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Skips compilation for block. Use to show literal mustache syntax.</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;code v-pre&gt;{{ raw }}&lt;/code&gt;</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-cloak</p>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Hide until app hydrated. Pair with CSS.</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">[v-cloak] { display: none; }</pre>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">v-once</p>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Render element/component only once; skips future updates.</p>
+            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;HeroBanner v-once :config="config" /&gt;</pre>
+          </article>
+        </div>
+        <div class="mt-6 rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+          <p class="font-semibold text-slate-900 dark:text-white">Filters?</p>
+          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Filters were removed in Vue 3. Replace with computed properties or methods.</p>
+        </div>
+      </section>
+
+      <section id="tips" class="mt-16">
+        <div class="flex flex-wrap items-end justify-between gap-4">
+          <div>
+            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">16</p>
+            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Tips & Gotchas</h2>
+            <p class="text-base text-slate-600 dark:text-slate-300">Battle-tested notes for production Vue apps.</p>
+          </div>
+        </div>
+        <div class="mt-6 grid gap-5 md:grid-cols-2">
+          <article class="rounded-2xl border border-warn-500/50 bg-warn-50/80 p-5 shadow-card dark:border-warn-500/60 dark:bg-warn-500/10">
+            <p class="font-semibold text-warn-600">Reactive caveats</p>
+            <ul class="mt-3 space-y-2 text-sm text-warn-600 dark:text-warn-50">
+              <li>Directly reassigning reactive objects (<span class="font-mono">state = {}</span>) loses reactivity; use <span class="font-mono">Object.assign(state, newState)</span>.</li>
+              <li>Mutating arrays via index works, but use <span class="font-mono">splice</span> when removing to keep watchers aware.</li>
+              <li>When using <span class="font-mono">reactive</span>, destructuring breaks reactivity. Convert with <span class="font-mono">toRefs</span>.</li>
+            </ul>
+          </article>
+          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
+            <p class="font-semibold text-slate-900 dark:text-white">Performance & UX</p>
+            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
+              <li>Key list items deterministically to avoid DOM reuse bugs.</li>
+              <li>Wrap expensive components with <span class="font-mono">defineAsyncComponent</span> + suspense.</li>
+              <li>Use <span class="font-mono">v-memo</span> and <span class="font-mono">shallowRef</span> for static heavy blocks.</li>
+              <li>Prefer <span class="font-mono">script setup</span> + <span class="font-mono">defineModel</span> for single-source-of-truth two-way binding.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <footer class="mt-16 rounded-3xl border border-white/70 bg-white/80 p-6 text-sm text-slate-500 shadow-card dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
+        Keep this Vue.js cheatsheet handy for daily development. Validate directives, prefer composition utilities, and profile before optimizing.
+      </footer>
+    </main>
+  </div>
+</body>
+</html>
