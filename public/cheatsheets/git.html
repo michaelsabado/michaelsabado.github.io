@@ -44,6 +44,21 @@
     pre, code {
       font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
+    pre {
+      max-width: 100%;
+      width: 100%;
+      box-sizing: border-box;
+      overflow-x: auto;
+    }
+    .grid > *, .flex > * {
+      min-width: 0;
+    }
+    @media (max-width: 640px) {
+      pre {
+        font-size: 0.7rem;
+        padding: 0.75rem;
+      }
+    }
   </style>
 </head>
 <body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
