@@ -1,837 +1,1473 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Comprehensive Vue.js cheatsheet covering setup, directives, components, reactivity, router, and state management." />
-  <meta name="color-scheme" content="light dark" />
-  <title>Vue.js Cheatsheet</title>
+  <title>Vue 3 Composition API Cheatsheet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'media',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui'],
-            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
           },
           colors: {
-            accent: {
-              50: '#ecfeff',
+            brand: {
+              50: '#f0f9ff',
+              200: '#bae6fd',
               500: '#0ea5e9',
               600: '#0284c7',
+              900: '#0b4a6f',
             },
-            warn: {
-              50: '#fff1f2',
-              500: '#f43f5e',
+            surface: {
+              light: '#f8fafc',
+              dark: '#020617',
             },
           },
           boxShadow: {
-            card: '0 18px 45px -25px rgba(15,23,42,0.45)',
+            glow: '0 20px 70px rgba(14,165,233,0.25)',
           },
         },
       },
     };
   </script>
-  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <style>
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: auto;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    body {
+      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    pre, code {
+      font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
   </style>
 </head>
-<body class="min-h-full bg-slate-50 font-sans text-slate-900 antialiased selection:bg-accent-50 selection:text-slate-900 dark:bg-slate-950 dark:text-slate-100 dark:selection:bg-accent-600/30 dark:selection:text-white">
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent-50 via-white to-slate-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"></div>
-    <main class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10">
-      <header class="rounded-3xl border border-white/70 bg-white/80 p-8 shadow-card backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Reference</p>
-        <h1 class="mt-4 text-4xl font-semibold text-slate-900 dark:text-white sm:text-5xl">Vue.js Cheatsheet</h1>
-        <p class="mt-4 max-w-3xl text-lg text-slate-600 dark:text-slate-300">Comprehensive reference for Vue 3 (Composition & Options API), directives, components, events, and state management. Copy-ready snippets, mobile-friendly, and dark-mode aware.</p>
-        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-300">
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-accent-500"></span>Vue 3.4+</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-emerald-500"></span>Composition & Options API</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-warn-500"></span>Pitfalls highlighted</span>
-        </div>
-      </header>
+<body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+  <div class="relative isolate overflow-hidden">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute top-10 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"></div>
+    </div>
 
-      <section class="mt-12 rounded-2xl border border-white/70 bg-white/80 p-6 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Table of contents</p>
-        <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          <a href="#setup" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Vue Setup</a>
-          <a href="#template" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Template Syntax</a>
-          <a href="#components" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Components</a>
-          <a href="#reactivity" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Reactivity</a>
-          <a href="#lifecycle" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Lifecycle Hooks</a>
-          <a href="#methods" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Methods & Computed</a>
-          <a href="#events" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Event Handling</a>
-          <a href="#conditionals" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Conditional Rendering & Lists</a>
-          <a href="#forms" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Forms & v-model</a>
-          <a href="#computed-watch" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Computed & Watch</a>
-          <a href="#slots" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Slots</a>
-          <a href="#router" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Vue Router</a>
-          <a href="#state" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">State Management</a>
-          <a href="#composition-utils" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Composition Utilities</a>
-          <a href="#directives" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Directives & Helpers</a>
-          <a href="#tips" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Tips & Gotchas</a>
+    <header id="hero" class="px-4 py-16 sm:px-8 lg:px-16">
+      <div class="max-w-5xl mx-auto text-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200">Vue 3 · Composition API</span>
+        <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">Composition API Cheatsheet</h1>
+        <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">Practical, production-ready recipes for building Vue 3 apps with the Composition API.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Mobile-first</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Light & Dark</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Copy-paste ready</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="px-4 pb-24 sm:px-8 lg:px-16">
+      <section class="max-w-6xl mx-auto" id="toc">
+        <div class="rounded-3xl border border-white/70 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 shadow-xl p-8">
+          <h2 class="text-xl font-semibold">Table of Contents</h2>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm font-semibold">
+            <a href="#intro" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Introduction & Fundamentals</a>
+            <a href="#bindings" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Template Bindings</a>
+            <a href="#reactivity" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Reactivity Utilities</a>
+            <a href="#lifecycle" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Lifecycle Hooks</a>
+            <a href="#dom" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">DOM References</a>
+            <a href="#events" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Events</a>
+            <a href="#forms" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Forms & Validation</a>
+            <a href="#errors" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Error Handling</a>
+            <a href="#components" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Components & Composables</a>
+            <a href="#typescript" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Type-Safe API</a>
+            <a href="#advanced" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Advanced Reactivity</a>
+            <a href="#router" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Router & State</a>
+            <a href="#best" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Best Practices</a>
+            <a href="#debug" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Debugging & Mini-app</a>
+          </div>
         </div>
       </section>
 
-      <section id="setup" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+
+      <section id="intro" class="max-w-6xl mx-auto mt-20">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">01</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Vue Setup</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Bootstrapping apps via CDN or build tooling.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 01</p>
+            <h2 class="mt-2 text-3xl font-semibold">Introduction / Fundamentals</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Why Composition API: better logic reuse, co-located concerns, better TS inference, tree-shakeable imports.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Guideline</p>
+            <p class="mt-2">Prefer Composition API for complex components, reusable logic, and TypeScript-heavy projects. Options API remains fine for small/simple views.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">CDN quick start</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;div id="app"&gt;{{ message }}&lt;/div&gt;
-&lt;script src="https://unpkg.com/vue@3/dist/vue.global.prod.js"&gt;&lt;/script&gt;
-&lt;script&gt;
-const { createApp } = Vue;
-createApp({
-  data: () => ({ message: 'Hello Vue' })
-}).mount('#app');
-&lt;/script&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use for prototypes or embeds; no bundling.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Vite + Vue</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">npm create vite@latest my-app -- --template vue
-cd my-app && npm install && npm run dev</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Modern tooling with HMR, TypeScript, tests. Keep app structure: <span class="font-mono">App.vue</span> + <span class="font-mono">/components</span>.</p>
-          </article>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Single File Component anatomy</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;template&gt;
-  &lt;Button :label="count" @click="increment" /&gt;
-&lt;/template&gt;
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">ref() vs reactive()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, reactive } from 'vue'
 
-&lt;script setup&gt;
-import Button from './Button.vue';
-const count = ref(0);
-const increment = () => count.value++;
-&lt;/script&gt;
+const count = ref(0)              // primitive or single value
+const user = reactive({           // nested object stays reactive via proxy
+  name: 'Ada',
+  skills: ['Vue', 'TS'],
+})
 
-&lt;style scoped&gt;
-button { font-weight: 600; }
-&lt;/style&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">&lt;script setup&gt;</span> for concise components.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Mounting</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { createApp } from 'vue';
-import App from './App.vue';
-
-createApp(App)
-  .provide('apiBase', 'https://api.example.com')
-  .mount('#app');</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Chain plugins (.use), directives (.directive), or mixins before <span class="font-mono">mount()</span>.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="template" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">02</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Template Syntax & Directives</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Interpolation, bindings, and logic with full modifier coverage.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Interpolation</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;h1&gt;Hello {{ user.name.toUpperCase() }}!&lt;/h1&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Only expressions allowed (no statements). Auto-escapes HTML.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-bind / :</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;img :src="avatarUrl" :alt="`Avatar of ${user.name}`" /&gt;
-&lt;component :is="dynamicComponent" /&gt;
-&lt;MyButton v-bind="buttonProps" /&gt;</pre>
-            <ul class="mt-3 space-y-1 text-sm text-slate-600 dark:text-slate-300">
-              <li>Arguments: <span class="font-mono">v-bind:class</span>, <span class="font-mono">:[dynamicAttr]</span>.</li>
-              <li>Modifiers: <span class="font-mono">.prop</span> force DOM property, <span class="font-mono">.camel</span> convert to camelCase, <span class="font-mono">.attr</span> explicit attribute (default).</li>
-              <li>When to use: reactive attribute/prop binding, dynamic component selection.</li>
+count.value++                     // must use .value on refs
+user.skills.push('DX')            // deep mutations stay tracked
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use ref for primitives or single values; access via .value in script.</li>
+              <li>Use reactive for cohesive objects/collections needing deep tracking.</li>
+              <li>Mutate reactive objects directly; avoid replacing the reference unless intended.</li>
+              <li>When to use: pick ref for scalar UI flags/inputs; pick reactive for grouped state you mutate in place.</li>
             </ul>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-on / @</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;button @click.stop="save" @mouseenter="hover = true" /&gt;
-&lt;input @keyup.enter="submit" /&gt;
-&lt;form @submit.prevent="submit" /&gt;</pre>
-            <p class="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Native events</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">click, dblclick, contextmenu, input, change, focus, blur, submit, keydown, keyup, keypress, mouseenter, mouseleave, mousemove, wheel, touchstart, touchend, drag, drop, scroll.</p>
-            <p class="mt-3 text-sm font-semibold uppercase tracking-[0.2em] text-slate-500 dark:text-slate-400">Modifiers</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300"><span class="font-mono">.stop</span> stopPropagation · <span class="font-mono">.prevent</span> preventDefault · <span class="font-mono">.capture</span> add capture listener · <span class="font-mono">.once</span> auto-remove · <span class="font-mono">.passive</span> passive mode (no preventDefault) · <span class="font-mono">.self</span> only when target is element itself · <span class="font-mono">.exact</span> exact modifier key match · key modifiers (<span class="font-mono">.enter</span>, <span class="font-mono">.esc</span>, <span class="font-mono">.ctrl</span>, <span class="font-mono">.shift</span>, <span class="font-mono">.alt</span>, <span class="font-mono">.meta</span>) · <span class="font-mono">.left/.right/.middle</span> mouse buttons · <span class="font-mono">.native</span> legacy when listening on child component root.</p>
-          </article>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">toRefs(), toRaw(), markRaw()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { reactive, toRefs, toRaw, markRaw } from 'vue'
+
+const state = reactive({ ready: false, payload: null })
+const { ready, payload } = toRefs(state) // preserves reactivity when destructuring
+
+const raw = toRaw(state)                // escape proxy (e.g., pass to non-reactive lib)
+const thirdParty = markRaw(new Map())   // opt-out of tracking for heavy structures
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use toRefs when exposing reactive properties to keep reactivity.</li>
+              <li>Use toRaw sparingly for debugging or third-party interop.</li>
+              <li>markRaw opts objects out of tracking (great for heavy/immutable data).</li>
+              <li>When to use: toRefs for consuming reactive pieces elsewhere; toRaw/markRaw only for interop or perf-critical structures.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">shallowReactive / shallowRef</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { shallowReactive, shallowRef } from 'vue'
+
+const card = shallowReactive({
+  meta: { views: 0 },   // nested meta is NOT reactive
+  title: 'Guide',
+})
+
+const el = shallowRef(null)       // DOM refs benefit: avoids deep tracking overhead
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Shallow variants track only top-level properties.</li>
+              <li>Use when nested objects are managed elsewhere (e.g., Chart.js).</li>
+              <li>Helps avoid expensive deep proxying on large payloads.</li>
+              <li>When to use: bridges to third-party instances or large immutable blobs.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">readonly() & customRef()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, readonly, customRef } from 'vue'
+
+const internal = ref(0)
+const exposed = readonly(internal)   // prevent external mutation
+
+const debounced = (delay = 200) => customRef((track, trigger) => {
+  let timer, value = ''
+  return {
+    get() {
+      track()                   // track access
+      return value
+    },
+    set(v) {
+      clearTimeout(timer)
+      timer = setTimeout(() => {
+        value = v
+        trigger()              // notify after debounce
+      }, delay)
+    },
+  }
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Expose readonly state to prevent external mutation.</li>
+              <li>customRef lets you control tracking/triggering (e.g., debounce).</li>
+              <li>Great for throttled flags, debounced inputs, or lazy values.</li>
+              <li>When to use: export read-only state to consumers; wrap inputs that need debounce/throttle semantics.</li>
+            </ul>
+          </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Conditional rendering</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;p v-if="status === 'success'"&gt;Done&lt;/p&gt;
-&lt;p v-else-if="status === 'loading'"&gt;Loading...&lt;/p&gt;
-&lt;p v-else&gt;Failed&lt;/p&gt;
-&lt;p v-show="isVisible"&gt;Display toggled via CSS (no destroy).&lt;/p&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">v-if</span> for expensive DOM, <span class="font-mono">v-show</span> for frequent toggles.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-for</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;li v-for="(todo, index) in todos" :key="todo.id"&gt;
-  {{ index + 1 }}. {{ todo.title }}
-&lt;/li&gt;
-&lt;template v-for="(value, key) in stats" :key="key"&gt;...&lt;/template&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Provide unique <span class="font-mono">:key</span>; avoid using index unless data is static.</p>
-          </article>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-model</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input v-model.trim="form.email" /&gt;
-&lt;input type="number" v-model.number="form.age" /&gt;
-&lt;textarea v-model.lazy="bio" /&gt;
-&lt;MyInput v-model="search" /&gt;
-&lt;MySlider v-model:value="range" /&gt;
-&lt;MyToggle v-model:checked="isOn" v-model:label="label" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Modifiers: <span class="font-mono">.lazy</span> update on change, <span class="font-mono">.trim</span> auto-trim strings, <span class="font-mono">.number</span> cast to number. Arguments (<span class="font-mono">v-model:prop</span>) allow multiple two-way bindings. Components can define <span class="font-mono">modelValue</span>/<span class="font-mono">update:modelValue</span> or <span class="font-mono">defineModel</span>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Directive summary</p>
-            <table class="mt-3 w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-                <tr>
-                  <th class="py-2 pr-3">Directive</th>
-                  <th class="py-2 pr-3">Key options</th>
-                  <th class="py-2">Use case</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr class="border-t border-slate-100 dark:border-slate-800">
-                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-html</td>
-                  <td class="py-2 pr-3">Inject raw HTML (sanitize yourself).</td>
-                  <td class="py-2">Use for trusted markdown output.</td>
-                </tr>
-                <tr class="border-t border-slate-100 dark:border-slate-800">
-                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-text</td>
-                  <td class="py-2 pr-3">Sets <span class="font-mono">textContent</span>.</td>
-                  <td class="py-2">Shorthand for plain text injection.</td>
-                </tr>
-                <tr class="border-t border-slate-100 dark:border-slate-800">
-                  <td class="py-2 pr-3 font-mono text-slate-900 dark:text-white">v-memo</td>
-                  <td class="py-2 pr-3">Cache subtree until dependency array changes.</td>
-                  <td class="py-2">Optimize expensive static blocks.</td>
-                </tr>
-              </tbody>
-            </table>
-          </article>
+        <div class="mt-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+          <h3 class="text-lg font-semibold">Computed Basics & Getters/Setters</h3>
+          <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, computed } from 'vue'
+
+const first = ref('Ada')
+const last = ref('Lovelace')
+
+const fullName = computed(() => `${first.value} ${last.value}`)
+
+const normalized = computed({
+  get: () => fullName.value.toUpperCase(),
+  set: (value) => {
+    const [f, ...rest] = value.split(' ')
+    first.value = f
+    last.value = rest.join(' ')
+  },
+})
+
+normalized.value = 'GRACE HOPPER'  // also updates first/last
+</code></pre>
+          <ul class="mt-3 list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+            <li>Computed values are cached until dependencies change.</li>
+            <li>Getter/setter pairs enable two-way derived state (formatted inputs).</li>
+            <li>Prefer computed over watch when deriving state.</li>
+            <li>When to use: any time you derive view data from source state instead of imperatively syncing.</li>
+          </ul>
         </div>
       </section>
 
-      <section id="components" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="bindings" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">03</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Components</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Registration, props, emits, and slots.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 02</p>
+            <h2 class="mt-2 text-3xl font-semibold">Template Bindings</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Compose bindings using refs/computed, dynamic attributes, and slot-driven layouts.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
+            <p class="font-semibold">Pitfall</p>
+            <p class="mt-2">Remember to unwrap refs in templates automatically. In script, access .value. In templates, no .value needed.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Registration</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// main.js global
-createApp(App)
-  .component('BaseButton', BaseButton)
-  .mount('#app');
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">v-model with Composition API</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;input v-model.trim="title" class="input" />
+  &lt;p>{{ title }}&lt;/p>
+&lt;/template>
 
-// Local
-import BaseCard from './BaseCard.vue';
-export default {
-  components: { BaseCard }
-};</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Prefer auto-import or local registration to reduce bundle size.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Props</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const props = defineProps({
-  label: { type: String, required: true },
-  count: { type: Number, default: 0 },
-  config: { type: Object, default: () => ({}) }
-});</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Validate types, provide defaults via factory for objects/arrays. Use <span class="font-mono">defineEmits</span> for TypeScript inference.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Emits + .sync</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const emit = defineEmits({
-  submit: (payload) => payload !== null,
-  'update:modelValue': (val) => typeof val === 'string'
-});
+&lt;script setup>
+import { ref } from 'vue'
+const title = ref('Hello')         // template unwraps .value
+&lt;/script>
+</code></pre>
+            <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;input v-model.number="age" type="number" placeholder="Age" />
+  &lt;input v-model.lazy="email" type="email" placeholder="Email (updates on blur)" />
+  &lt;p>{{ age }} — {{ email }}&lt;/p>
+&lt;/template>
 
-emit('submit', formData);
+&lt;script setup>
+import { ref } from 'vue'
+const age = ref(0)
+const email = ref('')
+&lt;/script>
+</code></pre>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 list-disc list-inside space-y-1">
+                <li>Use modifiers (trim, number, lazy) on the consumer side; number coerces strings, lazy updates on blur/change.</li>
+                <li>For multiple bindings, use modelValue plus named props (v-model:title).</li>
+                <li>When to use: simplest two-way binding for native inputs and small forms.</li>
+              </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Component v-model Support</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;input :value="modelValue" @input="$emit('update:modelValue', $event.target.value)" />
+&lt;/template>
 
-&lt;MyDialog v-model="isOpen" @submit="save" /&gt;
-&lt;MyDialog :visible="isOpen" @update:visible="isOpen = $event" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">.sync sugar became <span class="font-mono">v-model:prop</span>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Slots</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Modal&gt;
-  &lt;template #header&gt;Title&lt;/template&gt;
-  Default content
-  &lt;template #footer&gt;
-    &lt;button @click="close"&gt;Close&lt;/button&gt;
-  &lt;/template&gt;
-&lt;/Modal&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Named slots via <span class="font-mono">#name</span>. Provide fallback using slot content inside component.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Scoped slot</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;List :items="users"&gt;
-  &lt;template #default="{ item, index }"&gt;
-    {{ index + 1 }} - {{ item.name }}
-  &lt;/template&gt;
-&lt;/List&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Expose slot props from child via <span class="font-mono">&lt;slot :item="item" /&gt;</span>.</p>
-          </article>
+&lt;script setup>
+const props = defineProps({ modelValue: String })
+const emit = defineEmits(['update:modelValue'])
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Declare update:modelValue emits for each bound prop.</li>
+              <li>Parent controls modifiers (trim/number/lazy) on usage.</li>
+              <li>Keep component inputs controlled by props, emit changes upward.</li>
+              <li>When to use: building custom input components that need v-model support.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Named v-model (multiple bindings)</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;!-- Parent -->
+&lt;template>
+  &lt;Dialog v-model:open="isOpen" v-model:title="title" />
+&lt;/template>
+
+&lt;!-- Dialog.vue -->
+&lt;template>
+  &lt;section v-if="open">
+    &lt;header>
+      &lt;input :value="title" @input="$emit('update:title', $event.target.value)" />
+      &lt;button @click="$emit('update:open', false)">Close&lt;/button>
+    &lt;/header>
+    &lt;slot />
+  &lt;/section>
+&lt;/template>
+
+&lt;script setup>
+const props = defineProps({ open: Boolean, title: String })
+const emit = defineEmits(['update:open', 'update:title'])
+&lt;/script>
+</code></pre>
+              <ul class="text-sm text-slate-600 dark:text-slate-300 list-disc list-inside space-y-1">
+                <li>Each named model needs a prop and matching update:&lt;name> emit.</li>
+                <li>Lets parents bind multiple independent values (e.g., open boolean + title string) without collisions.</li>
+                <li>When to use: components managing multiple controlled fields.</li>
+              </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Dynamic Attributes & Classes</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;button :class="['btn', sizeClass, { 'is-loading': loading }]">
+    {{ label }}
+  &lt;/button>
+  &lt;div v-bind="baseAttrs" :data-role="role">&lt;/div>
+&lt;/template>
+
+&lt;script setup>
+import { computed } from 'vue'
+
+const props = defineProps({ size: String, loading: Boolean, label: String })
+const role = 'dialog'
+
+const sizeClass = computed(() => props.size === 'lg' ? 'btn-lg' : 'btn-sm')
+const baseAttrs = { id: 'panel', class: 'rounded border p-4' }
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>v-bind on objects merges attributes (great for forwarding attrs).</li>
+              <li>Class/style accept arrays, objects, or strings.</li>
+              <li>Computed classes help map props to utility classes cleanly.</li>
+              <li>When to use: forwarding arbitrary attributes/ARIA or mapping props to utility classes.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Conditional & List Rendering</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;div v-if="loading">Loading...&lt;/div>
+  &lt;div v-else-if="error">{{ error }}&lt;/div>
+  &lt;div v-else>
+    &lt;article v-for="post in posts" :key="post.id" class="card">
+      &lt;h4>{{ post.title }}&lt;/h4>
+      &lt;p v-show="post.excerpt">{{ post.excerpt }}&lt;/p>
+    &lt;/article>
+  &lt;/div>
+&lt;/template>
+
+&lt;script setup>
+import { ref } from 'vue'
+const loading = ref(true)
+const error = ref('')
+const posts = ref([])
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use v-show for toggling visibility without unmounting.</li>
+              <li>Prefer stable keys (IDs over indexes) for v-for.</li>
+              <li>Use key to preserve component state across reorders.</li>
+              <li>When to use: branch UI states (loading/error/success) and list rendering with stable identity.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Slots</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;Card>
+    &lt;template #title>
+      &lt;h3>Custom Title&lt;/h3>
+    &lt;/template>
+    &lt;p>Body goes here&lt;/p>
+  &lt;/Card>
+&lt;/template>
+
+&lt;!-- Card.vue -->
+&lt;template>
+  &lt;header class="font-semibold">&lt;slot name="title" />&lt;/header>
+  &lt;section>&lt;slot />&lt;/section>
+&lt;/template>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Slots let parents supply structure while children keep logic isolated.</li>
+              <li>Name slots (#title) for multiple regions; default slot for main content.</li>
+              <li>Provide sensible defaults inside the slot to avoid empty UI.</li>
+              <li>When to use: reusable layout shells where parents own content.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Dynamic Events</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;button v-on="listeners">Submit&lt;/button>
+&lt;/template>
+
+&lt;script setup>
+const listeners = {
+  click: () => console.log('clicked'),
+  mouseenter: () => console.log('hover'),
+}
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>v-on object syntax binds multiple handlers at once.</li>
+              <li>Use computed objects for dynamic events (e.g., feature flags).</li>
+              <li>Great for forwarding listeners into child components.</li>
+              <li>When to use: listener forwarding or conditional event binding.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">v-once / v-memo</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;h1 v-once>{{ expensiveTitle }}&lt;/h1>      &lt;!-- render once, no updates -->
+
+  &lt;section
+    v-memo="[user.id, isEditing]"           
+    class="card"
+  >
+    &lt;p>{{ user.name }}&lt;/p>
+    &lt;button @click="$emit('edit', user.id)">Edit&lt;/button>
+  &lt;/section>
+&lt;/template>
+
+&lt;script setup>
+const props = defineProps({ user: Object, isEditing: Boolean, expensiveTitle: String })
+const emit = defineEmits(['edit'])
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use v-once for static fragments that never update.</li>
+              <li>v-memo re-renders only when listed dependencies change.</li>
+              <li>Handy to limit reactivity in large lists or expensive subtrees.</li>
+              <li>When to use: static hero sections or memoizing expensive child renders.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="reactivity" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="reactivity" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">04</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Reactivity (Composition API)</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">State containers, derived values, and effects.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 03</p>
+            <h2 class="mt-2 text-3xl font-semibold">Reactivity Utilities</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Control tracking, watchers, and scopes for predictable updates.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
+            <p class="font-semibold">Edge Case</p>
+            <p class="mt-2">watchEffect runs immediately and tracks on access. Avoid async race conditions by cancelling or checking stale flags.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">ref</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const count = ref(0);
-count.value++;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Holds primitive or complex value. Unwrapped in templates.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">reactive</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const state = reactive({ user: null, loading: false });
-state.loading = true;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Proxy-based; mutate directly. Use <span class="font-mono">toRefs()</span> when spreading into components.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">computed</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const fullName = computed(() => `${user.value.first} ${user.value.last}`);</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Cached until dependencies change. Can be writable via getter/setter.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">watch</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">watch(() => route.params.id, (id, prev) => {
-  fetchUser(id);
-}, {
-  immediate: true,
-  deep: false,
-  flush: 'pre'
-});</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Options: <span class="font-mono">immediate</span>, <span class="font-mono">deep</span>, <span class="font-mono">flush</span> ('pre' | 'post' | 'sync'), <span class="font-mono">onTrack/onTrigger</span> dev hooks.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">watchEffect</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">watchEffect((onCleanup) => {
-  const stop = subscribeToChannel(channelId.value);
-  onCleanup(() => stop());
-});</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Auto tracks dependencies inside callback. Good for syncing imperative APIs.</p>
-          </article>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">watch() vs watchEffect()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, watch, watchEffect } from 'vue'
+
+const userId = ref(1)
+const user = ref(null)
+const loading = ref(false)
+
+watch(userId, async (id, prevId, onCleanup) => {
+  loading.value = true
+  const controller = new AbortController()
+  onCleanup(() => controller.abort()) // cancel stale fetch
+  const res = await fetch(`/api/users/${id}`, { signal: controller.signal })
+  user.value = await res.json()
+  loading.value = false
+})
+
+watchEffect(() => {
+  console.log('User changed', user.value)
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>watch is lazy, takes explicit sources, and exposes new/old values.</li>
+              <li>watchEffect runs immediately and tracks dependencies on access.</li>
+              <li>Use watch when you need previous values or to skip first run; watchEffect for quick derived effects.</li>
+              <li>When to use: watch for controlled side effects with history; watchEffect for quick reactive wiring/logging.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Deep Watching & flush</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { reactive, watch } from 'vue'
+
+const filters = reactive({ range: { min: 0, max: 100 }, tags: [] })
+
+watch(() => filters, (val) => {
+  console.log('filters changed', val)
+}, { deep: true, flush: 'post' }) // run after DOM updates
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use deep when observing nested objects or arrays.</li>
+              <li>flush: post runs after DOM updates—useful for measurements.</li>
+              <li>Avoid flush: sync unless absolutely needed for low-latency reactions.</li>
+              <li>When to use: track nested filter/state objects or DOM-dependent effects.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">effectScope() & triggerRef()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { effectScope, ref, watchEffect, triggerRef } from 'vue'
+
+const scope = effectScope()
+
+const stop = scope.run(() => {
+  const draft = ref({ title: 'Draft' })
+
+  watchEffect(() => {
+    console.log('draft title', draft.value.title)
+  })
+
+  return () => draft                 // expose for external updates
+})
+
+const draft = stop()                 // returns ref
+
+draft.value = { title: 'Published' } // replace object
+triggerRef(draft)                    // force re-run when ref holds object
+scope.stop()                         // dispose watchers
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>effectScope groups effects so you can dispose them together (great in composables).</li>
+              <li>Return cleanup functions to let consumers stop internal watchers.</li>
+              <li>triggerRef forces updates when a ref holds a non-reactive object that was replaced.</li>
+              <li>When to use: composables that spin up watchers you need to stop as a unit.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">pauseTracking / enableTracking</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, computed, pauseTracking, enableTracking } from 'vue'
+
+const secret = ref('hidden')
+
+const label = computed(() => {
+  pauseTracking()               // ignore this read from deps
+  const masked = secret.value   // not tracked
+  enableTracking()
+  return masked ? '***' : 'none'
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use pauseTracking to skip dependency collection for specific reads.</li>
+              <li>Re-enable with enableTracking once the non-reactive read is done.</li>
+              <li>Useful for logging or masking values without creating update chains.</li>
+              <li>When to use: rare cases where a read should not make the effect rerun (metrics, masked labels).</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="lifecycle" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="lifecycle" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">05</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Lifecycle Hooks</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Composition helpers and Options API equivalents.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 04</p>
+            <h2 class="mt-2 text-3xl font-semibold">Lifecycle Hooks</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Hooks are imported functions; call them in setup().</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-sky-200 bg-sky-50/80 dark:border-sky-900 dark:bg-sky-900/30 p-4 text-sm text-sky-900 dark:text-sky-50">
+            <p class="font-semibold">Pattern</p>
+            <p class="mt-2">Encapsulate hook usage inside composables (e.g., useResizeObserver) to keep components lean.</p>
           </div>
         </div>
-        <div class="mt-6 overflow-x-auto rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-          <table class="min-w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              <tr>
-                <th class="py-2 pr-4">Hook</th>
-                <th class="py-2 pr-4">Composition API</th>
-                <th class="py-2 pr-4">Options API</th>
-                <th class="py-2">Usage</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before mount</td>
-                <td class="py-2 pr-4 font-mono">onBeforeMount()</td>
-                <td class="py-2 pr-4 font-mono">beforeMount</td>
-                <td class="py-2">Access props, avoid DOM.</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Mounted</td>
-                <td class="py-2 pr-4 font-mono">onMounted()</td>
-                <td class="py-2 pr-4 font-mono">mounted</td>
-                <td class="py-2">DOM available, start subscriptions.</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before update</td>
-                <td class="py-2 pr-4 font-mono">onBeforeUpdate()</td>
-                <td class="py-2 pr-4 font-mono">beforeUpdate</td>
-                <td class="py-2">Read pre-patch DOM.</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Updated</td>
-                <td class="py-2 pr-4 font-mono">onUpdated()</td>
-                <td class="py-2 pr-4 font-mono">updated</td>
-                <td class="py-2">Interact with post-patch DOM.</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Before unmount</td>
-                <td class="py-2 pr-4 font-mono">onBeforeUnmount()</td>
-                <td class="py-2 pr-4 font-mono">beforeUnmount</td>
-                <td class="py-2">Cleanup timers, listeners.</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-semibold text-slate-900 dark:text-white">Unmounted</td>
-                <td class="py-2 pr-4 font-mono">onUnmounted()</td>
-                <td class="py-2 pr-4 font-mono">unmounted</td>
-                <td class="py-2">Detach services, sockets.</td>
-              </tr>
-            </tbody>
-          </table>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Render & Update Hooks</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { onBeforeMount, onMounted, onBeforeUpdate, onUpdated } from 'vue'
+
+onBeforeMount(() => console.log('about to mount'))
+onMounted(() => console.log('mounted'))
+
+onBeforeUpdate(() => console.log('before patch'))
+onUpdated(() => console.log('patched'))
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use onMounted for DOM access, subscriptions, or initial fetches.</li>
+              <li>Keep onUpdated light to avoid jank; prefer watch for heavy work.</li>
+              <li>Pair before/after hooks to bracket setup/teardown logic.</li>
+              <li>When to use: DOM measurements, subscriptions, or first-load fetches that need the element tree.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Unmount & Error</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { onBeforeUnmount, onUnmounted, onErrorCaptured } from 'vue'
+
+onBeforeUnmount(() => stopInterval())
+onUnmounted(() => console.log('cleanup complete'))
+
+onErrorCaptured((err, instance, info) => {
+  console.error('child error', err, info)
+  return false // returning false lets error bubble
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Clean up timers/listeners in onBeforeUnmount/onUnmounted.</li>
+              <li>Use onErrorCaptured as an error boundary around risky children.</li>
+              <li>Return false to let errors bubble to global handlers/loggers.</li>
+              <li>When to use: wrapping third-party widgets or async children that might throw.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Activation, Render Tracking</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { onActivated, onDeactivated, onRenderTracked, onRenderTriggered } from 'vue'
+
+onActivated(() => console.log('kept-alive activated'))
+onDeactivated(() => console.log('kept-alive cached'))
+
+onRenderTracked((event) => {
+  console.log('tracked', event)
+})
+
+onRenderTriggered((event) => {
+  console.log('triggered', event)
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>onActivated/onDeactivated fire for keep-alive cached components.</li>
+              <li>onRenderTracked shows which dependencies were tracked.</li>
+              <li>onRenderTriggered shows which dependency triggered the render.</li>
+              <li>When to use: profiling render causes or handling keep-alive lifecycle.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-amber-200 dark:border-amber-900 bg-amber-50/70 dark:bg-amber-900/40 p-6 text-sm text-amber-900 dark:text-amber-50 space-y-3">
+            <p class="font-semibold">Common Mistakes</p>
+            <ul class="list-disc list-inside space-y-1 text-sm">
+              <li>Using async directly in setup() without error handling.</li>
+              <li>Accessing DOM before onMounted.</li>
+              <li>Forgetting to clean up timers or listeners in onUnmounted.</li>
+            </ul>
+          </div>
         </div>
-        <div class="mt-6 rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-          <p class="font-semibold text-slate-900 dark:text-white">Example</p>
-          <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { onMounted, onUnmounted } from 'vue';
-const interval = ref();
+      </section>
+
+      <section id="dom" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 05</p>
+            <h2 class="mt-2 text-3xl font-semibold">DOM References</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Template refs provide typed access to elements or components.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Safety</p>
+            <p class="mt-2">Access refs after onMounted or await nextTick. Guard for null when conditionally rendering elements.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Template Refs</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;input ref="inputEl" class="input" />
+  &lt;button @click="focusInput">Focus&lt;/button>
+&lt;/template>
+
+&lt;script setup>
+import { ref, onMounted, nextTick } from 'vue'
+
+const inputEl = ref(null)           // HTMLInputElement | null
+
+const focusInput = async () => {
+  await nextTick()                  // ensure DOM paint
+  inputEl.value?.focus()
+}
+
+onMounted(focusInput)
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Access DOM refs after onMounted or nextTick.</li>
+              <li>Guard optional chaining (?.) for conditionally rendered elements.</li>
+              <li>Encapsulate DOM usage in helpers like focusInput for reuse.</li>
+              <li>When to use: focusing inputs, measuring elements, or imperative DOM actions.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">shallowRef for DOM-heavy Objects</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { shallowRef, onMounted, onUnmounted } from 'vue'
+
+const chart = shallowRef(null)
 
 onMounted(() => {
-  interval.value = setInterval(fetchStats, 5000);
-});
+  chart.value = new Chart(/* ... */) // third-party instance
+})
 
-onUnmounted(() => clearInterval(interval.value));</pre>
+onUnmounted(() => {
+  chart.value?.destroy()
+  chart.value = null
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use shallowRef for third-party instances to avoid deep tracking.</li>
+              <li>Replace/destroy instances in onUnmounted to prevent leaks.</li>
+              <li>Combine with markRaw when passing instances through provide/inject.</li>
+              <li>When to use: wrapping chart/map/editor instances that manage their own internals.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="methods" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="events" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">06</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Methods & Computed</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Encapsulate business logic and derived state.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 06</p>
+            <h2 class="mt-2 text-3xl font-semibold">Events</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Handle native and custom events with Composition API ergonomics.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
+            <p class="font-semibold">Reminder</p>
+            <p class="mt-2">Use @keyup.enter, @click.prevent, and other modifiers to express intent without manual stopPropagation.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Methods</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const increment = () => count.value++;
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Native Events & Modifiers</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;form @submit.prevent="submit">
+    &lt;input @keyup.enter="submit" />
+    &lt;button @click.stop="log('clicked')">Save&lt;/button>
+    &lt;button @click.once="log('first time only')">Run Once&lt;/button>
+  &lt;/form>
+&lt;/template>
 
-export default {
-  methods: {
-    increment() {
-      this.count++;
+&lt;script setup>
+const log = (msg) => console.log(msg)
+const submit = () => console.log('submitted')
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use @submit.prevent to stop form navigation.</li>
+              <li>.stop keeps events from bubbling; .once auto-removes after first fire.</li>
+              <li>Key modifiers like .enter reduce manual keyCode checks.</li>
+              <li>When to use: declarative event handling without manual preventDefault/stopPropagation.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Custom Events & v-on Object</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;Modal v-on="listeners" />
+&lt;/template>
+
+&lt;script setup>
+import { computed } from 'vue'
+
+const emit = defineEmits(['close'])
+const listeners = computed(() => ({
+  close: () => emit('close'),
+  'update:open': (val) => console.log('open', val),
+}))
+&lt;/script>
+</code></pre>
+            <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;!-- Child emitting custom events -->
+&lt;template>
+  &lt;button @click="$emit('save', payload)">Save&lt;/button>
+&lt;/template>
+
+&lt;script setup>
+const emit = defineEmits(['save'])
+const payload = { id: 1 }
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>v-on object syntax batches handlers for forwarding listeners.</li>
+              <li>Declare emits for better TS inference and devtools hints.</li>
+              <li>Use update:modelValue to support v-model on custom components.</li>
+              <li>When to use: composing modals/dialogs where listeners are passed through.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Key & Mouse Modifier Examples</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;input @keyup.enter="save" @keyup.esc="reset" placeholder="Press Enter to save" />
+
+  &lt;button @click.prevent="submit">Submit (prevent default)
+  &lt;/button>
+
+  &lt;button @click.ctrl.enter="submit">
+    Submit (Ctrl+Enter)
+  &lt;/button>
+
+  &lt;div class="box" @click.self="close">
+    &lt;!-- clicks on children won't close -->
+    &lt;p>Click background to close&lt;/p>
+  &lt;/div>
+&lt;/template>
+
+&lt;script setup>
+const save = () => console.log('saved')
+const reset = () => console.log('reset')
+const submit = () => console.log('submit')
+const close = () => console.log('close')
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Combine key modifiers (e.g., .ctrl.enter) for shortcut combos.</li>
+              <li>Use .self to restrict clicks to the element, ignoring children.</li>
+              <li>.prevent stops default behavior like form submit or link nav.</li>
+              <li>When to use: keyboard shortcuts, backdrop clicks, or preventing default link/form behavior.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="forms" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 07</p>
+            <h2 class="mt-2 text-3xl font-semibold">Forms & Validation</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Use refs for primitives, reactive for grouped form state, and composables for validation.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-sky-200 bg-sky-50/80 dark:border-sky-900 dark:bg-sky-900/30 p-4 text-sm text-sky-900 dark:text-sky-50">
+            <p class="font-semibold">Tip</p>
+            <p class="mt-2">Prefer controlled inputs with v-model. For large dynamic forms, store field metadata in arrays and render via v-for.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Basic Form State</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;form @submit.prevent="submit">
+    &lt;input v-model.trim="form.email" type="email" />
+    &lt;input v-model.number="form.age" type="number" />
+    &lt;label>
+      &lt;input v-model="form.newsletter" type="checkbox" /> Subscribe
+    &lt;/label>
+    &lt;button type="submit">Send&lt;/button>
+    &lt;button type="button" @click="reset">Reset&lt;/button>
+  &lt;/form>
+&lt;/template>
+
+&lt;script setup>
+import { reactive } from 'vue'
+
+const initial = { email: '', age: 0, newsletter: false }
+const form = reactive({ ...initial })
+
+const submit = () => console.log(form)
+const reset = () => Object.assign(form, initial)
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use reactive for grouped form state; refs for primitives.</li>
+              <li>Object.assign resets reactive objects without breaking binding.</li>
+              <li>Prefer .trim/.number modifiers to coerce and clean input.</li>
+              <li>When to use: small-to-medium forms with simple validation needs.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Dynamic Forms & Validation</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;div v-for="field in fields" :key="field.name" class="space-y-2">
+    &lt;label :for="field.name">{{ field.label }}&lt;/label>
+    &lt;input
+      :id="field.name"
+      v-model="form[field.name]"
+      :type="field.type"
+      :placeholder="field.placeholder"
+    />
+    &lt;p v-if="errors[field.name]" class="text-red-500 text-xs">{{ errors[field.name] }}&lt;/p>
+  &lt;/div>
+&lt;/template>
+
+&lt;script setup>
+import { reactive, computed } from 'vue'
+
+const fields = [
+  { name: 'email', label: 'Email', type: 'email', placeholder: 'you@example.com' },
+  { name: 'password', label: 'Password', type: 'password', placeholder: '••••••' },
+]
+
+const form = reactive({ email: '', password: '' })
+
+const errors = computed(() => ({
+  email: !form.email.includes('@') ? 'Email is invalid' : '',
+  password: form.password.length < 8 ? 'Min 8 chars' : '',
+}))
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Computed validations stay reactive to field changes.</li>
+              <li>Store field metadata in arrays to render dynamic forms.</li>
+              <li>Debounce async validation with customRef or watch + timeout.</li>
+              <li>When to use: dynamic schemas or forms built from metadata.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Radios, Checkboxes, Select</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;fieldset class="space-y-2">
+    &lt;legend>Theme&lt;/legend>
+    &lt;label v-for="option in themes" :key="option" class="flex gap-2 items-center">
+      &lt;input type="radio" name="theme" :value="option" v-model="theme" />
+      {{ option }}
+    &lt;/label>
+  &lt;/fieldset>
+
+  &lt;fieldset class="space-y-2">
+    &lt;legend>Stacks (multi-select)&lt;/legend>
+    &lt;label v-for="stack in stacks" :key="stack" class="flex gap-2 items-center">
+      &lt;input type="checkbox" :value="stack" v-model="selectedStacks" />
+      {{ stack }}
+    &lt;/label>
+  &lt;/fieldset>
+
+  &lt;select v-model="country" class="input mt-3">
+    &lt;option disabled value="">Pick a country&lt;/option>
+    &lt;option v-for="c in countries" :key="c.code" :value="c.code">{{ c.label }}&lt;/option>
+  &lt;/select>
+&lt;/template>
+
+&lt;script setup>
+import { ref } from 'vue'
+
+const themes = ['light', 'dark']
+const stacks = ['Vue', 'React', 'Svelte']
+const countries = [
+  { code: 'US', label: 'United States' },
+  { code: 'CA', label: 'Canada' },
+]
+
+const theme = ref('light')
+const selectedStacks = ref(['Vue'])
+const country = ref('')
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Radios bind a single primitive value.</li>
+              <li>Checkboxes with arrays accumulate selected values.</li>
+              <li>Select v-model binds the option value; use true-value/false-value for non-boolean checkboxes.</li>
+              <li>When to use: user preference pickers, multi-select filters, or country/state dropdowns.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="errors" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 08</p>
+            <h2 class="mt-2 text-3xl font-semibold">Error Handling</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Handle async failures close to the source; provide fallbacks in UI.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
+            <p class="font-semibold">Rule</p>
+            <p class="mt-2">Never throw from template expressions. Catch in setup and expose safe state.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">try/catch in setup()</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { ref, onMounted } from 'vue'
+
+const data = ref(null)
+const error = ref('')
+
+onMounted(async () => {
+  try {
+    const res = await fetch('/api/data')
+    if (!res.ok) throw new Error('Request failed')
+    data.value = await res.json()
+  } catch (err) {
+    error.value = err.message
+  }
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Handle async errors in setup/onMounted and expose friendly state.</li>
+              <li>Guard .ok before parsing; set fallback UI for error/loading.</li>
+              <li>Keep error strings serializable for SSR and logging.</li>
+              <li>When to use: component-level fetches where you control loading/error UI.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Global & Async Patterns</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { onErrorCaptured, provide, inject } from 'vue'
+
+// Error boundary component
+onErrorCaptured((err) => {
+  console.error('boundary caught', err)
+  return false
+})
+
+// Provide/inject error bus
+const ERROR_KEY = Symbol('error')
+provide(ERROR_KEY, (err) => console.error(err))
+
+const emitError = inject(ERROR_KEY)
+emitError?.(new Error('oops'))
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Wrap risky children (charts, portals) with error boundaries.</li>
+              <li>Provide/inject an error bus for global logging or toast emitters.</li>
+              <li>Return false in onErrorCaptured to rethrow to global handlers.</li>
+              <li>When to use: shared logging/toast pipelines or isolating unstable child components.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="components" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 09</p>
+            <h2 class="mt-2 text-3xl font-semibold">Components & Composables</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Compose props, emits, slots, and reusable functions.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Pattern</p>
+            <p class="mt-2">Use composables for logic, components for rendering. Keep composables pure (no DOM) when possible.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Props, Emits, Slots</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;section>
+    &lt;header>&lt;slot name="title" />&lt;/header>
+    &lt;slot />
+    &lt;button @click="emit('submit')">Submit&lt;/button>
+  &lt;/section>
+&lt;/template>
+
+&lt;script setup>
+const props = defineProps({
+  variant: { type: String, default: 'solid' },
+  modelValue: Boolean,
+})
+const emit = defineEmits(['submit', 'update:modelValue'])
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Keep props serializable; avoid passing functions unless needed.</li>
+              <li>Emit updates instead of mutating props directly.</li>
+              <li>Expose named slots for flexible layout control.</li>
+              <li>When to use: reusable UI components that need controlled props/events.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">defineAsyncComponent</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { defineAsyncComponent } from 'vue'
+
+const AsyncChart = defineAsyncComponent({
+  loader: () => import('./Chart.vue'),
+  loadingComponent: () => 'Loading...',
+  errorComponent: () => 'Failed to load',
+  timeout: 8000,
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Async components code-split heavy children to trim bundles.</li>
+              <li>Provide loading/error fallbacks to keep UX responsive.</li>
+              <li>Set a timeout so failed loads do not hang indefinitely.</li>
+              <li>When to use: heavy/rarely-viewed components (charts, editors, admin panels).</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Composable Example</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">// useFetch.js
+import { ref, watchEffect } from 'vue'
+
+export function useFetch(url, options = {}) {
+  const data = ref(null)
+  const error = ref('')
+  const loading = ref(false)
+
+  watchEffect(async (onCleanup) => {
+    loading.value = true
+    const controller = new AbortController()
+    onCleanup(() => controller.abort())
+    try {
+      const res = await fetch(url, { ...options, signal: controller.signal })
+      if (!res.ok) throw new Error('Request failed')
+      data.value = await res.json()
+    } catch (err) {
+      if (err.name !== 'AbortError') error.value = err.message
+    } finally {
+      loading.value = false
+    }
+  })
+
+  return { data, error, loading }
+}
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Composables return refs/computed—not components or DOM.</li>
+              <li>Accept params for flexibility; avoid hidden singletons unless intentional.</li>
+              <li>Support cancellation (AbortController) for fetch-like composables.</li>
+              <li>When to use: shared logic across components (fetching, feature flags, keyboard shortcuts).</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Provide / Inject</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { provide, inject } from 'vue'
+
+const USER_KEY = Symbol('user')
+
+// provider
+provide(USER_KEY, { name: 'Ada' })
+
+// consumer
+const user = inject(USER_KEY, { name: 'Guest' })
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use symbols as keys to avoid collisions.</li>
+              <li>Provide/inject follows the parent chain; nearest provider wins.</li>
+              <li>Great for themes, i18n, and shared singletons like auth stores.</li>
+              <li>When to use: cross-tree data like themes, localization, or user/session context.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="typescript" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 10</p>
+            <h2 class="mt-2 text-3xl font-semibold">Type-safe Composition API</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Use TypeScript for safer refs, props, emits, and composables.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-indigo-200 bg-indigo-50/80 dark:border-indigo-900 dark:bg-indigo-900/30 p-4 text-sm text-indigo-900 dark:text-indigo-50">
+            <p class="font-semibold">Pitfall</p>
+            <p class="mt-2">Always annotate generic refs (`ref<number>(0)`). Avoid implicit any for emits payloads.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Typing refs & reactive</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-ts">import { ref, reactive } from 'vue'
+
+const count = ref<number>(0)
+const user = reactive<{ name: string; age?: number }>({ name: 'Ada' })
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Annotate ref generics for primitives/unions.</li>
+              <li>Use reactive for structured objects; ref for scalars.</li>
+              <li>Prefer readonly/computed when exposing derived state.</li>
+              <li>When to use: TS-heavy components needing strict value types.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Typed props / emits</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-ts">&lt;script setup lang="ts">
+const props = defineProps<{
+  modelValue: string
+  size?: 'sm' | 'md' | 'lg'
+}>()
+
+const emit = defineEmits<{
+  (e: 'update:modelValue', value: string): void
+  (e: 'submit'): void
+}>()
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Type props/emits to get template inference and editor hints.</li>
+              <li>Narrow strings with unions; overload emits to document payloads.</li>
+              <li>Use withDefaults for optional props that need defaults.</li>
+              <li>When to use: reusable components where payload shapes must be explicit.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Generics for Composables</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-ts">// usePromise.ts
+import { ref } from 'vue'
+
+export function usePromise<T>(fn: () => Promise<T>) {
+  const data = ref<T | null>(null)
+  const error = ref<string>('')
+
+  const run = async () => {
+    try {
+      data.value = await fn()
+    } catch (err) {
+      error.value = err instanceof Error ? err.message : String(err)
     }
   }
-};</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use for actions that may receive arguments or have side effects.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Computed vs method</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const filtered = computed(() => items.value.filter(matches));
 
-&lt;div v-for="item in filtered" :key="item.id" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Computed caches until dependencies change; methods re-run on each render. Use computed for derived data without side effects.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="events" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">07</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Event Handling</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Native events, modifiers, and component communication.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Native events</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li><span class="font-semibold">Keyboard</span>: <span class="font-mono">@keyup.enter</span>, <span class="font-mono">@keydown.ctrl.s</span>.</li>
-              <li><span class="font-semibold">Form</span>: <span class="font-mono">@submit.prevent</span>, <span class="font-mono">@change</span>, <span class="font-mono">@input</span>.</li>
-              <li><span class="font-semibold">Mouse</span>: <span class="font-mono">@click.stop</span>, <span class="font-mono">@dblclick</span>, <span class="font-mono">@contextmenu.prevent</span>.</li>
-              <li><span class="font-semibold">Focus</span>: <span class="font-mono">@focus</span>, <span class="font-mono">@blur</span>.</li>
+  return { data, error, run }
+}
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Expose typed composable APIs so callers get inference.</li>
+              <li>Prefer discriminated unions for status over many booleans.</li>
+              <li>Type async functions to surface expected payloads/errors.</li>
+              <li>When to use: shared composables that other teams consume.</li>
             </ul>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Modifiers quick lookup</p>
-            <table class="mt-3 w-full text-left text-sm text-slate-600 dark:text-slate-300">
-              <tbody>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.stop</td>
-                  <td class="py-1">stopPropagation()</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.prevent</td>
-                  <td class="py-1">preventDefault()</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.once</td>
-                  <td class="py-1">Listener runs once</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.self</td>
-                  <td class="py-1">Only if event.target === currentTarget</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.passive</td>
-                  <td class="py-1">Hint for scroll performance</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.capture</td>
-                  <td class="py-1">Use capture phase</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.exact</td>
-                  <td class="py-1">Exact modifier combination</td>
-                </tr>
-                <tr>
-                  <td class="py-1 pr-2 font-mono text-slate-900 dark:text-white">.native</td>
-                  <td class="py-1">Listen on child root (compat)</td>
-                </tr>
-              </tbody>
-            </table>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Custom events</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// Child
-const emit = defineEmits(['submit']);
-const handleClick = () => emit('submit', form.value);
-
-// Parent
-&lt;FormCard @submit="save" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Document events for consumers. Use <span class="font-mono">defineEmits</span> for TS types.</p>
-          </article>
+          </div>
         </div>
       </section>
 
-      <section id="conditionals" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="advanced" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">08</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Conditional Rendering & Lists</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Control DOM output and iterate data safely.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 11</p>
+            <h2 class="mt-2 text-3xl font-semibold">Advanced Reactivity Patterns</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Optimize tracking and understand proxy caveats.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
+            <p class="font-semibold">Gotcha</p>
+            <p class="mt-2">Destructuring reactive objects breaks reactivity unless wrapped with toRefs.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-if vs v-show</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Alert v-if="error" :message="error" /&gt;
-&lt;Tooltip v-show="hover" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">v-if removes DOM entirely (costly but ensures teardown). v-show toggles CSS <span class="font-mono">display</span>; perfect for frequent toggles.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Loop best practices</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li>Always supply stable <span class="font-mono">:key</span> (primary key, slug).</li>
-              <li>Use <span class="font-mono">v-for="(value, key, index) in object"</span> for objects.</li>
-              <li>Avoid nested <span class="font-mono">v-for</span> with same key to prevent patch conflicts.</li>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">watch vs watchEffect</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">// watch: specify sources, get old/new
+watch(() => route.query.page, (page, prev) => {
+  console.log('page changed', page, prev)
+})
+
+// watchEffect: good for derived side effects
+watchEffect(() => {
+  document.title = `Users | page ${route.query.page}`
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use watch when you need old values or to skip the initial run.</li>
+              <li>watchEffect is great for quick reactive side effects without boilerplate.</li>
+              <li>Prefer computed when deriving state instead of watch.</li>
+              <li>When to use: watch for controlled side effects; watchEffect for quick wiring; computed for pure derivations.</li>
             </ul>
-          </article>
-        </div>
-      </section>
-
-      <section id="forms" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">09</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Forms & v-model</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Two-way binding patterns for every input type.</p>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Text inputs</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input v-model.trim="form.email" type="email" /&gt;
-&lt;textarea v-model.lazy="form.notes" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">.trim</span> to strip whitespace; <span class="font-mono">.lazy</span> to update on blur/change.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Checkbox & radio</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;input type="checkbox" v-model="form.agree" /&gt;
-&lt;input type="checkbox" value="dark" v-model="form.themes" /&gt;
-&lt;input type="radio" value="monthly" v-model="plan" /&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Checkbox supports boolean or array. For radios, ensure same <span class="font-mono">name</span>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Select</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;select v-model.number="form.countryId"&gt;
-  &lt;option :value="null" disabled&gt;Select...&lt;/option&gt;
-  &lt;option v-for="c in countries" :value="c.id" :key="c.id"&gt;
-    {{ c.name }}
-  &lt;/option&gt;
-&lt;/select&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use <span class="font-mono">multiple</span> with array binding for multi-select.</p>
-          </article>
-        </div>
-      </section>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Proxy Caveats</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { reactive } from 'vue'
 
-      <section id="computed-watch" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">10</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Computed & Watch</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Pick the right tool for derived state or side effects.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Computed cheat</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li>Use when output is deterministic & derived from reactive sources.</li>
-              <li>Writable variant: <span class="font-mono">computed({ get, set })</span> for two-way formatting.</li>
+const state = reactive(new Map())
+state.set('id', 1)          // reactive
+const raw = Array.from(state.entries()) // snapshot, non-reactive array
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Some collection methods return raw values (e.g., spreading a Map).</li>
+              <li>Wrap derived snapshots in computed to stay reactive.</li>
+              <li>Avoid mutating raw snapshots—mutate the reactive source.</li>
+              <li>When to use: handling Maps/Sets where spreading breaks reactivity.</li>
             </ul>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">watch options</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li><span class="font-semibold">Sources</span>: single ref, getter fn, array of sources.</li>
-              <li><span class="font-mono">deep: true</span> for nested objects (expensive, prefer specific watchers).</li>
-              <li><span class="font-mono">flush: 'post'</span> to run after DOM update for animation hooks.</li>
-              <li><span class="font-mono">immediate: true</span> run once instantly.</li>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Handling Large Objects Efficiently</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { shallowReactive, markRaw, computed } from 'vue'
+
+const cache = shallowReactive({})
+const large = markRaw({ huge: true }) // opt-out of tracking
+cache.snapshot = large
+
+const entries = computed(() => Object.keys(cache))
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use shallowReactive or markRaw for heavy objects or caches.</li>
+              <li>Normalize data before storing to reduce deep watcher churn.</li>
+              <li>Expose computed snapshots instead of raw objects when possible.</li>
+              <li>When to use: large payloads, caches, or normalized store data.</li>
             </ul>
-          </article>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">flush option in watch()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">watch(() => props.modelValue, () => {
+  // read DOM after it updates
+}, { flush: 'post' })
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Use flush: post when effects depend on rendered DOM.</li>
+              <li>flush: sync is rare—reserve for ultra-low-latency needs.</li>
+              <li>Default flush: pre suits most data-side effects.</li>
+              <li>When to use: DOM measurement after render, or ultra-low-latency reactions.</li>
+            </ul>
+          </div>
         </div>
       </section>
 
-      <section id="slots" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="router" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">11</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Slots</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Reusable component content injection.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 12</p>
+            <h2 class="mt-2 text-3xl font-semibold">Router & State Management</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Use composables from Vue Router and Pinia to stay reactive.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-indigo-200 bg-indigo-50/80 dark:border-indigo-900 dark:bg-indigo-900/30 p-4 text-sm text-indigo-900 dark:text-indigo-50">
+            <p class="font-semibold">Note</p>
+            <p class="mt-2">Pinia is Composition-first; stores expose refs and computed getters.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Default slot</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Card&gt;Body content&lt;/Card&gt;</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Named slot</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;Card&gt;
-  &lt;template #header&gt;Header&lt;/template&gt;
-  Main content
-&lt;/Card&gt;</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Scoped slot</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;DataTable :rows="rows"&gt;
-  &lt;template #cell-name="{ row }"&gt;
-    {{ row.first }} {{ row.last }}
-  &lt;/template&gt;
-&lt;/DataTable&gt;</pre>
-          </article>
-        </div>
-      </section>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Vue Router Patterns</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { useRoute, useRouter, onBeforeRouteUpdate } from 'vue-router'
 
-      <section id="router" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">12</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Vue Router Basics</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Navigation, dynamic routes, and views.</p>
+const route = useRoute()
+const router = useRouter()
+
+onBeforeRouteUpdate((to, from, next) => {
+  if (to.query.page !== from.query.page) {
+    // fetch new data
+  }
+  next()
+})
+
+const goHome = () => router.push({ name: 'home' })
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Route params and query are reactive—watch to refetch data.</li>
+              <li>Use named routes for stability when paths change.</li>
+              <li>Leverage navigation guards for per-route data checks.</li>
+              <li>When to use: data-fetching screens where URL drives state.</li>
+            </ul>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Setup</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { createRouter, createWebHistory } from 'vue-router';
-import Home from './pages/Home.vue';
-import User from './pages/User.vue';
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Pinia Store Example</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">// stores/useUser.js
+import { defineStore } from 'pinia'
 
-const routes = [
-  { path: '/', component: Home },
-  { path: '/users/:id', name: 'user', component: User, props: true }
-];
-
-export const router = createRouter({
-  history: createWebHistory(),
-  routes,
-  scrollBehavior: () => ({ top: 0 })
-});
-
-createApp(App).use(router).mount('#app');</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Usage</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;router-link :to="{ name: 'user', params: { id: 42 } }"&gt;
-  Profile
-&lt;/router-link&gt;
-&lt;router-view v-slot="{ Component }"&gt;
-  &lt;transition name="fade"&gt;
-    &lt;component :is="Component" /&gt;
-  &lt;/transition&gt;
-&lt;/router-view&gt;</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Grab current route via <span class="font-mono">const route = useRoute()</span>; push via <span class="font-mono">const router = useRouter()</span>.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="state" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">13</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">State Management (Vuex / Pinia)</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Centralized stores for complex apps.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Pinia store</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">import { defineStore } from 'pinia';
-export const useUserStore = defineStore('user', {
-  state: () => ({ user: null }),
+export const useUser = defineStore('user', {
+  state: () => ({ name: 'Ada', token: '' }),
   getters: {
-    isAdmin: (state) => state.user?.role === 'admin'
+    isAuthenticated: (state) => Boolean(state.token),
   },
   actions: {
-    async fetchUser() {
-      this.user = await api.me();
-    }
-  }
-});
-
-const store = useUserStore();
-store.fetchUser();</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Vuex (legacy)</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const store = createStore({
-  state: () => ({ count: 0 }),
-  mutations: {
-    increment(state) { state.count++; }
+    async login(credentials) {
+      const token = await apiLogin(credentials)
+      this.token = token
+    },
   },
-  actions: {
-    incrementAsync({ commit }) {
-      setTimeout(() => commit('increment'), 250);
-    }
-  },
-  getters: {
-    double: (state) => state.count * 2
-  }
-});</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Pinia is the recommended store for Vue 3 (lighter API, TS friendly).</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="composition-utils" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">14</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Composition API Utilities</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Patterns for dependency injection and script setup ergonomics.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">provide / inject</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">// parent
-provide('theme', ref('dark'));
-
-// child
-const theme = inject('theme', ref('light'));</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use symbols for type safety; default value used if provider missing.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">defineProps / defineEmits / defineExpose</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">const props = defineProps<{ label: string }>();
-const emit = defineEmits<{ (e: 'select', value: string): void }>();
-
-const focus = () => input.value?.focus();
-defineExpose({ focus });</pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Works only inside <span class="font-mono">&lt;script setup&gt;</span>. Expose methods for parent refs.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="directives" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">15</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Common Directives / Helpers</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Less-used utilities worth remembering.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-pre</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Skips compilation for block. Use to show literal mustache syntax.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;code v-pre&gt;{{ raw }}&lt;/code&gt;</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-cloak</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Hide until app hydrated. Pair with CSS.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">[v-cloak] { display: none; }</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">v-once</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Render element/component only once; skips future updates.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">&lt;HeroBanner v-once :config="config" /&gt;</pre>
-          </article>
-        </div>
-        <div class="mt-6 rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-          <p class="font-semibold text-slate-900 dark:text-white">Filters?</p>
-          <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Filters were removed in Vue 3. Replace with computed properties or methods.</p>
-        </div>
-      </section>
-
-      <section id="tips" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">16</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Tips & Gotchas</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Battle-tested notes for production Vue apps.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-warn-500/50 bg-warn-50/80 p-5 shadow-card dark:border-warn-500/60 dark:bg-warn-500/10">
-            <p class="font-semibold text-warn-600">Reactive caveats</p>
-            <ul class="mt-3 space-y-2 text-sm text-warn-600 dark:text-warn-50">
-              <li>Directly reassigning reactive objects (<span class="font-mono">state = {}</span>) loses reactivity; use <span class="font-mono">Object.assign(state, newState)</span>.</li>
-              <li>Mutating arrays via index works, but use <span class="font-mono">splice</span> when removing to keep watchers aware.</li>
-              <li>When using <span class="font-mono">reactive</span>, destructuring breaks reactivity. Convert with <span class="font-mono">toRefs</span>.</li>
+})
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Pinia state is reactive; getters are computed.</li>
+              <li>Use storeToRefs when destructuring to keep reactivity.</li>
+              <li>Keep async actions typed and handle errors within the store.</li>
+              <li>When to use: shared application state (auth/user/preferences) across routes/components.</li>
             </ul>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Performance & UX</p>
-            <ul class="mt-3 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <li>Key list items deterministically to avoid DOM reuse bugs.</li>
-              <li>Wrap expensive components with <span class="font-mono">defineAsyncComponent</span> + suspense.</li>
-              <li>Use <span class="font-mono">v-memo</span> and <span class="font-mono">shallowRef</span> for static heavy blocks.</li>
-              <li>Prefer <span class="font-mono">script setup</span> + <span class="font-mono">defineModel</span> for single-source-of-truth two-way binding.</li>
-            </ul>
-          </article>
+          </div>
         </div>
       </section>
 
-      <footer class="mt-16 rounded-3xl border border-white/70 bg-white/80 p-6 text-sm text-slate-500 shadow-card dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
-        Keep this Vue.js cheatsheet handy for daily development. Validate directives, prefer composition utilities, and profile before optimizing.
-      </footer>
+      <section id="best" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 13</p>
+            <h2 class="mt-2 text-3xl font-semibold">Best Practices / Performance</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Keep components focused; avoid unnecessary reactive work.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Checklist</p>
+            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
+              <li>Prefer computed over watch when deriving state.</li>
+              <li>Dispose listeners/timers in onUnmounted.</li>
+              <li>Code-split large routes with async components.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Organizing setup()</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">// good: top-level imports, composables first, events last
+import { useFetch } from '@/composables/useFetch'
+
+const { data, loading } = useFetch('/api')
+const onClick = () => {/* ... */}
+
+// avoid: deeply nested logic in setup; move to composables
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Order setup: imports, state, computed, watchers, then handlers.</li>
+              <li>Extract branches/loops into composables to keep setup lean.</li>
+              <li>Group related logic together to improve readability.</li>
+              <li>When to use: any component with growing setup complexity.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Minimizing Re-renders</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">import { computed } from 'vue'
+
+const expensiveList = computed(() => items.value.slice(0, 10)) // limit work
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Split components to shrink reactive scope.</li>
+              <li>Memoize derived data with computed instead of recalculating.</li>
+              <li>Paginate or window large lists to avoid heavy renders.</li>
+              <li>When to use: performance-sensitive views with large lists or expensive child renders.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">SSR / Hydration</h3>
+            <pre class="mt-2 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-js">// avoid direct window/document in setup during SSR
+let width = 0
+if (typeof window !== 'undefined') {
+  width = window.innerWidth
+}
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Guard browser-only APIs for SSR (check typeof window).</li>
+              <li>Keep initial state deterministic to avoid hydration mismatch.</li>
+              <li>Use onMounted for client-only work after hydration.</li>
+              <li>When to use: universal apps rendered on both server and client.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-3">
+            <h3 class="text-lg font-semibold">Mixing Options & Composition</h3>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>You can mix Options + Composition, but prefer one style per file.</li>
+              <li>Use setup within Options components when migrating gradually.</li>
+              <li>Document patterns so teams stay consistent.</li>
+              <li>When to use: incremental migrations from Options API or legacy components.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
+
+      <section id="debug" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 14</p>
+            <h2 class="mt-2 text-3xl font-semibold">Misc / Debugging</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Inspect reactivity, avoid common mistakes, and see a small end-to-end example.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
+            <p class="font-semibold">Debug Tips</p>
+            <ul class="mt-2 list-disc list-inside space-y-1 text-sm">
+              <li>Use Vue Devtools to inspect component state and events.</li>
+              <li>Log toRaw(state) when debugging proxy issues.</li>
+              <li>Add onRenderTriggered to identify noisy deps.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Common Mistakes</h3>
+            <ul class="list-disc list-inside space-y-2 text-sm text-slate-700 dark:text-slate-200">
+              <li>Destructuring reactive objects without toRefs.</li>
+              <li>Mutating props directly instead of emitting updates.</li>
+              <li>Forgetting cleanup for intervals and external listeners.</li>
+              <li>Using watch when computed is sufficient.</li>
+              <li>Heavy work inside template expressions (prefer computed).</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+            <h3 class="text-lg font-semibold">Mini App Example</h3>
+            <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code class="language-vue">&lt;template>
+  &lt;section class="space-y-4">
+    &lt;input v-model="term" placeholder="Search users" class="input" />
+    &lt;ul>
+      &lt;li v-for="user in filtered" :key="user.id" class="flex items-center gap-2">
+        &lt;span class="font-semibold">{{ user.name }}&lt;/span>
+        &lt;button @click="select(user)">Select&lt;/button>
+      &lt;/li>
+    &lt;/ul>
+    &lt;p v-if="selected">Selected: {{ selected.name }}&lt;/p>
+  &lt;/section>
+&lt;/template>
+
+&lt;script setup>
+import { ref, computed } from 'vue'
+
+const term = ref('')
+const users = ref([
+  { id: 1, name: 'Ada' },
+  { id: 2, name: 'Grace' },
+])
+
+const filtered = computed(() =>
+  users.value.filter((u) => u.name.toLowerCase().includes(term.value.toLowerCase()))
+)
+
+const selected = ref(null)
+const select = (user) => (selected.value = user)
+&lt;/script>
+</code></pre>
+            <ul class="list-disc list-inside space-y-1 text-sm text-slate-600 dark:text-slate-300">
+              <li>Combines refs, computed filtering, and event handlers.</li>
+              <li>Demonstrates key rendering with v-for + :key.</li>
+              <li>Extend with async fetch via useFetch to load users.</li>
+              <li>When to use: starting point for list + filter + selection patterns.</li>
+            </ul>
+          </div>
+        </div>
+      </section>
     </main>
   </div>
 </body>

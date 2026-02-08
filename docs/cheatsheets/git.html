@@ -1,987 +1,827 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <meta name="description" content="Concise Git reference for daily workflows, fixes, and safe options." />
-  <meta name="color-scheme" content="light dark" />
   <title>Git Cheatsheet</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'media',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui'],
-            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
           },
           colors: {
-            accent: {
-              100: '#f0f9ff',
+            brand: {
+              50: '#f0f9ff',
+              200: '#bae6fd',
               500: '#0ea5e9',
               600: '#0284c7',
+              900: '#0c4a6e',
             },
-            warn: {
-              50: '#fff1f2',
-              500: '#f43f5e',
+            surface: {
+              light: '#f8fafc',
+              dark: '#020617',
             },
           },
           boxShadow: {
-            card: '0 18px 45px -25px rgba(15,23,42,0.45)',
+            glow: '0 20px 70px rgba(14,165,233,0.25)',
           },
         },
       },
     };
   </script>
-  <script src="https://cdn.tailwindcss.com?plugins=typography"></script>
   <style>
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      overflow-x: auto;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    body {
+      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    pre, code {
+      font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
   </style>
 </head>
-<body class="min-h-full bg-slate-50 font-sans text-slate-900 antialiased selection:bg-accent-100 selection:text-slate-900 dark:bg-slate-950 dark:text-slate-100 dark:selection:bg-accent-500/30 dark:selection:text-white">
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-accent-100 via-white to-slate-100 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"></div>
-    <main class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10">
-      <header class="rounded-3xl border border-white/70 bg-white/80 p-8 shadow-card backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Reference</p>
-        <h1 class="mt-4 text-4xl font-semibold text-slate-900 dark:text-white sm:text-5xl">Git Cheatsheet</h1>
-        <p class="mt-4 max-w-3xl text-lg text-slate-600 dark:text-slate-300">A practical reference for daily Git usage, fixes, workflows, and command options. Optimized for quick scanning, dark-mode friendly, and copy-ready.</p>
-        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-300">
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-accent-500"></span>Core & advanced commands</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-emerald-500"></span>Copy-ready snippets</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-warn-500"></span>Warnings for destructive actions</span>
-        </div>
-      </header>
+<body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+  <div class="relative isolate overflow-hidden">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute top-12 right-0 w-80 h-80 rounded-full bg-brand-500/20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-6 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"></div>
+    </div>
 
-      <section class="mt-12 rounded-2xl border border-white/70 bg-white/80 p-6 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Table of contents</p>
-        <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          <a href="#basics" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Git Basics</a>
-          <a href="#branching" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Branching & Navigation</a>
-          <a href="#remote" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Remote Repositories</a>
-          <a href="#stashing" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Stashing</a>
-          <a href="#undo" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Undo & Fix Mistakes</a>
-          <a href="#history" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">History & Inspection</a>
-          <a href="#tags" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Tags</a>
-          <a href="#workflows" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Common Workflows</a>
-          <a href="#config" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Git Config</a>
-          <a href="#gitignore" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">.gitignore</a>
-          <a href="#ssh" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">SSH & Authentication</a>
-          <a href="#problems" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Common Problems & Fixes</a>
-          <a href="#aliases" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-accent-600 transition hover:-translate-y-0.5 hover:border-accent-500 hover:text-accent-500 dark:border-slate-800 dark:text-accent-200">Git Aliases</a>
+    <header id="hero" class="px-4 py-16 sm:px-8 lg:px-16">
+      <div class="max-w-5xl mx-auto text-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200">Git · Reference</span>
+        <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">Git Cheatsheet</h1>
+        <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">A complete reference from beginner to advanced Git workflows.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Mobile-first</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Dark-mode ready</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Copy-paste friendly</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="px-4 pb-24 sm:px-8 lg:px-16">
+      <section class="max-w-6xl mx-auto" id="toc">
+        <div class="rounded-3xl border border-white/70 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 shadow-xl p-8">
+          <h2 class="text-xl font-semibold">Table of Contents</h2>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm font-semibold">
+            <a href="#basic" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Basic Commands</a>
+            <a href="#branching" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Branching &amp; Merging</a>
+            <a href="#remotes" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Remote Repositories</a>
+            <a href="#tagging" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Tagging</a>
+            <a href="#stash-undo" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Stashing &amp; Undoing</a>
+            <a href="#diff-log" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Diff &amp; Log</a>
+            <a href="#conflicts" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Merge Conflicts</a>
+            <a href="#workflows" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Workflows &amp; Best Practices</a>
+            <a href="#releases" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Tagging &amp; Releases</a>
+            <a href="#advanced" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Advanced Commands</a>
+          </div>
         </div>
       </section>
 
-      <section id="basics" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="basic" class="max-w-6xl mx-auto mt-20">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">01</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Git Basics</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Initialize repositories, inspect status, add files, craft commits, and compare changes.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 01</p>
+            <h2 class="mt-2 text-3xl font-semibold">Basic Commands</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Initialize repositories, inspect state, stage changes, and record commits with clear messages.</p>
           </div>
-          <span class="rounded-full bg-slate-900 px-4 py-1 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">7 commands</span>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Tip</p>
+            <p class="mt-2">Configure identity once per machine: git config --global user.name "Your Name"; git config --global user.email "you@example.com".</p>
+          </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git init</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Create a new repository.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Start</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git init --initial-branch=main</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--bare</span> — Create repo without working tree (server-side).</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--initial-branch</span> — Name the first branch.</li>
-              </ul>
-              <p class="text-slate-500 dark:text-slate-400">Use when bootstrapping new projects or re-initializing after removing .git.</p>
-            </div>
-          </article>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git init</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create a new Git repository in the current directory or a specified path.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--bare</span>: create a repo without working tree (for servers/remotes).</li>
+              <li><span class="font-semibold">-b &lt;name&gt;</span>: set initial branch name.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create repo with main as default branch
+git init -b main
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git clone</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Copy an existing repo.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Core</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git clone https://github.com/org/app.git app</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--depth 1</span> — Shallow clone for CI or quick review.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--branch feature</span> — Checkout a remote branch directly.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--recurse-submodules</span> — Initialize nested repos.</li>
-              </ul>
-              <p>Use when onboarding to an existing project or mirroring repos.</p>
-            </div>
-          </article>
+# Create a bare remote-style repo
+git init --bare /srv/git/project.git</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git clone</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Copy an existing repository (local or remote) with history.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--branch/-b</span>: checkout specific branch or tag.</li>
+              <li><span class="font-semibold">--depth N</span>: shallow clone with last N commits.</li>
+              <li><span class="font-semibold">--recurse-submodules</span>: initialize submodules.</li>
+              <li><span class="font-semibold">--origin/-o</span>: custom remote name (default origin).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Shallow clone main branch
+git clone --branch main --depth 5 https://github.com/org/app.git
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git status</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">View working tree state.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Inspect</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git status -sb</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-s / -sb</span> — Short output with upstream info.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--ignored</span> — Show ignored files.</li>
-              </ul>
-              <p>Run before committing or switching branches to avoid surprises.</p>
-            </div>
-          </article>
+# Clone with submodules and custom remote name
+git clone --recurse-submodules -o upstream git@github.com:org/app.git</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git status</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show working tree state: staged, unstaged, untracked files, and branch/HEAD info.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-s/--short</span>: condensed output.</li>
+              <li><span class="font-semibold">--branch</span>: show branch and upstream (default with -s).</li>
+              <li><span class="font-semibold">--ignored</span>: include ignored files.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Brief status with branch
+git status -sb
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git add</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Stage file changes.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Stage</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git add src/**/*.ts</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-p</span> — Stage hunks interactively.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">-u</span> — Stage tracked file updates & deletions.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--all</span> — Stage everything (tracked + untracked).</li>
-              </ul>
-              <p>Use to curate commits; pair with <span class="font-mono">-p</span> for surgical staging.</p>
-            </div>
-          </article>
+# Show ignored files too
+git status --ignored</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git add</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Stage file contents for the next commit.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-p/--patch</span>: interactively stage hunks.</li>
+              <li><span class="font-semibold">-A</span>: stage all changes (tracked + untracked).</li>
+              <li><span class="font-semibold">-u/--update</span>: stage tracked file modifications/deletions.</li>
+              <li><span class="font-semibold">.</span>: stage current directory recursively.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Stage interactively
+git add -p src/app.py
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git commit</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Record staged changes.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Record</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git commit -m "feat: add onboarding flow"</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-a</span> — Automatically stage tracked files.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--amend</span> — Replace previous commit (use cautiously).</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--no-verify</span> — Skip hooks (only when necessary).</li>
-              </ul>
-              <p>Use for atomic changes; craft meaningful messages to simplify reviews.</p>
-            </div>
-          </article>
+# Stage everything (including deletions)
+git add -A</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git commit</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Record staged changes with a message, creating a new snapshot.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-m</span>: commit message inline.</li>
+              <li><span class="font-semibold">-a</span>: stage tracked file modifications before committing.</li>
+              <li><span class="font-semibold">--amend</span>: rewrite last commit (message or content).</li>
+              <li><span class="font-semibold">--no-edit</span>: amend without changing message.</li>
+              <li><span class="font-semibold">--signoff/-s</span>: add Signed-off-by trailer.</li>
+              <li><span class="font-semibold">--gpg-sign/-S</span>: sign commit with GPG key.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Standard commit with message
+git commit -m "Add user validation"
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git log</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Inspect commit history.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">History</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git log --oneline --decorate --graph --all</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--oneline</span> — Compact output.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--graph</span> — ASCII branch graph.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--since="3 days ago"</span> — Filter by time.</li>
-              </ul>
-              <p>Use for quick audits, release notes, or to confirm merges.</p>
-            </div>
-          </article>
+# Amend last commit after staging fixes
+git commit --amend --no-edit
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git diff</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Compare changes.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Compare</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <p class="text-xs font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Usage</p>
-                <pre class="mt-1 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git diff HEAD~1..HEAD --stat</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--staged</span> — Diff staged changes.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--stat</span> — Summary of insertions/deletions.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">branchA..branchB</span> — Compare histories.</li>
-              </ul>
-              <p>Use before PRs or code reviews to understand impact.</p>
-            </div>
-          </article>
+# Commit all tracked changes and sign off
+git commit -am "Refactor auth middleware" -s</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git log</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">View commit history with flexible formatting and filtering.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--oneline</span>: compact one-line entries.</li>
+              <li><span class="font-semibold">--graph</span>: ASCII branch graph.</li>
+              <li><span class="font-semibold">--decorate</span>: show refs (branches/tags).</li>
+              <li><span class="font-semibold">-n N</span>: limit number of commits.</li>
+              <li><span class="font-semibold">--since/--until</span>: date filters.</li>
+              <li><span class="font-semibold">--author/--grep</span>: filter by author or message regex.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Visual history graph
+git log --oneline --graph --decorate -n 15
+
+# Filter by author and date
+git log --author="Alice" --since="2 weeks ago" --oneline</code></pre>
+          </div>
         </div>
       </section>
 
-      <section id="branching" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="branching" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">02</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Branching & Navigation</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Create, inspect, switch, and align branches safely.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 02</p>
+            <h2 class="mt-2 text-3xl font-semibold">Branching &amp; Merging</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Create, switch, merge, and rebase branches. Choose strategies that keep history clear.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
+            <p class="font-semibold">Reminder</p>
+            <p class="mt-2">Merge keeps history branching; rebase rewrites commits atop a new base. Avoid rebasing shared branches.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git branch</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">List & manage branches.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Navigate</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git branch -a</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-a</span> — Show local + remote branches.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">-d/-D</span> — Delete (safe/force) branch.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">-m</span> — Rename current branch.</li>
-              </ul>
-              <p>Use to audit available branches or clean stale ones.</p>
-            </div>
-          </article>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git status</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Identify conflicted paths after merge/rebase and see guidance for next steps.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git status</span>: lists files with conflicts (both modified).</li>
+              <li><span class="font-semibold">-sb</span>: short output while keeping branch info.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Show conflicted files and instructions
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git switch</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Move between branches.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Navigate</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git switch develop</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--discard-changes</span> — Drop local modifications.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--detach</span> — Enter detached HEAD intentionally.</li>
-              </ul>
-              <p>Use instead of <span class="font-mono">checkout</span> for clarity.</p>
-            </div>
-          </article>
+# Delete merged branch
+git branch -d feature/login</code></pre>
+          </div>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git diff</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Inspect conflict markers and compare ours vs theirs.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git diff</span>: view conflict blocks (&lt;&lt;&lt;&lt;&lt;&lt;&lt;, =======, &gt;&gt;&gt;&gt;&gt;&gt;&gt;).</li>
+              <li><span class="font-semibold">--name-only --diff-filter=U</span>: list only conflicted files.</li>
+              <li><span class="font-semibold">--ours/--theirs</span>: compare specific sides (with pathspecs).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># List conflicted files
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git checkout</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Legacy command to switch branches or restore files. Prefer git switch / git restore for clarity.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git checkout &lt;branch&gt;</span>: switch branches.</li>
+              <li><span class="font-semibold">git checkout -b</span>: create and switch.</li>
+              <li><span class="font-semibold">git checkout -- file</span>: discard local file changes.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create and switch
+          </div>
+git checkout -b docs/update-readme
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git switch -c</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Create + switch.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Create</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git switch -c feature/auth-ui origin/main</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-c new</span> — Start new branch from current tip.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">start-point</span> — Optional base ref.</li>
-              </ul>
-              <p>Use when starting feature work with a clean base.</p>
-            </div>
-          </article>
+# Discard changes to a file (cannot be undone)
+git checkout -- README.md</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git switch</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Modern, branch-only switch command (safer than checkout).</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Use vimdiff to resolve conflicts
+git switch -
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git checkout (legacy)</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Older switch/create syntax.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Legacy</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git checkout -b hotfix/login main</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">git checkout file</span> — Restore file from HEAD.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">git checkout <commit></span> — Detached HEAD.</li>
-              </ul>
-              <p>Use only when scripts/tools still rely on checkout.</p>
-            </div>
-          </article>
+# Create and switch to feature
+git switch -c feature/payments</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git merge</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Combine histories, producing a merge commit (or fast-forward when possible).</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--no-ff</span>: create merge commit even if fast-forward.</li>
+              <li><span class="font-semibold">--ff-only</span>: fail unless fast-forward possible.</li>
+              <li><span class="font-semibold">--squash</span>: apply changes without creating merge commit.</li>
+              <li><span class="font-semibold">--abort</span>: stop merge and reset to pre-merge state.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Merge feature into main
+git checkout main
+git merge feature/login --no-ff
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git merge</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Combine histories.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Integrate</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git merge feature/payment</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--no-ff</span> — Force merge commit for traceability.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--squash</span> — Combine changes without auto-commit.</li>
-              </ul>
-              <p>Use when integrating reviewed branches; resolve conflicts before committing.</p>
-            </div>
-          </article>
+# Abort merge after conflicts
+git merge --abort</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold">git rebase</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Replay commits onto a new base to create a linear history. Avoid rebasing published branches.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
+              <li><span class="font-semibold">git rebase &lt;branch&gt;</span>: move current branch onto target.</li>
+              <li><span class="font-semibold">-i/--interactive</span>: reorder, edit, squash commits.</li>
+              <li><span class="font-semibold">--onto A B</span>: move range starting at B onto A.</li>
+              <li><span class="font-semibold">--continue / --abort / --skip</span>: control after conflicts.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Rebase feature onto latest main
+git switch feature/login
+git fetch origin
+git rebase origin/main
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git rebase</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Replay commits onto another tip.</p>
-              </div>
-              <span class="rounded-full bg-slate-100 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-slate-600 dark:bg-slate-800 dark:text-slate-300">Advanced</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git rebase origin/main</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-i HEAD~3</span> — Interactive rewrite for cleanup.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--onto main feature base</span> — Move subset of commits.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--rebase-merges</span> — Preserve branch structure.</li>
-              </ul>
-              <p>Use to maintain linear history. Avoid rebasing shared/public branches.</p>
-            </div>
-          </article>
+# Interactive cleanup before PR
+git rebase -i HEAD~4  # squash, edit messages</code></pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Merge vs Rebase: merge preserves branch context; rebase rewrites commits for linear history. Use merge for shared history; use rebase locally before publishing to reduce noise.</p>
+          </div>
         </div>
       </section>
 
-      <section id="remote" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="remotes" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">03</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Remote Repositories</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Coordinate with origin servers and shared remotes.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 03</p>
+            <h2 class="mt-2 text-3xl font-semibold">Remote Repositories</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Manage remote endpoints, fetch updates, and push local changes safely.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-cyan-200 bg-cyan-50/80 dark:border-cyan-900 dark:bg-cyan-900/30 p-4 text-sm text-cyan-900 dark:text-cyan-50">
+            <p class="font-semibold">Note</p>
+            <p class="mt-2">Set upstream tracking with git push -u or git branch --set-upstream-to to enable simpler pulls.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git remote -v</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Show remotes & URLs.</p>
-              </div>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git remote -v</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">git remote add upstream ...</span> — Track another source.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">git remote set-url origin ...</span> — Update URL (HTTPS⇄SSH).</li>
-              </ul>
-              <p>Use when auditing push/pull URLs or configuring forks.</p>
-            </div>
-          </article>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git remote</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">List and manage remote repositories.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-v</span>: show URLs.</li>
+              <li><span class="font-semibold">add &lt;name&gt; &lt;url&gt;</span>: add remote.</li>
+              <li><span class="font-semibold">set-url</span>: change remote URL.</li>
+              <li><span class="font-semibold">rename</span>: rename remote.</li>
+              <li><span class="font-semibold">remove/rm</span>: delete remote.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Add upstream remote
+git remote add upstream https://github.com/org/app.git
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git fetch</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Download refs only.</p>
-              </div>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git fetch origin --prune</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--all</span> — Fetch every remote.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--prune</span> — Remove deleted remote branches.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">origin feature</span> — Fetch a single branch.</li>
-              </ul>
-              <p>Use before comparing or rebasing to stay current.</p>
-            </div>
-          </article>
+# Change origin to SSH
+git remote set-url origin git@github.com:org/app.git
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git pull</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Fetch + merge/rebase.</p>
-              </div>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git pull --rebase origin main</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--rebase</span> — Avoid merge commits for local sync.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--ff-only</span> — Fail if merge commit required.</li>
-              </ul>
-              <p>Use for daily sync; configure default strategy in <span class="font-mono">git config pull.rebase true</span>.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git push</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Upload local refs.</p>
-              </div>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <div>
-                <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git push origin feature/docs</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--set-upstream / -u</span> — Link local branch to remote.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--force-with-lease</span> — Force push with safety check.</li>
-              </ul>
-              <p>Use to publish work for review, CI, or release.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-warn-500/50 bg-warn-50/80 p-5 shadow-card dark:border-warn-500/60 dark:bg-warn-500/10">
-            <div class="flex items-start justify-between gap-4">
-              <div>
-                <p class="font-mono text-lg font-semibold text-warn-500">git push -f</p>
-                <p class="text-sm text-warn-500/80">Overwrite remote history.</p>
-              </div>
-              <span class="rounded-full bg-white/60 px-3 py-0.5 text-xs font-semibold uppercase tracking-wide text-warn-500">Warning</span>
-            </div>
-            <div class="mt-4 space-y-3 text-sm text-warn-500/90 dark:text-warn-50">
-              <div>
-                <pre class="rounded-xl bg-white/50 px-3 py-2 text-warn-600">git push --force-with-lease origin feature</pre>
-              </div>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-warn-600">--force</span> — Blunt force; may erase teammates' work.</li>
-                <li><span class="font-mono text-warn-600">--force-with-lease</span> — Safer: fails if remote advanced.</li>
-              </ul>
-              <p>Use only after rebasing private branches. Announce before force pushing shared branches.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="stashing" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">04</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Stashing</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Shelve work-in-progress without committing.</p>
+# List remotes with URLs
+git remote -v</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git stash</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Save dirty state.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git stash push -m "WIP: auth flow" --include-untracked</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-m</span> — Give stash a label.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--include-untracked</span> — Save new files too.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--keep-index</span> — Keep staged changes staged.</li>
-              </ul>
-              <p>Use before switching branches mid-task.</p>
-            </div>
-          </article>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git fetch</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Download refs and objects from remotes without altering working tree.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--all</span>: fetch all remotes.</li>
+              <li><span class="font-semibold">--prune</span>: remove stale remote-tracking refs.</li>
+              <li><span class="font-semibold">&lt;remote&gt; &lt;refspec&gt;</span>: fetch specific branches/tags.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Update all remotes and prune stale branches
+git fetch --all --prune
 
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git stash list</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">View saved stashes.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git stash list --stat</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--stat</span> — Show summary of each stash.</li>
-              </ul>
-              <p>Use to choose which stash to reapply.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git stash apply</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Reapply without removing.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git stash apply stash@{2}</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--index</span> — Restore staged state.</li>
-              </ul>
-              <p>Use when you may need the same stash again or want to test before popping.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git stash pop</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Apply & delete.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git stash pop</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--index</span> — Restore staged state.</li>
-              </ul>
-              <p>Use after verifying the target branch; conflicts behave like merges.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="undo" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">05</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Undo & Fix Mistakes</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Recover from accidents, rewrite commits responsibly, and fix branch mix-ups.</p>
+# Fetch only main branch from origin
+git fetch origin main</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git restore</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Discard working tree changes.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git restore src/app.js</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--source HEAD~1</span> — Restore from older commit.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--worktree</span> — Default; affects files only.</li>
-              </ul>
-              <p>Use to drop local modifications in specific files.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git restore --staged</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Unstage without losing work.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git restore --staged package.json</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--worktree</span> — Combine to drop staged + working tree.</li>
-              </ul>
-              <p>Use when you staged something prematurely.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git reset --soft</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Move HEAD, keep staging.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git reset --soft HEAD~1</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">target</span> — Commit to move to (HEAD~1, abc123).</li>
-              </ul>
-              <p>Use to rewrite latest commit while keeping staged snapshot.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git reset --mixed</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Default reset: unstage changes.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git reset HEAD^</pre>
-              <p>Use to move commits back into working tree for editing.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-warn-500/50 bg-warn-50/80 p-5 shadow-card dark:border-warn-500/60 dark:bg-warn-500/10">
-            <p class="font-mono text-lg font-semibold text-warn-500">git reset --hard</p>
-            <p class="text-sm text-warn-500/80">Discard staged + working changes.</p>
-            <div class="mt-3 space-y-3 text-sm text-warn-600 dark:text-warn-50">
-              <pre class="rounded-xl bg-white/50 px-3 py-2 text-warn-600">git reset --hard origin/main</pre>
-              <p>Use only when you're certain uncommitted work can be lost. Back up critical files first.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git revert</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Create inverse commit.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git revert HEAD~2</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--no-edit</span> — Keep default message.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">-m 1</span> — Choose parent for reverting merges.</li>
-              </ul>
-              <p>Use on shared branches to undo commits without rewriting history.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Amend last commit</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Fix message or include forgotten changes.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git commit --amend --no-edit
-# or update message
-git commit --amend -m "feat: clarify API"</pre>
-              <p>Use before pushing to remote. After pushing, coordinate with team and force push safely.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Fix commit on wrong branch</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Move work to intended branch.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git switch correct-branch
-# cherry-pick commit
-git cherry-pick <bad-commit>
-git switch wrong-branch
-git reset --hard HEAD~1</pre>
-              <p>Use to salvage commits made on main or another branch. Cherry-pick keeps history clean.</p>
-            </div>
-          </article>
-        </div>
-        <div class="mt-10 overflow-x-auto rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-          <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Reset comparison</p>
-          <table class="mt-4 w-full text-left text-sm text-slate-600 dark:text-slate-300">
-            <thead class="text-xs uppercase tracking-wide text-slate-500 dark:text-slate-400">
-              <tr>
-                <th class="py-2 pr-4">Command</th>
-                <th class="py-2 pr-4">HEAD moves?</th>
-                <th class="py-2 pr-4">Staging area</th>
-                <th class="py-2">Working tree</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-mono text-slate-900 dark:text-white">reset --soft</td>
-                <td class="py-2 pr-4">Yes</td>
-                <td class="py-2 pr-4">Preserved</td>
-                <td class="py-2">Preserved</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-mono text-slate-900 dark:text-white">reset --mixed</td>
-                <td class="py-2 pr-4">Yes</td>
-                <td class="py-2 pr-4">Cleared</td>
-                <td class="py-2">Preserved</td>
-              </tr>
-              <tr class="border-t border-slate-100 dark:border-slate-800">
-                <td class="py-2 pr-4 font-mono text-slate-900 dark:text-white">reset --hard</td>
-                <td class="py-2 pr-4">Yes</td>
-                <td class="py-2 pr-4">Cleared</td>
-                <td class="py-2 text-warn-500">Discarded</td>
-              </tr>
-            </tbody>
-          </table>
-        </div>
-      </section>
-
-      <section id="history" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">06</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">History & Inspection</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Trace authorship, compare diffs, and inspect commits quickly.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git log --oneline</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Compact history.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git log --oneline --decorate --max-count=15</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--decorate</span> — Show refs.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--author="Alex"</span> — Filter by author.</li>
-              </ul>
-              <p>Use for quick release summaries or to find commit IDs.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git log --graph</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Visualize branching.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git log --graph --oneline --all --color</pre>
-              <p>Use to explain branch topology during reviews or debugging.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git show</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Display commit details.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git show HEAD~1 --stat --patch</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">--name-only</span> — List touched files.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">--name-status</span> — Show add/modify/delete.</li>
-              </ul>
-              <p>Use to inspect a specific commit before cherry-picking or reverting.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git blame</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Annotate file history.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git blame -L 20,60 --date=short src/server.ts</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-L start,end</span> — Limit to line range.</li>
-                <li><span class="font-mono text-slate-900 dark:text-white">-w</span> — Ignore whitespace.</li>
-              </ul>
-              <p>Use when tracking regressions or understanding context; pair with <span class="font-mono">git show</span>.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="tags" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">07</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Tags</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Mark releases and important checkpoints.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git tag</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">List or create lightweight tags.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git tag v1.4.0</pre>
-              <p>Use for local markers or automation scripts.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git tag -a</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Annotated tag with metadata.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git tag -a v1.5.0 -m "Release 1.5"</pre>
-              <ul class="space-y-1">
-                <li><span class="font-mono text-slate-900 dark:text-white">-s</span> — Sign tag with GPG.</li>
-              </ul>
-              <p>Use for releases so tag includes author, date, and message.</p>
-            </div>
-          </article>
-
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-lg font-semibold text-slate-900 dark:text-white">git push --tags</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Publish tags.</p>
-            <div class="mt-3 space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <pre class="rounded-xl bg-slate-900/90 px-3 py-2 text-white">git push origin --tags
-# or single tag
-git push origin v1.5.0</pre>
-              <p>Use after tagging releases so CI/CD or teammates can access them.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="workflows" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">08</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Common Workflows</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Battle-tested patterns for collaborating at scale.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Feature branches</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Start from <span class="font-mono">main</span>, branch per unit of work, rebase or merge main frequently, open PR when ready.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git fetch origin
-git switch -c feature/payment origin/main</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Pull request flow</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Push branch, open PR, ensure CI passes, squash merge for tidy history, delete branch.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git push -u origin feature/payment
-# after review
-git switch main && git pull --rebase
-</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Hotfix flow</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Branch from production tag, patch urgently, merge back into both <span class="font-mono">main</span> and release branches, tag release.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git switch -c hotfix/cache v1.4.3
-# fix + commit
-git tag v1.4.4 && git push --tags</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="config" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">09</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Git Config</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Set identity, editors, and inspect settings.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 xl:grid-cols-4">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">user.name</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global user.name "Alex Kim"</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use per machine; override per repo without <span class="font-mono">--global</span>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">user.email</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global user.email "alex@example.com"</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use GitHub noreply if privacy is required.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">core.editor</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global core.editor "code --wait"</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Ensures commit messages open in VS Code and wait until closed.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Config list</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --show-origin --list</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Shows value plus file source (<span class="font-mono">/etc/gitconfig</span>, global, repo).</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="gitignore" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">10</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">.gitignore</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Control which files enter history.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Purpose</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Prevent secrets, build artifacts, and OS cruft from entering Git history.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Common patterns</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">node_modules/
-dist/
-.env
-*.log
-.DS_Store</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use curated templates from <a href="https://github.com/github/gitignore" class="text-accent-600 dark:text-accent-300 underline-offset-2 hover:underline">github/gitignore</a>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Global gitignore</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global core.excludesfile ~/.gitignore_global</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use for editor swap files and OS-specific artifacts.</p>
-          </article>
-        </div>
-      </section>
-
-      <section id="ssh" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">11</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">SSH & Authentication</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Securely connect to remotes.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Generate SSH key</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">ssh-keygen -t ed25519 -C "alex@example.com"
-# add to agent
-ssh-add ~/.ssh/id_ed25519</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use modern algorithms (ed25519) and protect with a passphrase.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Test SSH access</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">ssh -T git@github.com</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Expect "You've successfully authenticated" message; failure hints at missing keys.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">HTTPS vs SSH</p>
-            <div class="mt-2 space-y-2 text-sm text-slate-600 dark:text-slate-300">
-              <p><span class="font-semibold text-slate-900 dark:text-white">HTTPS</span> — Simple, works behind strict proxies, can use PAT tokens.</p>
-              <p><span class="font-semibold text-slate-900 dark:text-white">SSH</span> — Key-based, no password prompts, required for signed pushes.</p>
-              <p>Choose based on network restrictions and security requirements.</p>
-            </div>
-          </article>
-        </div>
-      </section>
-
-      <section id="problems" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">12</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Common Problems & Fixes</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Diagnose frequent Git headaches fast.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Detached HEAD</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Occurs when checking out a commit SHA. Create a branch before committing.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git switch -c temp-fix
-# commit safely</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Merge conflicts</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Open conflicting files, look for <<<<<<< markers, resolve, then continue.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git status
-# edit files
-git add resolved-file
-git merge --continue</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Push rejected</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Remote advanced. Pull with rebase, resolve, push again.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git fetch origin
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git pull</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Fetch then merge (or rebase) into current branch.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--rebase</span>: rebase instead of merge.</li>
+              <li><span class="font-semibold">--ff-only</span>: refuse non fast-forward updates.</li>
+              <li><span class="font-semibold">--all</span>: pull from all remotes (rare).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Rebase current branch onto upstream main
 git pull --rebase origin main
-# or force-with-lease after coordination</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Line ending issues</p>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Configure autocrlf or .gitattributes for consistent endings.</p>
-            <pre class="mt-3 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global core.autocrlf input
-# or .gitattributes
-*.sh text eol=lf</pre>
-          </article>
-        </div>
-      </section>
 
-      <section id="aliases" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">13</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Git Aliases</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Shortcuts for daily commands.</p>
+# Safe pull that fails on divergence
+git pull --ff-only origin main</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git push</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Upload local commits to a remote branch or tag.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-u/--set-upstream</span>: set upstream tracking.</li>
+              <li><span class="font-semibold">--force-with-lease</span>: force push safely (checks remote tip).</li>
+              <li><span class="font-semibold">--tags</span>: push all tags.</li>
+              <li><span class="font-semibold">&lt;remote&gt; :&lt;branch&gt;</span>: delete remote branch by pushing nothing.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># First push and set upstream
+git push -u origin feature/login
+
+# Safe force after rebase
+git push --force-with-lease origin feature/login
+
+# Delete remote branch
+git push origin :old-branch</code></pre>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Define aliases</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global alias.st status -sb
-git config --global alias.co switch
-git config --global alias.unstage "restore --staged"
-</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Aliases behave like subcommands: <span class="font-mono">git st</span>.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Helpful examples</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-white">git config --global alias.lg "log --graph --oneline --all"
-git config --global alias.rbi "rebase -i"
-git config --global alias.last "show -1 --stat"</pre>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use descriptive names to document your workflow for teammates.</p>
-          </article>
+      </section>
+
+      <section id="tagging" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 04</p>
+            <h2 class="mt-2 text-3xl font-semibold">Tagging</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Mark important points (releases) with lightweight or annotated tags.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-indigo-200 bg-indigo-50/80 dark:border-indigo-900 dark:bg-indigo-900/30 p-4 text-sm text-indigo-900 dark:text-indigo-50">
+            <p class="font-semibold">Tip</p>
+            <p class="mt-2">Use annotated tags for releases: they store message, tagger, and date, and can be signed.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git tag</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create, list, or delete tags.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git tag</span>: list tags.</li>
+              <li><span class="font-semibold">-a &lt;tag&gt; -m "msg"</span>: create annotated tag.</li>
+              <li><span class="font-semibold">-s</span>: GPG-sign annotated tag.</li>
+              <li><span class="font-semibold">-d &lt;tag&gt;</span>: delete local tag.</li>
+              <li><span class="font-semibold">-f</span>: move tag to another commit (use carefully).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># List tags sorted by version
+git tag --list --sort=v:refname
+
+# Create annotated release tag
+git tag -a v1.4.0 -m "Release 1.4.0"
+
+# Move tag to new commit (rewrite)
+git tag -f v1.4.0 HEAD</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git show (tags)</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Display tag metadata and referenced commit.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git show &lt;tag&gt;</span>: show tag info and commit diff.</li>
+              <li><span class="font-semibold">--stat</span>: summary of changes.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Inspect annotated tag contents
+git show v1.4.0
+
+# Summary only
+git show --stat v1.4.0</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold">Push Tags</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Share tags with remotes. Tags are not pushed automatically unless specified.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git push &lt;remote&gt; &lt;tag&gt;</span>: push single tag.</li>
+              <li><span class="font-semibold">git push --tags</span>: push all tags.</li>
+              <li><span class="font-semibold">git push &lt;remote&gt; :refs/tags/&lt;tag&gt;</span>: delete remote tag.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Push a single tag
+git push origin v1.4.0
+
+# Push all tags (release day)
+git push --tags
+
+# Delete remote tag
+git push origin :refs/tags/v1.3.0</code></pre>
+          </div>
         </div>
       </section>
 
-      <footer class="mt-16 rounded-3xl border border-white/70 bg-white/80 p-6 text-sm text-slate-500 shadow-card dark:border-slate-800 dark:bg-slate-900/70 dark:text-slate-400">
-        Built for everyday Git operations. Keep this page handy, keep branches tidy, and communicate before running destructive commands.
-      </footer>
+      <section id="stash-undo" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 05</p>
+            <h2 class="mt-2 text-3xl font-semibold">Stashing &amp; Undoing</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Temporarily shelve work, roll back changes, or revert commits safely.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
+            <p class="font-semibold">Safety</p>
+            <p class="mt-2">Prefer revert for published commits; use reset only on local branches or when collaborators agree.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git stash</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Save a snapshot of unstaged/staged changes for later.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">push</span>: store changes (default action).</li>
+              <li><span class="font-semibold">-m "msg"</span>: describe the stash.</li>
+              <li><span class="font-semibold">-u/--include-untracked</span>: include untracked files.</li>
+              <li><span class="font-semibold">-a/--all</span>: include ignored files.</li>
+              <li><span class="font-semibold">list</span>: list stashes.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Stash tracked and untracked files
+git stash push -u -m "WIP: login form"
+
+# List stashes
+git stash list</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git stash pop</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Apply latest (or specific) stash and remove it from the stash list.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git stash pop</span>: apply most recent.</li>
+              <li><span class="font-semibold">git stash pop stash@{n}</span>: apply specific entry.</li>
+              <li><span class="font-semibold">git stash apply</span>: apply without dropping.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Apply latest stash and drop
+git stash pop
+
+# Apply specific stash without dropping
+git stash apply stash@{2}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git reset</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Move HEAD and optionally the index/working tree. Use with care.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--soft</span>: move HEAD only (keep index and working tree).</li>
+              <li><span class="font-semibold">--mixed</span>: move HEAD and reset index (default), keep working tree.</li>
+              <li><span class="font-semibold">--hard</span>: reset HEAD, index, and working tree (destructive).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Undo last commit but keep changes staged
+git reset --soft HEAD~1
+
+# Drop work completely (dangerous)
+git reset --hard origin/main</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git revert</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create a new commit that undoes the changes of a previous commit. Safe for shared branches.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git revert &lt;commit&gt;</span>: revert a single commit.</li>
+              <li><span class="font-semibold">--no-commit</span>: stage the revert without committing.</li>
+              <li><span class="font-semibold">-n/--no-commit</span>: collect multiple reverts into one commit.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Revert a bad commit on shared branch
+git revert abc1234
+
+# Revert multiple commits then commit once
+git revert -n HEAD~3..HEAD~1
+git commit -m "Revert problematic migrations"</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Discard file changes</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Restore a file to index or HEAD state. Modern alternative: git restore.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git checkout -- file</span>: reset file to index/HEAD.</li>
+              <li><span class="font-semibold">git restore file</span>: clearer equivalent (if available).</li>
+              <li><span class="font-semibold">git restore --staged file</span>: unstage while keeping working copy.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Discard local modifications (cannot undo)
+git checkout -- config.yml
+
+# Unstage but keep edits
+git restore --staged src/app.js</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="diff-log" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 06</p>
+            <h2 class="mt-2 text-3xl font-semibold">Diff &amp; Log</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Inspect changes and history with focused filters and readable formats.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-lime-200 bg-lime-50/80 dark:border-lime-900 dark:bg-lime-900/30 p-4 text-sm text-lime-900 dark:text-lime-50">
+            <p class="font-semibold">Hint</p>
+            <p class="mt-2">Use --stat for summaries, --patch for details, and --color for clarity when piping to pagers.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git diff</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show changes between commits, index, and working tree.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git diff</span>: working tree vs index.</li>
+              <li><span class="font-semibold">git diff --cached</span>: index vs HEAD.</li>
+              <li><span class="font-semibold">git diff HEAD~1 HEAD</span>: between commits.</li>
+              <li><span class="font-semibold">--stat</span>: summary of changes.</li>
+              <li><span class="font-semibold">--word-diff</span>: highlight word-level changes.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># View staged diff
+git diff --cached
+
+# Word-level diff for a file
+git diff --word-diff src/app.py</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git log (formats)</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Customize history output for quick scans or audits.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--pretty=format:"..."</span>: custom fields (%h, %ad, %an, %s).</li>
+              <li><span class="font-semibold">--stat</span>: per-commit file summaries.</li>
+              <li><span class="font-semibold">--reverse</span>: oldest first.</li>
+              <li><span class="font-semibold">--first-parent</span>: follow mainline through merges.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Custom one-line with date
+git log --pretty=format:"%h %ad %an %s" --date=short -n 10
+
+# Follow mainline only (useful on release branches)
+git log --first-parent --oneline</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold">git shortlog</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Summarize commits grouped by author. Helpful for release notes or contribution stats.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-s</span>: summary (counts only).</li>
+              <li><span class="font-semibold">-n</span>: sort by number of commits.</li>
+              <li><span class="font-semibold">-e</span>: include email addresses.</li>
+              <li><span class="font-semibold">--since/--until</span>: time-bounded summaries.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Contributions in last month
+git shortlog -sn --since="1 month ago"
+
+# Include emails for release notes
+git shortlog -se v1.3.0..HEAD</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="conflicts" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 07</p>
+            <h2 class="mt-2 text-3xl font-semibold">Merge Conflicts</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Detect, inspect, and resolve conflicts methodically.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-orange-200 bg-orange-50/80 dark:border-orange-900 dark:bg-orange-900/30 p-4 text-sm text-orange-900 dark:text-orange-50">
+            <p class="font-semibold">Workflow</p>
+            <p class="mt-2">Resolve conflicts in working tree, stage resolved files, then continue (merge --continue / rebase --continue).</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Detect &amp; inspect</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use status and diff to see conflicted paths and markers.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git status</span>: shows paths with conflicts (both modified).</li>
+              <li><span class="font-semibold">git diff</span>: shows conflict markers <<<<<<<, =======, >>>>>>>.</li>
+              <li><span class="font-semibold">git diff --name-only --diff-filter=U</span>: list conflicted files.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># List conflicted files
+git diff --name-only --diff-filter=U
+
+# View conflict markers in a file
+git diff -- config/routes.rb</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git mergetool</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Launch configured merge tool to resolve conflicts visually.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git mergetool</span>: open tool for each conflicted file.</li>
+              <li><span class="font-semibold">--tool &lt;name&gt;</span>: choose specific tool (meld, kdiff3, vimdiff).</li>
+              <li><span class="font-semibold">--gui</span>: prefer GUI tools when available.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Use vimdiff to resolve conflicts
+git mergetool --tool=vimdiff
+
+# After resolving, stage and continue
+ git add path/to/file
+ git merge --continue  # or: git rebase --continue</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold">Conflict resolution workflow</h3>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># 1) Start merge/rebase and hit conflicts
+# 2) Inspect conflicts
+git status
+
+# 3) Open files, resolve markers <<<<<<< ======= >>>>>>>
+# 4) Optionally use a mergetool
+#    git mergetool --tool=meld
+
+# 5) Stage resolved files
+git add app/models/user.rb
+
+# 6) Continue
+# For merge:
+git merge --continue
+# For rebase:
+git rebase --continue
+
+# 7) If stuck, abort
+# git merge --abort
+# git rebase --abort</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="workflows" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 08</p>
+            <h2 class="mt-2 text-3xl font-semibold">Workflows &amp; Best Practices</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Pick a branching strategy, write clear commits, and collaborate predictably.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-teal-200 bg-teal-50/80 dark:border-teal-900 dark:bg-teal-900/30 p-4 text-sm text-teal-900 dark:text-teal-50">
+            <p class="font-semibold">Commit style</p>
+            <p class="mt-2">Use imperative mood, keep to ~50 char subject, and wrap body at ~72 chars with rationale and context.</p>
+          </div>
+        </div>
+        <div class="mt-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-6">
+          <h3 class="text-xl font-semibold">Branching Strategies</h3>
+          <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li><span class="font-semibold">Feature branches:</span> short-lived branches off main; rebase before merge; prefer fast-forward or squash merges.</li>
+            <li><span class="font-semibold">Pull request flow:</span> branch per change, open PR early, run CI, rebase/merge after review.</li>
+            <li><span class="font-semibold">Gitflow:</span> main + develop; release/hotfix branches; heavier but structured for releases.</li>
+            <li><span class="font-semibold">Trunk-based:</span> tiny, frequent merges to main with feature flags; favors CI/CD.</li>
+          </ul>
+          <h3 class="text-xl font-semibold">Commit Message Examples</h3>
+          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>feat(auth): add OAuth token refresh
+fix(payments): handle declined cards gracefully
+chore(ci): bump actions/cache to v4
+refactor(api): simplify pagination helpers
+docs: clarify onboarding steps
+revert: revert "feat(auth): add OAuth token refresh"</code></pre>
+          <h3 class="text-xl font-semibold">Best Practices</h3>
+          <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li>Commit early and often; keep commits focused and reversible.</li>
+            <li>Prefer rebase + fast-forward for small, local cleanup; merge for shared branches to preserve context.</li>
+            <li>Keep main always deployable; gate risky work behind flags.</li>
+            <li>Protect branches: require reviews, CI, and status checks before merging.</li>
+            <li>Use .gitignore to keep noise out; avoid committing secrets.</li>
+            <li>Document decisions in commit bodies, not just PR descriptions.</li>
+          </ul>
+        </div>
+      </section>
+
+      <section id="releases" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 09</p>
+            <h2 class="mt-2 text-3xl font-semibold">Tagging &amp; Releases</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Plan releases with semantic versioning and consistent tagging practices.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-fuchsia-200 bg-fuchsia-50/80 dark:border-fuchsia-900 dark:bg-fuchsia-900/30 p-4 text-sm text-fuchsia-900 dark:text-fuchsia-50">
+            <p class="font-semibold">Semantic Versioning</p>
+            <p class="mt-2">Format: MAJOR.MINOR.PATCH (e.g., 2.3.1). Bump MAJOR for breaking changes, MINOR for new features, PATCH for fixes.</p>
+          </div>
+        </div>
+        <div class="mt-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create release branch and tag
+git switch -c release/1.4.0
+# run tests, update changelog
+
+# Tag with changelog summary
+git tag -a v1.4.0 -m "Release 1.4.0 - payments and UX"
+
+# Push branch and tags
+git push origin release/1.4.0
+git push origin v1.4.0
+
+# Hotfix flow
+# branch from main
+git switch -c hotfix/1.4.1
+# after fix:
+git tag -a v1.4.1 -m "Hotfix: fix webhook retries"
+git push origin hotfix/1.4.1 v1.4.1</code></pre>
+          <p class="text-sm text-slate-600 dark:text-slate-300">Prefer annotated, signed tags for releases. Keep CHANGELOG.md aligned with tags; automate changelog generation from conventional commits or release notes when possible.</p>
+        </div>
+      </section>
+
+      <section id="advanced" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 10</p>
+            <h2 class="mt-2 text-3xl font-semibold">Advanced Commands</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Diagnose history, isolate changes, and recover from mistakes.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-purple-200 bg-purple-50/80 dark:border-purple-900 dark:bg-purple-900/30 p-4 text-sm text-purple-900 dark:text-purple-50">
+            <p class="font-semibold">Caution</p>
+            <p class="mt-2">Commands like rebase -i, cherry-pick, and reset rewrite history. Coordinate with teammates before altering shared branches.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git cherry-pick</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Apply specific commits onto current branch.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-x</span>: append "cherry picked from" reference to message.</li>
+              <li><span class="font-semibold">-n/--no-commit</span>: apply changes without committing.</li>
+              <li><span class="font-semibold">--continue / --abort / --skip</span>: handle conflicts.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Bring fix from main to release branch
+git cherry-pick -x abc1234
+
+# Apply multiple commits without auto-committing
+git cherry-pick -n abc1234 def5678
+git commit -m "Backport fixes"</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git rebase -i</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Interactively reorder, squash, or edit commits.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">pick</span>: keep commit as-is.</li>
+              <li><span class="font-semibold">reword</span>: edit commit message.</li>
+              <li><span class="font-semibold">squash/fixup</span>: combine commits.</li>
+              <li><span class="font-semibold">edit</span>: pause to amend content.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Clean up last 5 commits
+git rebase -i HEAD~5
+# choose pick/reword/squash in editor
+# fix conflicts if any, then continue
+git rebase --continue</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git bisect</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Binary search commits to find where a bug was introduced.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">start</span>: begin session.</li>
+              <li><span class="font-semibold">good &lt;rev&gt;</span>: mark known good commit.</li>
+              <li><span class="font-semibold">bad &lt;rev&gt;</span>: mark known bad commit.</li>
+              <li><span class="font-semibold">run &lt;cmd&gt;</span>: automate tests per step.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Manual bisect session
+git bisect start
+git bisect bad HEAD
+git bisect good v1.3.0
+# test... then mark good/bad until found
+
+git bisect reset  # return to original HEAD
+
+# Automated bisect with script
+git bisect start
+git bisect bad
+git bisect good v1.3.0
+git bisect run npm test
+git bisect reset</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">git reflog</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">View reference logs for HEAD and branches to recover lost commits.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">git reflog</span>: list recent HEAD movements.</li>
+              <li><span class="font-semibold">git reflog show &lt;ref&gt;</span>: specific branch/tag.</li>
+              <li><span class="font-semibold">git reset --hard HEAD@{n}</span>: restore to prior position (dangerous).</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Recover after accidental reset
+git reflog
+# pick the wanted entry, e.g., HEAD@{3}
+git reset --hard HEAD@{3}
+
+# Inspect remote tracking ref log
+git reflog show origin/main</code></pre>
+          </div>
+        </div>
+      </section>
     </main>
+
+    <footer class="px-4 pb-16 sm:px-8 lg:px-16">
+      <div class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4">
+        <p>Git Cheatsheet · Updated 2026</p>
+        <p>Crafted with Tailwind CSS CDN · Dark-mode aware.</p>
+      </div>
+    </footer>
   </div>
 </body>
 </html>

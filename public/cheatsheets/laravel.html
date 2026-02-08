@@ -1,795 +1,1030 @@
 <!DOCTYPE html>
-<html lang="en" class="h-full">
+<html lang="en" class="scroll-smooth">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Laravel Cheatsheet</title>
-  <meta name="description" content="A practical Laravel reference covering setup, routing, Eloquent, APIs, queues, testing, and deployment." />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
+  <script src="https://cdn.tailwindcss.com"></script>
   <script>
     tailwind.config = {
       darkMode: 'media',
       theme: {
         extend: {
           fontFamily: {
-            sans: ['"Space Grotesk"', 'ui-sans-serif', 'system-ui'],
-            mono: ['"JetBrains Mono"', 'ui-monospace', 'SFMono-Regular', 'Menlo', 'monospace'],
+            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+            mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
           },
           colors: {
             brand: {
-              50: '#fdf2f8',
-              500: '#ec4899',
-              600: '#db2777',
+              50: '#fff1f2',
+              200: '#fecdd3',
+              500: '#ef4444',
+              600: '#dc2626',
+              900: '#7f1d1d',
+            },
+            surface: {
+              light: '#f8fafc',
+              dark: '#0b1224',
             },
           },
           boxShadow: {
-            card: '0 18px 45px -25px rgba(15,23,42,0.45)',
+            glow: '0 18px 60px rgba(239,68,68,0.25)',
           },
         },
       },
     };
   </script>
-  <script src="https://cdn.tailwindcss.com"></script>
   <style>
-    pre {
-      white-space: pre-wrap;
-      word-break: break-word;
-      font-family: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+    body {
+      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    }
+    pre, code {
+      font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
     }
   </style>
 </head>
-<body class="min-h-full bg-slate-50 font-sans text-slate-900 antialiased dark:bg-slate-950 dark:text-slate-100">
-  <div class="relative overflow-hidden">
-    <div class="pointer-events-none absolute inset-0 bg-gradient-to-br from-brand-50 via-white to-slate-100 opacity-80 dark:from-slate-900 dark:via-slate-950 dark:to-slate-900"></div>
-    <main class="relative mx-auto max-w-7xl px-4 py-12 sm:px-6 lg:px-10">
-      <section class="rounded-3xl border border-white/70 bg-white/80 p-8 shadow-card backdrop-blur dark:border-slate-800/70 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Cheatsheet</p>
-        <h1 class="mt-4 text-4xl font-semibold text-slate-900 dark:text-white sm:text-5xl">Laravel Cheatsheet</h1>
-        <p class="mt-4 text-lg text-slate-600 dark:text-slate-300">A practical reference for daily development, APIs, and production-ready Laravel apps.</p>
-        <div class="mt-6 flex flex-wrap gap-3 text-sm text-slate-600 dark:text-slate-300">
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-brand-500"></span>Laravel 10+</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-emerald-500"></span>Zero build</span>
-          <span class="inline-flex items-center gap-2 rounded-full bg-slate-100 px-3 py-1 dark:bg-slate-800"><span class="h-2 w-2 rounded-full bg-indigo-500"></span>Copy-ready snippets</span>
+<body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+  <div class="relative isolate overflow-hidden">
+    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
+      <div class="absolute top-10 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"></div>
+      <div class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-rose-300/20 blur-3xl"></div>
+    </div>
+
+    <header id="hero" class="px-4 py-16 sm:px-8 lg:px-16">
+      <div class="max-w-5xl mx-auto text-center">
+        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200">Laravel · Reference</span>
+        <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">Laravel Cheatsheet</h1>
+        <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">A detailed reference from basics to advanced Laravel features.</p>
+        <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Mobile-first</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Dark-mode ready</span>
+          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Copy-paste friendly</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="px-4 pb-24 sm:px-8 lg:px-16">
+      <section class="max-w-6xl mx-auto" id="toc">
+        <div class="rounded-3xl border border-white/70 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 shadow-xl p-8">
+          <h2 class="text-xl font-semibold">Table of Contents</h2>
+          <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm font-semibold">
+            <a href="#basics" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Basics</a>
+            <a href="#routes" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Routes</a>
+            <a href="#controllers" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Controllers</a>
+            <a href="#views" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Views &amp; Blade</a>
+            <a href="#models" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Models &amp; Database</a>
+            <a href="#forms" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Form Handling &amp; Validation</a>
+            <a href="#middleware" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Middleware &amp; Auth</a>
+            <a href="#artisan" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Artisan Commands</a>
+            <a href="#events" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Events, Listeners &amp; Jobs</a>
+            <a href="#config" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Config, Caching &amp; Logging</a>
+            <a href="#testing" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Testing</a>
+            <a href="#deployment" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Deployment &amp; Workflow</a>
+          </div>
         </div>
       </section>
 
-      <section class="mt-12 rounded-2xl border border-white/70 bg-white/80 p-6 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-        <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">Table of contents</p>
-        <div class="mt-4 grid gap-2 sm:grid-cols-2 lg:grid-cols-3">
-          <a href="#setup" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Project Setup &amp; Environment</a>
-          <a href="#structure" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Directory Structure</a>
-          <a href="#artisan" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Artisan Commands</a>
-          <a href="#routing" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Routing</a>
-          <a href="#controllers" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Controllers</a>
-          <a href="#requests" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Requests &amp; Validation</a>
-          <a href="#blade" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Blade Templating</a>
-          <a href="#migrations" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Database &amp; Migrations</a>
-          <a href="#eloquent" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Eloquent ORM</a>
-          <a href="#auth" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Authentication &amp; Authorization</a>
-          <a href="#api" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">API Development</a>
-          <a href="#storage" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">File Storage</a>
-          <a href="#middleware" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Middleware</a>
-          <a href="#errors" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Error Handling &amp; Logging</a>
-          <a href="#queues" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Queues, Jobs &amp; Events</a>
-          <a href="#testing" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Testing</a>
-          <a href="#security" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Security Essentials</a>
-          <a href="#performance" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Performance &amp; Optimization</a>
-          <a href="#deployment" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Deployment &amp; Production</a>
-          <a href="#gotchas" class="rounded-xl border border-slate-200 px-4 py-3 text-sm font-semibold text-brand-600 transition hover:-translate-y-0.5 hover:border-brand-500 hover:text-brand-500 dark:border-slate-800 dark:text-brand-300">Gotchas &amp; Tips</a>
-        </div>
-      </section>
-
-      <section id="setup" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="basics" class="max-w-6xl mx-auto mt-20">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">01</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Project Setup &amp; Environment</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Bootstrap new apps fast and lock configuration.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 01</p>
+            <h2 class="mt-2 text-3xl font-semibold">Basics</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Project layout, environment setup, and essential artisan commands.</p>
           </div>
-          <span class="rounded-full bg-slate-900 px-4 py-1 text-sm font-semibold text-white dark:bg-white dark:text-slate-900">Core basics</span>
+          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
+            <p class="font-semibold">Tip</p>
+            <p class="mt-2">Run composer install, copy .env, set APP_KEY, then cache config/routes when deploying.</p>
+          </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Create project</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Installs latest Laravel skeleton.</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">composer create-project laravel/laravel blog</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Serve locally</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Starts PHP dev server.</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan serve --host=0.0.0.0 --port=8080</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">.env basics</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Config lives in env vars.</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">cp .env.example .env && php artisan key:generate</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Key generation</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Sets APP_KEY for encryption.</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan key:generate --show</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">env() vs config()</p>
-            <p class="text-sm text-slate-500 dark:text-slate-400">Use env only in config files.</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">// config/services.php
-'stripe' => [
-  'key' => env('STRIPE_KEY'),
-]
-// elsewhere: config('services.stripe.key')</pre>
-          </article>
-        </div>
-      </section>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Project Structure</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Key directories and their purpose.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">app/</span>: application code (Models, Http/, Providers).</li>
+              <li><span class="font-semibold">routes/</span>: web.php, api.php, console.php, channels.php.</li>
+              <li><span class="font-semibold">database/</span>: migrations, seeders, factories.</li>
+              <li><span class="font-semibold">config/</span>: configuration per feature (cache, queue, mail).</li>
+              <li><span class="font-semibold">resources/</span>: Blade views, lang, assets.</li>
+              <li><span class="font-semibold">storage/</span>: logs, cache, compiled views.</li>
+            </ul>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Create Project</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Scaffold a new Laravel app via installer or composer.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">laravel new &lt;name&gt;</span>: fastest (installer required).</li>
+              <li><span class="font-semibold">composer create-project</span>: no installer needed.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Using Laravel installer
+laravel new blog
 
-      <section id="structure" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">02</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Directory Structure Overview</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Know where everything lives.</p>
+# Using composer
+composer create-project laravel/laravel blog</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">app/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Core code (models, services, jobs, policies).</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">routes/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">web.php, api.php, console.php, channels.php.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">database/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Migrations, factories, seeders.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">resources/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Blade views, assets, lang files.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">public/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Web root, compiled assets, index.php.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">storage/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Logs, cache, framework, user uploads.</p>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-mono text-sm text-brand-600 dark:text-brand-300">config/</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">App configuration files loaded at boot.</p>
-          </article>
-        </div>
-      </section>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Serve Locally</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Run the embedded PHP server for quick dev.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan serve</span>: defaults to http://127.0.0.1:8000.</li>
+              <li><span class="font-semibold">--host, --port</span>: override host/port.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Custom host/port
+php artisan serve --host=0.0.0.0 --port=8080</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Artisan List</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Discover available commands and groups.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan list</span>: grouped commands.</li>
+              <li><span class="font-semibold">php artisan help &lt;cmd&gt;</span>: detailed usage and options.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Show all commands
+php artisan list
 
-      <section id="artisan" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">03</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Artisan Commands</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Code generators and maintenance utilities.</p>
+# View command options
+php artisan help migrate</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <div class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Generators</p>
-            <div class="mt-4 grid gap-4 sm:grid-cols-2">
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Controller</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:controller UserController</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Model + migration</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:model Post -m</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Request</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:request StorePostRequest</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Middleware</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:middleware EnsureAdmin</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Policy</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:policy PostPolicy --model=Post</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Job / Event / Listener</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:job SendReport
-php artisan make:event ReportGenerated
-php artisan make:listener SendReportNotification</pre>
-              </div>
-            </div>
-          </div>
-          <div class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="text-sm font-semibold uppercase tracking-[0.3em] text-slate-500 dark:text-slate-400">Utility</p>
-            <div class="mt-4 space-y-4">
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Route list</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">Inspect registered endpoints.</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan route:list --except-vendor</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Tinker</p>
-                <p class="text-sm text-slate-500 dark:text-slate-400">REPL for the app container.</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan tinker</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Optimize caches</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan optimize</pre>
-              </div>
-              <div>
-                <p class="font-semibold text-slate-900 dark:text-white">Clear caches</p>
-                <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan cache:clear
-php artisan config:clear
-php artisan route:clear</pre>
-              </div>
-            </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
+            <h3 class="text-lg font-semibold">Environment & Config Cache</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Manage .env, keys, and cached configuration for performance.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
+              <li><span class="font-semibold">cp .env.example .env</span>: seed environment file.</li>
+              <li><span class="font-semibold">php artisan key:generate</span>: set APP_KEY.</li>
+              <li><span class="font-semibold">php artisan config:cache</span>: compile config to bootstrap/cache.</li>
+              <li><span class="font-semibold">php artisan route:cache</span>: cache routes (avoid closures in prod).</li>
+              <li><span class="font-semibold">php artisan view:cache</span>: precompile Blade views.</li>
+              <li><span class="font-semibold">php artisan config:clear</span>: clear cached config.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Prepare env and key
+cp .env.example .env
+php artisan key:generate
+
+# Cache for production
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache</code></pre>
           </div>
         </div>
       </section>
 
-      <section id="routing" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="routes" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">04</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Routing</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Map HTTP verbs to controllers gracefully.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 02</p>
+            <h2 class="mt-2 text-3xl font-semibold">Routes</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Define endpoints, group middleware, and name routes for URL generation.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
+            <p class="font-semibold">Reminder</p>
+            <p class="mt-2">Cache routes in production and avoid route closures if you plan to cache.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Basics &amp; params</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Route::get('/', fn () => view('welcome'));
-Route::get('/posts/{post}', [PostController::class, 'show']);
-Route::get('/users/{user?}', fn ($user = null) => $user);</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Named routes</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Route::post('/login', AuthController::class)->name('login');
-return redirect()->route('login');</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Groups &amp; middleware</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Route::middleware(['auth', 'verified'])
-    ->prefix('dashboard')
-    ->name('dashboard.')
-    ->group(function () {
-        Route::get('/', [DashboardController::class, 'index'])
-            ->name('home');
-    });</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Resource &amp; binding</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Route::resource('posts', PostController::class);
-Route::model('post', Post::class);
-Route::bind('slug', fn ($value) => Post::whereSlug($value)->firstOrFail());</pre>
-          </article>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">HTTP Verbs</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Route helper methods map to verbs in routes/web.php or api.php.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">Route::get/post/put/patch/delete</span></li>
+              <li><span class="font-semibold">Route::match(['get','post'], ...)</span></li>
+              <li><span class="font-semibold">Route::any</span>: respond to all verbs.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// routes/web.php
+Route::get('/health', fn () => 'ok');
+Route::post('/users', [UserController::class, 'store']);
+Route::match(['get','post'], '/search', SearchController::class);</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Named Routes</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Give routes stable names for URL generation and redirects.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">->name('route.name')</span></li>
+              <li><span class="font-semibold">route('route.name', params)</span>: generate URL.</li>
+              <li><span class="font-semibold">redirect()->route('route.name')</span>: redirect helper.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Defining names
+Route::get('/profile/{user}', [ProfileController::class, 'show'])
+  ->name('profile.show');
+
+// In Blade
+<a href="{{ route('profile.show', $user) }}">View</a>
+
+// In controller
+return redirect()->route('profile.show', $user);</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Route Groups & Middleware</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Share middleware, prefixes, and namespaces across grouped routes.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">->middleware()</span>: apply single or array.</li>
+              <li><span class="font-semibold">->prefix()</span>: URL prefix.</li>
+              <li><span class="font-semibold">->as()</span>: name prefix.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>Route::prefix('admin')
+  ->as('admin.')
+  ->middleware(['auth', 'can:admin'])
+  ->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+    Route::resource('users', AdminUserController::class);
+  });</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Controller Routes</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Point routes to invokable or controller methods.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">Route::controller()</span>: group common controller.</li>
+              <li><span class="font-semibold">Route::resource()</span>: CRUD routes for a resource.</li>
+              <li><span class="font-semibold">Route::apiResource()</span>: resource without view routes.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Invokable controller
+Route::get('/invite', InviteController::class);
+
+// Resource routes
+Route::resource('posts', PostController::class);
+Route::apiResource('users', Api\UserController::class);</code></pre>
+          </div>
         </div>
       </section>
 
-      <section id="controllers" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="controllers" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">05</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Controllers</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Keep logic tidy.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 03</p>
+            <h2 class="mt-2 text-3xl font-semibold">Controllers</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Organize request handling, inject dependencies, and return responses.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-cyan-200 bg-cyan-50/80 dark:border-cyan-900 dark:bg-cyan-900/30 p-4 text-sm text-cyan-900 dark:text-cyan-50">
+            <p class="font-semibold">Note</p>
+            <p class="mt-2">Use invokable controllers for single-action endpoints; use resource controllers for CRUD.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Resource controllers</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">class PostController extends Controller
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">make:controller</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Generate controllers with helpful flags.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-i/--invokable</span>: single __invoke method.</li>
+              <li><span class="font-semibold">-r/--resource</span>: full resource methods.</li>
+              <li><span class="font-semibold">--model</span>: type-hint model (route-model binding).</li>
+              <li><span class="font-semibold">--api</span>: generate resource minus create/edit views.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Invokable controller
+php artisan make:controller InviteController --invokable
+
+# Resource controller with model binding
+php artisan make:controller PostController --resource --model=Post</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Resource Controllers</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Provides index, create, store, show, edit, update, destroy.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">Route::resource('posts', PostController::class)</span></li>
+              <li><span class="font-semibold">only/except</span>: limit generated routes.</li>
+              <li><span class="font-semibold">Route::resources([...])</span>: register multiple.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Limit to index/show
+Route::resource('docs', DocController::class)->only(['index','show']);
+
+// Multiple at once
+Route::resources([
+  'posts' => PostController::class,
+  'users' => UserController::class,
+]);</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Dependency Injection</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Type-hint services, requests, or models; Laravel resolves them via container.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">FormRequest</span>: validated input.</li>
+              <li><span class="font-semibold">Model binding</span>: inject route model instances.</li>
+              <li><span class="font-semibold">Service classes</span>: bind interfaces in providers.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>class PostController extends Controller
 {
-    public function store(StorePostRequest $request)
+    public function update(UpdatePostRequest $request, Post $post, Markdown $md)
     {
-        Post::create($request->validated());
-        return redirect()->route('posts.index');
+        $post->update($request->validated());
+        $post->body_html = $md->convert($post->body);
+        $post->save();
+        return redirect()->route('posts.show', $post);
     }
-}</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Single-action</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">class PublishPost extends Controller
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Controller Responses</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Return views, JSON, redirects, or streams.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">return view('posts.show', compact('post'));</span></li>
+              <li><span class="font-semibold">return response()->json([...], 201);</span></li>
+              <li><span class="font-semibold">return redirect()->route(...);</span></li>
+              <li><span class="font-semibold">return response()->streamDownload(...);</span></li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>public function show(Post $post)
 {
-    public function __invoke(Post $post)
-    {
-        $post->publish();
-        return back();
-    }
+    return view('posts.show', ['post' => $post]);
 }
-Route::post('/posts/{post}/publish', PublishPost::class);</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Dependency injection</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">public function index(Request $request, ReportService $service)
+
+public function export()
 {
-    return $service->forUser($request->user());
-}</pre>
-          </article>
+    return response()->streamDownload(function () {
+        echo Report::csv();
+    }, 'report.csv');
+}</code></pre>
+          </div>
         </div>
       </section>
 
-      <section id="requests" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="views" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">06</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Requests &amp; Validation</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Keep data clean at the boundary.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 04</p>
+            <h2 class="mt-2 text-3xl font-semibold">Views / Blade Templating</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Compose reusable layouts, components, and directives.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-indigo-200 bg-indigo-50/80 dark:border-indigo-900 dark:bg-indigo-900/30 p-4 text-sm text-indigo-900 dark:text-indigo-50">
+            <p class="font-semibold">Hint</p>
+            <p class="mt-2">Cache views in production. Use @once, @push/@stack for scripts and styles.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Request helpers</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$request->input('email');
-$request->only(['name','email']);
-$request->boolean('active');</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Form request</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">class StorePostRequest extends FormRequest
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Layouts & Sections</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use @extends and @section/@yield to DRY markup.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code><!-- resources/views/layouts/app.blade.php -->
+<!DOCTYPE html>
+<html>
+<body>
+  <header>@yield('header')</header>
+  <main>@yield('content')</main>
+</body>
+</html>
+
+<!-- resources/views/home.blade.php -->
+@extends('layouts.app')
+@section('header')Home@endsection
+@section('content')<p>Welcome</p>@endsection</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Blade Directives</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Common control structures and utilities.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid grid-cols-2 gap-2">
+              <li><span class="font-semibold">@if, @elseif, @else, @endif</span></li>
+              <li><span class="font-semibold">@foreach, @for, @while</span></li>
+              <li><span class="font-semibold">@include, @includeWhen</span></li>
+              <li><span class="font-semibold">@csrf, @method</span></li>
+              <li><span class="font-semibold">@vite/@asset</span></li>
+              <li><span class="font-semibold">@auth / @guest</span></li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>@foreach($posts as $post)
+  @include('partials.card', ['post' => $post])
+@endforeach
+
+<form method="POST" action="/logout">
+  @csrf
+  @method('DELETE')
+  <button>Logout</button>
+</form></code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Components & Slots</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use class or anonymous components with slots and attributes.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:component Alert</span></li>
+              <li><span class="font-semibold">&lt;x-alert type="success"&gt;</span>: anonymous usage.</li>
+              <li><span class="font-semibold">$slot, @props</span>: handle slot content/props.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code><!-- resources/views/components/alert.blade.php -->
+@props(['type' => 'info'])
+<div {{ $attributes->merge(['class' => "alert alert-{$type}"]) }}>
+  {{ $slot }}
+</div>
+
+<x-alert type="success" class="mt-4">Saved!</x-alert></code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Passing Data to Views</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Share variables via controller, route, or view composers.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">return view('posts.index', ['posts' =&gt; $posts]);</span></li>
+              <li><span class="font-semibold">View::composer()</span>: bind data to multiple views.</li>
+              <li><span class="font-semibold">with()</span>: chain extras.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Controller
+return view('dashboard')->with('user', $user);
+
+// Service provider
+View::composer('partials.nav', function ($view) {
+    $view->with('notifications', Auth::user()->unreadNotifications);
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="models" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 05</p>
+            <h2 class="mt-2 text-3xl font-semibold">Models &amp; Database</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Eloquent models, relationships, migrations, factories, and seeders.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-teal-200 bg-teal-50/80 dark:border-teal-900 dark:bg-teal-900/30 p-4 text-sm text-teal-900 dark:text-teal-50">
+            <p class="font-semibold">Best Practice</p>
+            <p class="mt-2">Use fillable/guarded for mass assignment, prefer UUIDs for distributed apps, and keep queries out of views.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">make:model</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Generate models with related artifacts.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-m</span>: create migration.</li>
+              <li><span class="font-semibold">-f</span>: create factory.</li>
+              <li><span class="font-semibold">-s</span>: create seeder.</li>
+              <li><span class="font-semibold">-c</span>: create controller.</li>
+              <li><span class="font-semibold">-a</span>: all of the above.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Model with migration and factory
+php artisan make:model Post -mf
+
+# Everything (migration, factory, seeder, controller, policy)
+php artisan make:model Invoice -a</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Eloquent Basics</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">CRUD with mass assignment and guarded fields.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// app/Models/Post.php
+class Post extends Model
 {
+    protected $fillable = ['title','body','published_at'];
+}
+
+// Create
+Post::create([...]);
+
+// Read
+$posts = Post::where('published_at', '<=', now())
+             ->latest()
+             ->paginate(10);
+
+// Update
+tap($post)->update(['title' => 'New']);
+
+// Delete
+$post->delete();</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Relationships</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Define relations on models for eager loading and constraints.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">hasOne / belongsTo</span></li>
+              <li><span class="font-semibold">hasMany / belongsToMany</span></li>
+              <li><span class="font-semibold">morphOne / morphMany / morphToMany</span></li>
+              <li><span class="font-semibold">with()</span>: eager load; <span class="font-semibold">loadCount()</span>: counts.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// app/Models/Post.php
+public function author()
+{
+    return $this->belongsTo(User::class, 'user_id');
+}
+
+public function comments()
+{
+    return $this->hasMany(Comment::class);
+}
+
+// Usage
+$posts = Post::with(['author','comments'])->latest()->get();</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Query Builder</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Chainable API for complex queries.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>$users = DB::table('users')
+  ->select('id','name')
+  ->whereNull('deleted_at')
+  ->when($active, fn($q) => $q->where('active', true))
+  ->orderByDesc('created_at')
+  ->limit(50)
+  ->get();</code></pre>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use chunk(), cursor(), lazy() for large datasets; wrap writes in transactions via DB::transaction.</p>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Migrations</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Version database schema safely.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:migration</span> create/modify tables.</li>
+              <li><span class="font-semibold">php artisan migrate</span>: run migrations.</li>
+              <li><span class="font-semibold">php artisan migrate:rollback --step=1</span></li>
+              <li><span class="font-semibold">--path</span>: run specific folder.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create table migration
+php artisan make:migration create_orders_table
+
+# Rollback last batch
+php artisan migrate:rollback --step=1</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Factories & Seeders</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Generate test data and initial content.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:factory UserFactory</span></li>
+              <li><span class="font-semibold">php artisan make:seeder UserSeeder</span></li>
+              <li><span class="font-semibold">Model::factory()->count(10)->create()</span></li>
+              <li><span class="font-semibold">php artisan db:seed</span> or <span class="font-semibold">migrate --seed</span></li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// database/factories/UserFactory.php
+public function definition()
+{
+    return [
+        'name' => fake()->name(),
+        'email' => fake()->unique()->safeEmail(),
+        'password' => bcrypt('secret'),
+    ];
+}
+
+// database/seeders/DatabaseSeeder.php
+User::factory(10)->hasPosts(3)->create();</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="forms" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 06</p>
+            <h2 class="mt-2 text-3xl font-semibold">Form Handling &amp; Validation</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Validate requests, reuse rules, and surface errors gracefully.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-lime-200 bg-lime-50/80 dark:border-lime-900 dark:bg-lime-900/30 p-4 text-sm text-lime-900 dark:text-lime-50">
+            <p class="font-semibold">Reminder</p>
+            <p class="mt-2">Always validate server-side; trust-but-verify client-side constraints.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Inline Validation</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Validate inside controllers using the validator helper.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>public function store(Request $request)
+{
+    $data = $request->validate([
+        'title' => ['required','string','max:255'],
+        'email' => ['required','email'],
+        'tags' => ['array'],
+        'tags.*' => ['string'],
+    ]);
+
+    Post::create($data);
+    return back()->with('status', 'Saved');
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Form Requests</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Encapsulate validation/authorization logic.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:request StorePostRequest</span></li>
+              <li><span class="font-semibold">rules()</span>: validation rules.</li>
+              <li><span class="font-semibold">authorize()</span>: gate check.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>class StorePostRequest extends FormRequest
+{
+    public function authorize()
+    {
+        return $this->user()->can('create', Post::class);
+    }
+
     public function rules()
     {
         return [
             'title' => 'required|string|max:255',
-            'body' => 'required',
+            'body' => 'required|string',
         ];
     }
-}</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Common rules</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">'email' => 'required|email:rfc,dns'
-'password' => 'required|min:12|confirmed'
-'photo' => 'nullable|image|max:2048'</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Custom messages</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">public function messages()
-{
-    return ['title.required' => 'Add a title before publishing.'];
-}</pre>
-          </article>
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Old Input & Errors</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Redisplay input and show validation messages in Blade.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code><!-- Blade form -->
+<input name="title" value="{{ old('title') }}" />
+@error('title')
+  <p class="text-red-600 text-sm">{{ $message }}</p>
+@enderror
+
+@if(session('status'))
+  <div class="text-green-600">{{ session('status') }}</div>
+@endif</code></pre>
+          </div>
         </div>
       </section>
 
-      <section id="blade" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
+      <section id="middleware" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
           <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">07</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Blade Templating</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Render HTML with clean syntax.</p>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 07</p>
+            <h2 class="mt-2 text-3xl font-semibold">Middleware &amp; Authentication</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Filter requests, secure routes, and scaffold auth.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
+            <p class="font-semibold">Security</p>
+            <p class="mt-2">Combine auth middleware with authorization policies; default guards differ between web and api.</p>
           </div>
         </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Layouts &amp; sections</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">// resources/views/layouts/app.blade.php
-&lt;html&gt;
-  &lt;body&gt;
-    @yield('content')
-  &lt;/body&gt;
-&lt;/html&gt;
-// page
-@extends('layouts.app')
-@section('content')
-  &lt;h1&gt;Dashboard&lt;/h1&gt;
-@endsection</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Conditionals &amp; loops</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">@if($posts->isEmpty())
-  &lt;p&gt;Nothing yet.&lt;/p&gt;
-@endif
-@foreach($posts as $post)
-  &lt;li&gt;{{ $post->title }}&lt;/li&gt;
-@endforeach</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">CSRF &amp; methods</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">&lt;form method="POST" action="/posts"&gt;
-  @csrf
-  @method('PATCH')
-&lt;/form&gt;</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Output</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Escaped: {{ $post->title }}
-Raw (trusted only): {!! $post->body !!}</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="migrations" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">08</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Database &amp; Migrations</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Version your schema.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Migration structure</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Schema::create('posts', function (Blueprint $table) {
-    $table->id();
-    $table->string('title');
-    $table->text('body');
-    $table->timestamps();
-});</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Column types</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$table->string('slug')->unique();
-$table->boolean('published')->default(false);
-$table->foreignId('user_id')->constrained();</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Indexes &amp; FK</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$table->index('status');
-$table->foreign('team_id')
-      ->references('id')->on('teams')
-      ->onDelete('cascade');</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Rollbacks</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan migrate
-php artisan migrate:rollback --step=1
-php artisan migrate:fresh --seed</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="eloquent" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">09</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Eloquent ORM</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Expressive database layer.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">CRUD &amp; mass assignment</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Post::create($request->validated());
-$post = Post::findOrFail($id);
-$post->update(['title' => 'New']);
-$post->delete();
-protected $fillable = ['title','body'];</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Helpers</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Post::firstOrFail();
-Post::updateOrCreate(['slug' => $slug], [...]);
-Post::pluck('title','id');</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Relationships &amp; eager loading</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">class Post extends Model
-{
-    public function author()
-    {
-        return $this->belongsTo(User::class, 'user_id');
-    }
-    public function tags()
-    {
-        return $this->belongsToMany(Tag::class);
-    }
-}
-$posts = Post::with(['author', 'tags'])->latest()->get();</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="auth" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">10</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Authentication &amp; Authorization</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Protect routes, control access.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">auth() helper &amp; middleware</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">auth()->user();
-Route::middleware(['auth', 'verified'])->group(...);</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Guards</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Auth::guard('api')->user();</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Gates &amp; policies</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Gate::define('update-post', fn ($user, $post) => $user->id === $post->user_id);
-$this->authorize('update', $post);</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Roles / permissions</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$user->hasRole('admin');
-$user->can('publish articles'); // via spatie/laravel-permission</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="api" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">11</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">API Development</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Ship JSON-first endpoints.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">API routes &amp; resources</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Route::apiResource('posts', Api\PostController::class);
-return PostResource::collection(Post::paginate());</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">JSON responses</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">return response()->json([
-  'data' => $payload,
-], 201);</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Pagination &amp; status</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">return User::paginate(25);
-return response()->json(['error' => 'Forbidden'], 403);</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Sanctum overview</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">composer require laravel/sanctum
-php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
-use HasApiTokens; // on User model</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="storage" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">12</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">File Storage</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Unified filesystem abstraction.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Local vs S3</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Storage::disk('local')->put('notes.txt', '...');
-Storage::disk('s3')->url('avatars/me.png');</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Uploading</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$path = $request->file('avatar')->store('avatars', 'public');</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">storage:link &amp; visibility</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan storage:link
-Storage::put('secret/report.pdf', $data, 'private');</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Public URLs</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Storage::disk('s3')->temporaryUrl('file.pdf', now()->addMinutes(5));</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="middleware" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">13</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Middleware</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Intervene during the request lifecycle.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Create middleware</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan make:middleware EnsureTeamMember
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">make:middleware</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create middleware and register it.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:middleware EnsureAdmin</span></li>
+              <li><span class="font-semibold">app/Http/Kernel.php</span>: add to $routeMiddleware or $middlewareGroups.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// app/Http/Middleware/EnsureAdmin.php
 public function handle($request, Closure $next)
 {
-    abort_unless($request->user()->onTeam(), 403);
+    abort_unless($request->user()?->is_admin, 403);
     return $next($request);
-}</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Global vs route</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">// app/Http/Kernel.php
-protected $middleware = [...]; // global
-protected $routeMiddleware = [
-  'team' => EnsureTeamMember::class,
-];
-Route::middleware('team')->group(...);</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="errors" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">14</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Error Handling &amp; Logging</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Fail loudly, log meaningfully.</p>
+}</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-3">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">abort()</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">abort_if(! $user->isAdmin(), 403);</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">try/catch</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">try {
-    $service->sync();
-} catch (Throwable $e) {
-    report($e);
-    return back()->withErrors('Sync failed');
-}</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Log levels</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Log::debug('Payload', $data);
-Log::info('User login', ['id' => $user->id]);
-Log::warning('High latency');
-Log::error('Unhandled exception', ['error' => $e->getMessage()]);</pre>
-          </article>
-        </div>
-      </section>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Using Middleware</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Apply per route, group, or controller constructor.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// routes/web.php
+Route::middleware(['auth', 'verified'])->group(function () {
+    Route::get('/dashboard', DashboardController::class)->name('dashboard');
+});
 
-      <section id="queues" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">15</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Queues, Jobs &amp; Events</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Offload heavy work and decouple.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 md:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">When to use</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Emails, reports, webhooks, long API calls.</p>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Job skeleton</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">class SendReport implements ShouldQueue
+// Controller
+public function __construct()
 {
-    public function handle(ReportService $service)
-    {
-        $service->deliver();
-    }
-}
-dispatch(new SendReport($report));</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Events &amp; listeners</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">event(new InvoicePaid($invoice));
-class SendReceipt
-{
-    public function handle(InvoicePaid $event)
-    {
-        Mail::to($event->invoice->user)->send(...);
-    }
-}</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Workers</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan queue:work --tries=3 --max-time=3600</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="testing" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">16</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Testing Quick Reference</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Protect regressions.</p>
+    $this->middleware('auth');
+    $this->middleware('can:update,post')->only('edit','update');
+}</code></pre>
           </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Feature vs unit</p>
-            <p class="text-sm text-slate-600 dark:text-slate-300">Feature hits HTTP/kernel; unit stays isolated.</p>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Running</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan test --parallel
-./vendor/bin/phpunit --filter=UserTest</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Common assertions</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">$response->assertStatus(200);
-$response->assertJsonFragment(['status' => 'ok']);
-$this->assertDatabaseHas('users', ['email' => '...']);</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="security" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">17</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Security Essentials</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Harden before shipping.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">CSRF &amp; XSS</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">@csrf in forms
-{{ $input }} auto-escapes</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Mass assignment</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">protected $fillable = [...];
-Model::unguard(); // avoid in production</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Password hashing</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">use Illuminate\Support\Facades\Hash;
-$user->password = Hash::make($request->password);</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Other tips</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Set APP_ENV=production &amp; APP_DEBUG=false
-Validate file uploads, limit mime types</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="performance" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">18</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Performance &amp; Optimization</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Squeeze more throughput.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Config &amp; route cache</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan config:cache
-php artisan route:cache</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">View cache</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">php artisan view:cache</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Query optimization</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">use DB::enableQueryLog();
-$users = User::with('roles')->paginate();
-// prefer eager loading to curb N+1</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Caching data</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">Cache::remember('stats', 600, fn () => Report::generate());</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="deployment" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">19</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Deployment &amp; Production Notes</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Checklist for live environments.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Environment config</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">APP_ENV=production
-APP_DEBUG=false
-LOG_CHANNEL=stack</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">File permissions</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">storage/ &amp; bootstrap/cache writable by web user.</pre>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Queue workers &amp; scheduler</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">sudo systemctl restart queue-worker
-php artisan schedule:run // triggered via cron each minute</pre>
-            <p class="mt-3 font-semibold text-slate-900 dark:text-white">Deploy script</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">composer install --no-dev
-php artisan migrate --force
-php artisan config:cache</pre>
-          </article>
-        </div>
-      </section>
-
-      <section id="gotchas" class="mt-16">
-        <div class="flex flex-wrap items-end justify-between gap-4">
-          <div>
-            <p class="text-xs font-semibold uppercase tracking-[0.35em] text-slate-500 dark:text-slate-400">20</p>
-            <h2 class="mt-2 text-2xl font-semibold text-slate-900 dark:text-white">Common Gotchas &amp; Tips</h2>
-            <p class="text-base text-slate-600 dark:text-slate-300">Quick fixes when things feel cursed.</p>
-          </div>
-        </div>
-        <div class="mt-6 grid gap-5 lg:grid-cols-2">
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <li><span class="font-semibold text-slate-900 dark:text-white">Cache issues:</span> run <span class="font-mono">php artisan config:clear</span> then <span class="font-mono">cache:clear</span>.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">Route not updating:</span> <span class="font-mono">php artisan route:clear</span>.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">Permission errors:</span> ensure web user can write storage &amp; bootstrap/cache.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">419 errors:</span> session expired or missing CSRF token; check domain &amp; session driver.</li>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Auth Scaffolding</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Bootstrapped auth flows for rapid start.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">Breeze</span>: minimal Tailwind/Blade or Inertia stacks.</li>
+              <li><span class="font-semibold">Jetstream</span>: teams, sessions, 2FA (Blade/Inertia).</li>
+              <li><span class="font-semibold">Sanctum</span>: API tokens/SPAs (guards + middleware).</li>
             </ul>
-          </article>
-          <article class="rounded-2xl border border-white/70 bg-white/80 p-5 shadow-card dark:border-slate-800 dark:bg-slate-900/70">
-            <p class="font-semibold text-slate-900 dark:text-white">Debug quickies</p>
-            <pre class="mt-2 rounded-xl bg-slate-900/90 px-3 py-2 text-sm text-white">dump($variable);
-dd($payload);
-logger()->info('Checkpoint');
-php artisan tinker</pre>
-          </article>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Breeze (Blade)
+composer require laravel/breeze --dev
+php artisan breeze:install blade
+npm install && npm run dev
+
+# Sanctum
+composer require laravel/sanctum
+php artisan vendor:publish --provider="Laravel\Sanctum\SanctumServiceProvider"
+php artisan migrate
+
+// Protect API routes
+Route::middleware('auth:sanctum')->get('/user', fn($req) => $req->user());</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Protecting Routes</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Combine auth, throttling, and policies.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">auth</span>: session or token guard.</li>
+              <li><span class="font-semibold">verified</span>: email verification.</li>
+              <li><span class="font-semibold">throttle:60,1</span>: rate limit.</li>
+              <li><span class="font-semibold">can:view,post</span>: policy checks.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>Route::middleware(['auth', 'verified', 'throttle:60,1'])
+  ->get('/profile', ProfileController::class)
+  ->name('profile');</code></pre>
+          </div>
         </div>
       </section>
 
-      <footer class="mt-20 flex flex-wrap items-center justify-between gap-4 border-t border-white/70 pt-6 text-sm text-slate-500 dark:border-slate-800 dark:text-slate-400">
-        <span>Last refreshed: February 2026</span>
-        <span>Drop-in page for <span class="font-mono">public/</span></span>
-      </footer>
+      <section id="artisan" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 08</p>
+            <h2 class="mt-2 text-3xl font-semibold">Artisan Commands</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">High-utility commands with options and examples.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-sky-200 bg-sky-50/80 dark:border-sky-900 dark:bg-sky-900/30 p-4 text-sm text-sky-900 dark:text-sky-50">
+            <p class="font-semibold">Remember</p>
+            <p class="mt-2">Use --help for any command to see flags; prefer --env for one-off environment overrides.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">php artisan migrate</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Run database migrations.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--path</span>: run specific migration files.</li>
+              <li><span class="font-semibold">--database</span>: choose connection.</li>
+              <li><span class="font-semibold">--force</span>: run in production.</li>
+              <li><span class="font-semibold">migrate:fresh</span>: drop all tables then migrate.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Run migrations in prod (explicit)
+php artisan migrate --force --database=mysql</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">php artisan make:model</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Generate model and related resources.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">-m</span>: migration.</li>
+              <li><span class="font-semibold">-f</span>: factory.</li>
+              <li><span class="font-semibold">-s</span>: seeder.</li>
+              <li><span class="font-semibold">-p</span>: policy.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>php artisan make:model Product -mfs</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">php artisan make:controller</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create controllers with structure.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--invokable</span>: single action.</li>
+              <li><span class="font-semibold">--resource</span>: CRUD actions.</li>
+              <li><span class="font-semibold">--model</span>: binds model.</li>
+              <li><span class="font-semibold">--api</span>: API-safe resource.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>php artisan make:controller Api/V1/OrderController --api --model=Order</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Cache & Route Commands</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Clear or warm caches when configs change.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan cache:clear</span></li>
+              <li><span class="font-semibold">php artisan config:cache|clear</span></li>
+              <li><span class="font-semibold">php artisan route:cache|clear</span></li>
+              <li><span class="font-semibold">php artisan view:cache|clear</span></li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># After deploying env/config changes
+php artisan config:cache
+php artisan route:cache</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="events" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 09</p>
+            <h2 class="mt-2 text-3xl font-semibold">Events, Listeners &amp; Jobs</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Decouple domains with events and offload work to queues.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-purple-200 bg-purple-50/80 dark:border-purple-900 dark:bg-purple-900/30 p-4 text-sm text-purple-900 dark:text-purple-50">
+            <p class="font-semibold">Guideline</p>
+            <p class="mt-2">Use queues for IO-heavy tasks; keep listeners idempotent and retry-safe.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Events & Listeners</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Generate and register event/listener pairs.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:event UserRegistered</span></li>
+              <li><span class="font-semibold">php artisan make:listener SendWelcomeEmail --event=UserRegistered</span></li>
+              <li><span class="font-semibold">EventServiceProvider</span>: map events to listeners.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Firing an event
+UserRegistered::dispatch($user);
+
+// Event payload
+class UserRegistered
+{
+    public function __construct(public User $user) {}
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Queue Jobs</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Dispatch jobs to queues with retry/backoff.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan make:job SendReport</span></li>
+              <li><span class="font-semibold">implements ShouldQueue</span>: marks job as queued.</li>
+              <li><span class="font-semibold">$this-&gt;release()</span>: retry later; <span class="font-semibold">backoff</span> property.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Dispatch
+SendReport::dispatch($report)->onQueue('reports');
+
+// Worker
+php artisan queue:work --queue=reports --timeout=120
+
+// Job example
+class SendReport implements ShouldQueue
+{
+    public $tries = 3;
+    public $backoff = 10;
+    public function handle(Mailer $mail)
+    {
+        $mail->to('ops@example.com')->send(new ReportMail);
+    }
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Broadcasting</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Send real-time events via websockets/pusher.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">implements ShouldBroadcast</span></li>
+              <li><span class="font-semibold">channels.php</span>: define auth callbacks.</li>
+              <li><span class="font-semibold">Broadcast::routes()</span> in routes/channels.php.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Event example
+class OrderShipped implements ShouldBroadcast
+{
+    public function broadcastOn()
+    {
+        return new PrivateChannel('orders.'.$this->order->id);
+    }
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Schedules</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Automate recurring tasks via scheduler.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">app/Console/Kernel.php</span>: define schedule() commands.</li>
+              <li><span class="font-semibold">php artisan schedule:run</span>: called every minute via cron.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>protected function schedule(Schedule $schedule)
+{
+    $schedule->command('reports:daily')
+      ->dailyAt('06:00')
+      ->onFailure(fn() => Log::error('report failed'));
+}</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="config" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 10</p>
+            <h2 class="mt-2 text-3xl font-semibold">Config, Caching &amp; Logging</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Manage environment, optimize caches, and collect logs.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-fuchsia-200 bg-fuchsia-50/80 dark:border-fuchsia-900 dark:bg-fuchsia-900/30 p-4 text-sm text-fuchsia-900 dark:text-fuchsia-50">
+            <p class="font-semibold">Note</p>
+            <p class="mt-2">Never commit .env; prefer config() helpers over env() outside config files.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Environment & Config</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Centralize settings in config/ and load via env.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">env()</span>: use only in config files.</li>
+              <li><span class="font-semibold">config('app.name')</span>: fetch anywhere.</li>
+              <li><span class="font-semibold">php artisan config:cache</span>: cache configuration.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// config/mail.php
+'from' => [
+  'address' => env('MAIL_FROM_ADDRESS', 'no-reply@example.com'),
+  'name' => env('MAIL_FROM_NAME', 'Example'),
+],</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Caching</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use cache drivers and tags; clear selectively.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">Cache::put/get/remember/rememberForever</span></li>
+              <li><span class="font-semibold">Cache::tags(['users'])->flush()</span></li>
+              <li><span class="font-semibold">php artisan cache:clear</span>: clear default store.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>// Cache with ttl (seconds)
+Cache::remember('settings', 600, fn() => Setting::all());</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Logging</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Channels, stacks, and levels via Monolog.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">config/logging.php</span>: define channels.</li>
+              <li><span class="font-semibold">Log::info|warning|error</span></li>
+              <li><span class="font-semibold">Stack channels</span>: combine single + slack, etc.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>Log::channel('slack')->error('Payment failed', ['order' => $order->id]);</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Caching Routes & Views</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Optimize route and view loading for prod.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">php artisan route:cache</span>: requires no route closures.</li>
+              <li><span class="font-semibold">php artisan view:cache</span>: precompile Blade.</li>
+              <li><span class="font-semibold">php artisan route:clear / view:clear</span>: during deploys.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Typical deploy cadence
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="testing" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 11</p>
+            <h2 class="mt-2 text-3xl font-semibold">Testing</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Write fast unit tests and expressive HTTP/feature tests.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-yellow-200 bg-yellow-50/80 dark:border-yellow-900 dark:bg-yellow-900/30 p-4 text-sm text-yellow-900 dark:text-yellow-50">
+            <p class="font-semibold">Hint</p>
+            <p class="mt-2">Use RefreshDatabase for isolation; prefer factories over fixtures.</p>
+          </div>
+        </div>
+        <div class="mt-8 grid gap-6 lg:grid-cols-2">
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">php artisan test</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Run PHPUnit with Laravel test runner.</p>
+            <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
+              <li><span class="font-semibold">--filter</span>: run matching tests.</li>
+              <li><span class="font-semibold">--testsuite</span>: unit, feature, etc.</li>
+              <li><span class="font-semibold">--parallel</span>: speed up on multi-core.</li>
+            </ul>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>php artisan test --testsuite=feature --filter=ProfileTest</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Feature Tests</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Test HTTP flows with database refresh.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>class ProfileTest extends TestCase
+{
+    use RefreshDatabase;
+
+    public function test_user_can_view_profile()
+    {
+        $user = User::factory()->create();
+        $this->actingAs($user)
+             ->get('/profile')
+             ->assertOk()
+             ->assertSee($user->name);
+    }
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Unit Tests</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Isolate pure logic; avoid hitting DB.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>class MoneyTest extends TestCase
+{
+    public function test_can_add_money()
+    {
+        $a = new Money(500, 'USD');
+        $b = new Money(250, 'USD');
+        $this->assertEquals(750, $a->add($b)->amount());
+    }
+}</code></pre>
+          </div>
+          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
+            <h3 class="text-lg font-semibold">Pest Support</h3>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Use Pest for expressive tests if preferred.</p>
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>test('guests are redirected', function () {
+    $this->get('/dashboard')->assertRedirect('/login');
+});</code></pre>
+          </div>
+        </div>
+      </section>
+
+      <section id="deployment" class="max-w-6xl mx-auto mt-24">
+        <div class="flex flex-wrap items-start justify-between gap-6">
+          <div>
+            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 12</p>
+            <h2 class="mt-2 text-3xl font-semibold">Deployment / Workflow Tips</h2>
+            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Ship safely with repeatable steps and guarded practices.</p>
+          </div>
+          <div class="max-w-lg rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-4 text-sm text-slate-700 dark:text-slate-200">
+            <p class="font-semibold">Checklist</p>
+            <ul class="mt-2 space-y-1 list-disc list-inside">
+              <li>Run tests + lint + static analysis.</li>
+              <li>Migrate with backups; use --force in CI/CD only.</li>
+              <li>Warm caches, queue workers, horizon monitoring.</li>
+            </ul>
+          </div>
+        </div>
+        <div class="mt-8 rounded-3xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-6">
+          <h3 class="text-xl font-semibold">Release Flow</h3>
+          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># CI/CD idea
+php artisan test --parallel
+php artisan migrate --force
+php artisan config:cache
+php artisan route:cache
+php artisan view:cache
+
+# Queue workers
+php artisan queue:restart  # reload after deploy
+
+# Horizon (if used)
+php artisan horizon:terminate</code></pre>
+          <h3 class="text-xl font-semibold">Common Pitfalls</h3>
+          <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+            <li>Forgetting APP_KEY or cache clears after .env/config changes.</li>
+            <li>Using route closures when route caching is enabled.</li>
+            <li>Not setting trusted proxies/hosts in production.</li>
+            <li>Leaving debug mode on (APP_DEBUG=true) in prod.</li>
+            <li>Running migrations without backups or review.</li>
+          </ul>
+        </div>
+      </section>
     </main>
+
+    <footer class="px-4 pb-16 sm:px-8 lg:px-16">
+      <div class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4">
+        <p>Laravel Cheatsheet · Updated 2026</p>
+        <p>Crafted with Tailwind CSS CDN · Dark-mode aware.</p>
+      </div>
+    </footer>
   </div>
 </body>
 </html>
