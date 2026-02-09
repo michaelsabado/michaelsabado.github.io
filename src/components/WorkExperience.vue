@@ -80,12 +80,12 @@ import { workExperience } from '../data/work'
             </div>
 
             <ul
-              class="mt-4 space-y-3 text-base leading-relaxed text-slate-600 dark:text-slate-300"
+              class="mt-4 space-y-3 text-[0.7rem] leading-5 sm:text-sm text-slate-600 dark:text-slate-300"
             >
               <li
                 v-for="item in role.contributions"
                 :key="item"
-                class="flex gap-3"
+                class="flex gap-2 sm:gap-3"
               >
                 <span
                   class="mt-[0.35rem] h-2 w-2 flex-shrink-0 rounded-full bg-brand-400"
