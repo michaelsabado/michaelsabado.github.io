@@ -116,6 +116,7 @@
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">pwd</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Prints the current working directory (resolves symlinks with -P).</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: pwd [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-L</span>: show logical path (default, respects symlinks).</li>
               <li><span class="font-semibold">-P</span>: show physical path (resolves symlinks).</li>
@@ -129,6 +130,7 @@ pwd -P</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">cd</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Changes directories. Accepts absolute or relative paths and handles shortcuts.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: cd [path]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">cd</span>: go to $HOME.</li>
               <li><span class="font-semibold">cd -</span>: toggle to previous directory.</li>
@@ -143,6 +145,7 @@ cd -  # back to prior directory</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
             <h3 class="text-lg font-semibold">ls</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Lists directory contents. Combine flags for detailed, hidden, and human-readable views.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: ls [options] [path]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-l</span>: long format (permissions, owner, size, time).</li>
               <li><span class="font-semibold">-a</span>: include hidden entries (dotfiles).</li>
@@ -179,6 +182,7 @@ ls -lR /var/log</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">touch</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create empty files or update timestamps.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: touch [options] file...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-a</span>: change access time only.</li>
               <li><span class="font-semibold">-m</span>: change modification time only.</li>
@@ -193,6 +197,7 @@ touch -t 202601011200 logs/app.log</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">mkdir</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create directories, optionally nested and with specific permissions.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: mkdir [options] dir...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-p</span>: create parent directories as needed (no error if existing).</li>
               <li><span class="font-semibold">-m MODE</span>: set permissions (octal or symbolic) on creation.</li>
@@ -203,11 +208,13 @@ mkdir -p -m 700 /var/www/app/storage/cache</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">cp</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Copy files or directories. Preserve metadata when needed.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: cp [options] source... target</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-r / -R</span>: recursive copy (directories).</li>
               <li><span class="font-semibold">-a</span>: archive mode (preserves perms, times, links; implies -r).</li>
               <li><span class="font-semibold">-i</span>: prompt before overwrite.</li>
               <li><span class="font-semibold">-u</span>: copy only when source is newer.</li>
+              <li><span class="font-semibold">-T</span>: treat destination as file (no dir merge).</li>
               <li><span class="font-semibold">-v</span>: verbose output.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Preserve metadata while copying a directory
@@ -219,9 +226,11 @@ cp -u src/*.sh /usr/local/bin/</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">mv</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Move or rename files/directories. Overwrites target by default.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: mv [options] source target</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-i</span>: prompt before overwrite.</li>
               <li><span class="font-semibold">-n</span>: never overwrite existing.</li>
+              <li><span class="font-semibold">-T</span>: treat destination as normal file.</li>
               <li><span class="font-semibold">-v</span>: verbose output.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Rename file safely
@@ -233,11 +242,13 @@ mv -v ~/logs/2025 ~/archive/logs/</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">rm</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Remove files or directories. Irreversible without backups.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: rm [options] file...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-i</span>: prompt before each removal.</li>
               <li><span class="font-semibold">-I</span>: prompt once if removing many files or recursive.</li>
               <li><span class="font-semibold">-r / -R</span>: recursive (required for directories).</li>
               <li><span class="font-semibold">-f</span>: force (ignore missing; no prompts).</li>
+              <li><span class="font-semibold">-d</span>: remove empty directories.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Safely remove a directory tree (prompted)
 rm -Ir ~/tmp/build
@@ -248,6 +259,7 @@ rm -rf /path/to/delete</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">ln</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create hard or symbolic links. Symlinks are most common.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: ln [options] target link_name</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-s</span>: create symbolic link.</li>
               <li><span class="font-semibold">-f</span>: overwrite existing destination.</li>
@@ -278,6 +290,7 @@ ln -sfn /opt/app/current /var/www/app</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">cat</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Concatenate and print files to stdout. Fast for small files.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: cat [options] file...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-n</span>: number all lines.</li>
               <li><span class="font-semibold">-b</span>: number non-blank lines.</li>
@@ -292,6 +305,7 @@ cat part1.txt part2.txt > combined.txt</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">less</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Pager for large files/streams. Supports search and color output.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: less [options] file</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-R</span>: preserve ANSI colors.</li>
               <li><span class="font-semibold">/pattern</span>: search forward.</li>
@@ -310,6 +324,7 @@ less /var/log/syslog
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">more</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Simple pager, older than less. Use when `less` is unavailable.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: more [options] file</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">SPACE</span>: next page.</li>
               <li><span class="font-semibold">ENTER</span>: next line.</li>
@@ -320,6 +335,7 @@ less /var/log/syslog
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">head</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show first lines of files. Helpful for quick inspection.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: head [options] file</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-n N</span>: show first N lines (default 10).</li>
               <li><span class="font-semibold">-c N</span>: show first N bytes.</li>
@@ -330,6 +346,7 @@ head -n 5 config.yaml</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">tail</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show end of files. Follow live logs with -f.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: tail [options] file</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-n N</span>: show last N lines.</li>
               <li><span class="font-semibold">-f</span>: follow appended data.</li>
@@ -341,6 +358,7 @@ tail -F /var/log/nginx/access.log</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">grep</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Search text using patterns (regex supported). Pipes well with other commands.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: grep [options] pattern [file...]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-i</span>: case-insensitive.</li>
               <li><span class="font-semibold">-n</span>: show line numbers.</li>
@@ -349,6 +367,8 @@ tail -F /var/log/nginx/access.log</code></pre>
               <li><span class="font-semibold">-E</span>: extended regex (egrep).</li>
               <li><span class="font-semibold">-l</span>: list matching file names only.</li>
               <li><span class="font-semibold">-A/-B/-C N</span>: context after/before/both.</li>
+              <li><span class="font-semibold">-H</span>: show filename prefixes.</li>
+              <li><span class="font-semibold">-m N</span>: stop after N matches per file.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Recursive search for case-insensitive string with context
 grep -RinC2 "timeout" ./config
@@ -359,6 +379,7 @@ grep -Rl "DATABASE_URL" /etc</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">find</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Locate files/directories by name, type, size, time, or permissions. Executes actions on matches.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: find path [options] [expression/action]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-name/-iname</span>: match (case-sensitive/insensitive).</li>
               <li><span class="font-semibold">-type f|d|l</span>: file, directory, symlink.</li>
@@ -366,6 +387,8 @@ grep -Rl "DATABASE_URL" /etc</code></pre>
               <li><span class="font-semibold">-mtime/-mmin</span>: modified days/minutes ago.</li>
               <li><span class="font-semibold">-perm 644</span>: permission filter.</li>
               <li><span class="font-semibold">-exec ... {} \;</span>: run command per match.</li>
+              <li><span class="font-semibold">-print0</span>: NUL-separated output (pair with xargs -0).</li>
+              <li><span class="font-semibold">-exec ... {} +</span>: batch exec with many paths.</li>
               <li><span class="font-semibold">-maxdepth/-mindepth</span>: limit traversal depth.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Find large logs and summarize size
@@ -396,6 +419,7 @@ find /var/www -type f -mtime -1 -exec chmod 640 {} \;</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">uname</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show kernel and system info.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: uname [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-a</span>: all info (kernel, node, release, machine, OS).</li>
               <li><span class="font-semibold">-r</span>: kernel release.</li>
@@ -411,10 +435,13 @@ uname -m</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">df</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Report filesystem disk usage and mount points.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: df [options] [path]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-h</span>: human-readable units.</li>
               <li><span class="font-semibold">-T</span>: include filesystem type.</li>
               <li><span class="font-semibold">-i</span>: show inode usage.</li>
+              <li><span class="font-semibold">-x FSTYPE</span>: exclude filesystem type.</li>
+              <li><span class="font-semibold">--total</span>: show grand total line.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Check disk and inode usage
 df -hT
@@ -424,10 +451,12 @@ df -hi  # inode pressure can block writes</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">du</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Summarize directory sizes. Great for finding space hogs.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: du [options] [path]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-h</span>: human-readable units.</li>
               <li><span class="font-semibold">-s</span>: summary only (top-level total).</li>
               <li><span class="font-semibold">-d N</span>: max depth N.</li>
+              <li><span class="font-semibold">-x</span>: stay on one filesystem.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Largest directories in current tree
 du -hd1 | sort -h
@@ -438,6 +467,7 @@ du -h -d2 /var/www</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">free</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Show memory usage (RAM and swap). Some distros use `procps` version.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: free [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-h</span>: human-readable.</li>
               <li><span class="font-semibold">-m/-g</span>: show in MB/GB.</li>
@@ -452,6 +482,7 @@ free -h -s 2</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">top</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Interactive process viewer. Available everywhere.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: top [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">P</span>: sort by CPU.</li>
               <li><span class="font-semibold">M</span>: sort by memory.</li>
@@ -464,6 +495,7 @@ free -h -s 2</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">htop</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Enhanced top with colors, tree view, filtering, and mouse support.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: htop [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">F5</span>: toggle process tree.</li>
               <li><span class="font-semibold">F3</span>: search for process.</li>
@@ -493,6 +525,7 @@ htop</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">ps</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Snapshot of running processes. Output format varies by options.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: ps [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">ps aux</span>: BSD style full listing.</li>
               <li><span class="font-semibold">ps -ef</span>: SysV style full listing.</li>
@@ -508,11 +541,13 @@ ps aux | grep -i "nginx"</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">kill</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Send signals to processes by PID.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: kill [options] pid...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-15 / SIGTERM</span>: graceful stop (default).</li>
               <li><span class="font-semibold">-9 / SIGKILL</span>: force kill (cannot be trapped).</li>
               <li><span class="font-semibold">-HUP</span>: hangup/reload (daemons often reload config).</li>
               <li><span class="font-semibold">-l</span>: list signal names.</li>
+              <li><span class="font-semibold">-s SIGNAL</span>: send specific signal name/number.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Graceful stop
 kill 12345
@@ -526,10 +561,12 @@ kill -9 9876</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">killall</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Send signals to processes by name. Matches across users unless restricted.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: killall [options] process_name...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-u USER</span>: limit to a user.</li>
               <li><span class="font-semibold">-I</span>: case-insensitive match.</li>
               <li><span class="font-semibold">-r regex</span>: regex match.</li>
+              <li><span class="font-semibold">-s SIGNAL</span>: send specific signal.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Gracefully stop all nginx master/worker processes
 sudo killall nginx
@@ -540,6 +577,7 @@ killall -u "$USER" -I chrome</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">jobs</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">List jobs started from the current shell, showing their state and job spec (%1, %2).</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: jobs [options]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">jobs</span>: basic list.</li>
               <li><span class="font-semibold">-l</span>: show PIDs with jobs.</li>
@@ -554,6 +592,7 @@ jobs -p   # PIDs only (useful for scripts)</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">bg</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Resume a suspended job in the background so it continues without blocking the shell.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: bg [%job]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">bg %n</span>: resume job n (defaults to most recent if omitted).</li>
               <li><span class="font-semibold">CTRL+Z</span>: suspend current job before using bg.</li>
@@ -567,6 +606,7 @@ jobs    # confirm now "Running" in background</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">fg</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Bring a background job to the foreground so it receives input and displays output interactively.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: fg [%job]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">fg %n</span>: foreground job n (defaults to most recent).</li>
               <li><span class="font-semibold">CTRL+C</span>: stop job; <span class="font-semibold">CTRL+Z</span>: re-suspend if needed.</li>
@@ -594,6 +634,7 @@ fg %1
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">tar</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create/extract archives; compression via flags.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: tar [cxtf options] archive.tar[.gz] [paths]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-c</span>: create archive.</li>
               <li><span class="font-semibold">-x</span>: extract archive.</li>
@@ -604,6 +645,7 @@ fg %1
               <li><span class="font-semibold">-j</span>: bzip2 compression.</li>
               <li><span class="font-semibold">-J</span>: xz compression.</li>
               <li><span class="font-semibold">-C DIR</span>: change to DIR before action.</li>
+              <li><span class="font-semibold">--strip-components N</span>: drop leading path parts on extract.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create gzip archive from parent dir
 cd /var/www && tar -czvf /tmp/site.tar.gz site/
@@ -617,6 +659,7 @@ tar -tzf site.tar.gz</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">gzip</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Compress files using the GNU zip format. Replaces original unless -k is used.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: gzip [options] file...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-k</span>: keep original file.</li>
               <li><span class="font-semibold">-r</span>: recurse directories.</li>
@@ -627,11 +670,12 @@ tar -tzf site.tar.gz</code></pre>
 gzip -k database.sql
 
 # Stream compress then encrypt
-tar -czf - /var/www | gzip -c | gpg -c -o backup.tar.gz.gpg</code></pre>
+tar -cf - /var/www | gzip -c | gpg -c -o backup.tar.gz.gpg</code></pre>
           </div>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">gunzip</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Decompress gzip files. Can output to stdout for piping.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: gunzip [options] file...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-k</span>: keep compressed file.</li>
               <li><span class="font-semibold">-c</span>: write decompressed data to stdout.</li>
@@ -646,6 +690,7 @@ gunzip -c logs.tar.gz | tar -tvf - | head -n 5</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">zip</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Create Zip archives (common on Windows/macOS).</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: zip [options] archive.zip path...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-r</span>: recurse directories.</li>
               <li><span class="font-semibold">-9</span>: maximum compression.</li>
@@ -658,6 +703,7 @@ zip -r9 release.zip app/ -x "app/node_modules/*"</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">unzip</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Extract Zip archives.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: unzip [options] archive.zip</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-l</span>: list contents.</li>
               <li><span class="font-semibold">-d DIR</span>: extract to target directory.</li>
@@ -689,11 +735,13 @@ sudo unzip -o release.zip -d /opt/app</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">ping</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Send ICMP echo requests to test reachability and latency.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: ping [options] host</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-c N</span>: send N packets.</li>
               <li><span class="font-semibold">-i N</span>: interval seconds between pings.</li>
               <li><span class="font-semibold">-W N</span>: per-packet timeout (seconds).</li>
               <li><span class="font-semibold">-4/-6</span>: force IPv4/IPv6.</li>
+              <li><span class="font-semibold">-q</span>: quiet output (summary only).</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Send 4 pings with 0.5s interval
 ping -c 4 -i 0.5 1.1.1.1</code></pre>
@@ -701,6 +749,7 @@ ping -c 4 -i 0.5 1.1.1.1</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">curl</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Transfer data with URLs. Supports HTTP(S), FTP, SCP, etc.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: curl [options] URL</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-I</span>: fetch headers only.</li>
               <li><span class="font-semibold">-L</span>: follow redirects.</li>
@@ -710,6 +759,9 @@ ping -c 4 -i 0.5 1.1.1.1</code></pre>
               <li><span class="font-semibold">-d data</span>: send POST data.</li>
               <li><span class="font-semibold">-H</span>: add header (repeatable).</li>
               <li><span class="font-semibold">--retry N</span>: retry failed transiently.</li>
+              <li><span class="font-semibold">-s</span>: silent (no progress).</li>
+              <li><span class="font-semibold">-k</span>: allow insecure TLS.</li>
+              <li><span class="font-semibold">--connect-timeout N</span>: fail fast if unreachable.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Check endpoint and follow redirects
 curl -IL https://example.com
@@ -722,6 +774,7 @@ curl -X POST https://api.example.com/items \
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">wget</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Non-interactive downloader. Good for scripts and mirrors.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: wget [options] URL</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">-O FILE</span>: save to file.</li>
               <li><span class="font-semibold">-c</span>: continue partial downloads.</li>
@@ -736,11 +789,14 @@ wget -c --limit-rate=2M https://example.com/big.iso -O big.iso</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">ssh</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Secure shell for remote login/commands. Respects ~/.ssh/config.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: ssh [options] user@host [command]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-i key</span>: specify private key.</li>
               <li><span class="font-semibold">-p port</span>: non-default port.</li>
               <li><span class="font-semibold">-L local:remote</span>: local port forward.</li>
               <li><span class="font-semibold">-N</span>: no remote command (port forwarding only).</li>
+              <li><span class="font-semibold">-A</span>: enable agent forwarding.</li>
+              <li><span class="font-semibold">-J host</span>: jump host (ProxyJump).</li>
               <li><span class="font-semibold">-o option=value</span>: override config (e.g., StrictHostKeyChecking=no).</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Connect with key and custom port
@@ -751,12 +807,15 @@ ssh -N -L 8080:localhost:80 admin@server</code></pre>
           </div>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">scp</h3>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Secure copy over SSH. Syntax: scp [options] source target.</p>
+            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Secure copy over SSH.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: scp [options] source target</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-r</span>: recursive copy.</li>
               <li><span class="font-semibold">-P port</span>: specify SSH port.</li>
               <li><span class="font-semibold">-i key</span>: private key.</li>
               <li><span class="font-semibold">-C</span>: enable compression.</li>
+              <li><span class="font-semibold">-3</span>: copy via local host (two-hop scp).</li>
+              <li><span class="font-semibold">-o option=value</span>: pass ssh options (ProxyJump, IdentityFile).</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Upload folder to server
 scp -r ./build user@server:/var/www/site
@@ -783,6 +842,7 @@ scp -C user@server:/var/log/app.log ./app.log</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">apt (Debian/Ubuntu)</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Front-end for APT. Requires sudo for system changes.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: apt &lt;command&gt; [options] [package...]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">update</span>: refresh package indexes.</li>
               <li><span class="font-semibold">upgrade</span>: upgrade packages (no removals).</li>
@@ -805,6 +865,7 @@ sudo apt clean</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">yum / dnf (RHEL/CentOS/Fedora)</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">`dnf` is the modern replacement for `yum`; commands are largely compatible.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: dnf|yum &lt;command&gt; [options] [package...]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">check-update</span>: show available updates.</li>
               <li><span class="font-semibold">install pkg</span>: install package.</li>
@@ -821,6 +882,7 @@ sudo dnf clean all</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
             <h3 class="text-lg font-semibold">brew (Homebrew, macOS/Linux)</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">User-space package manager. No sudo required when installed to $HOME.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: brew &lt;command&gt; [options] [formula]</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 grid sm:grid-cols-2 gap-2">
               <li><span class="font-semibold">update</span>: fetch latest formula metadata.</li>
               <li><span class="font-semibold">upgrade [pkg]</span>: upgrade all or specific package.</li>
@@ -1031,6 +1093,7 @@ vim app.py settings.py
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">chmod</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Change file or directory mode. Supports numeric and symbolic forms.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: chmod [options] mode path...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">Numeric</span>: 755, 644, 600, etc.</li>
               <li><span class="font-semibold">Symbolic</span>: u+x, g-w, o=rx, a+rX.</li>
@@ -1052,6 +1115,7 @@ chmod -R g+w /var/www/site/storage</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">chown</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Change ownership (user and optionally group). Requires sudo for system files.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: chown [options] owner[:group] path...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">user:group</span>: set both.</li>
               <li><span class="font-semibold">:group</span>: set group only.</li>
@@ -1067,6 +1131,7 @@ sudo chown -h root:root /usr/local/bin/app</code></pre>
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">chgrp</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Change group ownership. Useful with shared directories.</p>
+            <p class="mt-2 text-xs font-mono text-slate-500 dark:text-slate-400">Syntax: chgrp [options] group path...</p>
             <ul class="mt-3 text-sm text-slate-600 dark:text-slate-300 space-y-2">
               <li><span class="font-semibold">-R</span>: recursive.</li>
               <li><span class="font-semibold">-h</span>: affect symlink itself.</li>

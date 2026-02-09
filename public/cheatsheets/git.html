@@ -231,11 +231,12 @@ git log --author="Alice" --since="2 weeks ago" --oneline</code></pre>
               <li><span class="font-semibold">-sb</span>: short output while keeping branch info.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Show conflicted files and instructions
+git status
 
 # Delete merged branch
 git branch -d feature/login</code></pre>
           </div>
-          </div>
+
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">git diff</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Inspect conflict markers and compare ours vs theirs.</p>
@@ -245,6 +246,12 @@ git branch -d feature/login</code></pre>
               <li><span class="font-semibold">--ours/--theirs</span>: compare specific sides (with pathspecs).</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># List conflicted files
+git diff --name-only --diff-filter=U
+
+# View markers inside a file
+git diff -- config/routes.rb</code></pre>
+          </div>
+
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">git checkout</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Legacy command to switch branches or restore files. Prefer git switch / git restore for clarity.</p>
@@ -254,21 +261,22 @@ git branch -d feature/login</code></pre>
               <li><span class="font-semibold">git checkout -- file</span>: discard local file changes.</li>
             </ul>
             <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Create and switch
-          </div>
 git checkout -b docs/update-readme
 
 # Discard changes to a file (cannot be undone)
 git checkout -- README.md</code></pre>
           </div>
+
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">git switch</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Modern, branch-only switch command (safer than checkout).</p>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Use vimdiff to resolve conflicts
+            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code># Jump back to previous branch
 git switch -
 
 # Create and switch to feature
 git switch -c feature/payments</code></pre>
           </div>
+
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
             <h3 class="text-lg font-semibold">git merge</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Combine histories, producing a merge commit (or fast-forward when possible).</p>
@@ -285,6 +293,7 @@ git merge feature/login --no-ff
 # Abort merge after conflicts
 git merge --abort</code></pre>
           </div>
+
           <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 lg:col-span-2">
             <h3 class="text-lg font-semibold">git rebase</h3>
             <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Replay commits onto a new base to create a linear history. Avoid rebasing published branches.</p>
