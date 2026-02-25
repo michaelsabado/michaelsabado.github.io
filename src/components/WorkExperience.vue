@@ -1,5 +1,8 @@
 <script setup>
+import { ref } from 'vue'
 import { workExperience } from '../data/work'
+
+const expanded = ref(false)
 </script>
 
 <template>
@@ -7,19 +10,47 @@ import { workExperience } from '../data/work'
     id="experience"
     class="space-y-10"
   >
-    <div class="flex flex-col gap-3">
-      <p class="section-heading">Work Experience</p>
-      <h2
-        class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl dark:text-white"
+    <div
+      class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between sm:gap-4"
+    >
+      <div class="flex flex-col gap-3">
+        <p class="section-heading">Work Experience</p>
+        <h2
+          class="text-2xl font-semibold tracking-tight text-slate-900 sm:text-3xl dark:text-white"
+        >
+          Real-world engineering experience.
+        </h2>
+        <p class="text-base text-slate-600 dark:text-slate-300">
+          Designing, building, and maintaining production systems.
+        </p>
+      </div>
+      <div
+        class="flex items-center gap-3 py-2 sm:py-0"
+        role="group"
+        aria-label="Work experience section"
       >
-        Real-world engineering experience.
-      </h2>
-      <p class="text-base text-slate-600 dark:text-slate-300">
-        Designing, building, and maintaining production systems.
-      </p>
+        <span class="text-sm text-slate-500 dark:text-slate-400"> Show details </span>
+        <button
+          type="button"
+          role="switch"
+          :aria-checked="expanded"
+          aria-label="Toggle work experience details"
+          class="relative inline-flex h-6 w-11 shrink-0 cursor-pointer rounded-full border border-slate-300 bg-slate-200 transition-colors focus:outline-none focus:ring-2 focus:ring-brand-500 focus:ring-offset-2 dark:border-slate-600 dark:bg-slate-700 dark:focus:ring-offset-slate-900"
+          :class="expanded ? 'border-brand-500 bg-brand-500 dark:bg-brand-500' : ''"
+          @click="expanded = !expanded"
+        >
+          <span
+            class="pointer-events-none inline-block h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
+            :class="expanded ? 'translate-x-5' : 'translate-x-0.5'"
+          />
+        </button>
+      </div>
     </div>
 
-    <div class="relative space-y-10">
+    <div
+      v-show="expanded"
+      class="relative space-y-10"
+    >
       <span
         class="pointer-events-none absolute left-4 top-0 h-full w-px -translate-x-1/2 bg-slate-200 md:block dark:bg-slate-800"
       ></span>

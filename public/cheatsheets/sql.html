@@ -1,218 +1,411 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>SQL Cheatsheet</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'media',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
-            mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
-          },
-          colors: {
-            brand: {
-              50: '#ecfeff',
-              200: '#bae6fd',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              900: '#0c4a6e',
+<!doctype html>
+<html
+  lang="en"
+  class="scroll-smooth"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>SQL Cheatsheet</title>
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'media',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+              mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
             },
-            surface: {
-              light: '#f8fafc',
-              dark: '#020617',
+            colors: {
+              brand: {
+                50: '#ecfeff',
+                200: '#bae6fd',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                900: '#0c4a6e',
+              },
+              surface: {
+                light: '#f8fafc',
+                dark: '#020617',
+              },
             },
-          },
-          boxShadow: {
-            glow: '0 20px 70px rgba(14,165,233,0.25)',
+            boxShadow: {
+              glow: '0 20px 70px rgba(14,165,233,0.25)',
+            },
           },
         },
-      },
-    };
-  </script>
-  <style>
-    body {
-      font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
-    }
-    pre, code {
-      font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace;
-    }
-    pre {
-      max-width: 100%;
-      width: 100%;
-      box-sizing: border-box;
-      overflow-x: auto;
-    }
-    .grid > *, .flex > * {
-      min-width: 0;
-    }
-    @media (max-width: 640px) {
-      pre {
-        font-size: 0.7rem;
-        padding: 0.75rem;
       }
-    }
-  </style>
-</head>
-<body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
-  <div class="relative isolate overflow-hidden">
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <div class="absolute top-10 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"></div>
-      <div class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"></div>
-    </div>
-
-    <header id="hero" class="px-4 py-16 sm:px-8 lg:px-16">
-      <div class="max-w-4xl mx-auto text-center">
-        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200">SQL · Reference</span>
-        <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">SQL Cheatsheet</h1>
-        <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">Comprehensive reference from basic to advanced queries and database management.</p>
-        <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
-          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Mobile-first</span>
-          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Dark-mode ready</span>
-          <span class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10">Copy-paste friendly</span>
-        </div>
+    </script>
+    <style>
+      body {
+        font-family:
+          'Space Grotesk',
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+      pre,
+      code {
+        font-family:
+          'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          monospace;
+      }
+      pre {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+      }
+      .grid > *,
+      .flex > * {
+        min-width: 0;
+      }
+      @media (max-width: 640px) {
+        pre {
+          font-size: 0.7rem;
+          padding: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+    <div class="relative isolate overflow-hidden">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0"
+      >
+        <div
+          class="absolute top-10 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"
+        ></div>
       </div>
-    </header>
 
-    <main class="px-4 pb-24 sm:px-8 lg:px-16">
-      <section class="max-w-6xl mx-auto" id="toc">
-        <div class="rounded-3xl border border-white/70 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 shadow-xl p-8">
-          <h2 class="text-xl font-semibold">Table of Contents</h2>
-          <div class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm font-semibold">
-            <a href="#fundamentals" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Fundamentals</a>
-            <a href="#filtering" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Filtering & Sorting</a>
-            <a href="#aggregations" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Aggregations</a>
-            <a href="#joins" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Joins</a>
-            <a href="#subqueries" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Subqueries</a>
-            <a href="#set-operations" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Set Operations</a>
-            <a href="#modifying-data" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Modifying Data</a>
-            <a href="#table-management" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Table Management</a>
-            <a href="#transactions" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Transactions</a>
-            <a href="#views" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Views & Procedures</a>
-            <a href="#advanced" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Advanced Features</a>
-            <a href="#best-practices" class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition">Best Practices</a>
+      <header
+        id="hero"
+        class="px-4 py-16 sm:px-8 lg:px-16"
+      >
+        <div class="max-w-4xl mx-auto text-center">
+          <span
+            class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200"
+            >SQL · Reference</span
+          >
+          <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">
+            SQL Cheatsheet
+          </h1>
+          <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">
+            Comprehensive reference from basic to advanced queries and database
+            management.
+          </p>
+          <div class="mt-8 flex flex-wrap justify-center gap-4 text-sm">
+            <span
+              class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10"
+              >Mobile-first</span
+            >
+            <span
+              class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10"
+              >Dark-mode ready</span
+            >
+            <span
+              class="px-4 py-2 rounded-full bg-white/80 dark:bg-slate-900/60 border border-slate-200 dark:border-white/10"
+              >Copy-paste friendly</span
+            >
           </div>
         </div>
-      </section>
+      </header>
 
-      <section id="fundamentals" class="max-w-6xl mx-auto mt-20">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 01</p>
-            <h2 class="mt-2 text-3xl font-semibold">Fundamentals</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Relational databases store data in tables (relations) made of rows (records) and columns (attributes).</p>
-          </div>
-          <div class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50">
-            <p class="font-semibold">Tip</p>
-            <p class="mt-2">Always specify column lists on INSERT/SELECT to avoid coupling to schema order.</p>
-          </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Data Types Snapshot</h3>
-            <div class="mt-4 grid grid-cols-2 gap-3 text-xs sm:text-sm">
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
-                <p class="font-semibold">Numeric</p>
-                <p class="text-slate-600 dark:text-slate-300">INT, BIGINT, DECIMAL(p,s), FLOAT</p>
-              </div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
-                <p class="font-semibold">Character</p>
-                <p class="text-slate-600 dark:text-slate-300">CHAR(n), VARCHAR(n), TEXT</p>
-              </div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
-                <p class="font-semibold">Temporal</p>
-                <p class="text-slate-600 dark:text-slate-300">DATE, TIME, TIMESTAMP, INTERVAL</p>
-              </div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
-                <p class="font-semibold">Boolean & Misc</p>
-                <p class="text-slate-600 dark:text-slate-300">BOOLEAN, UUID, JSON, ARRAY</p>
-              </div>
+      <main class="px-4 pb-24 sm:px-8 lg:px-16">
+        <section
+          class="max-w-6xl mx-auto"
+          id="toc"
+        >
+          <div
+            class="rounded-3xl border border-white/70 dark:border-white/10 bg-white/80 dark:bg-slate-900/70 shadow-xl p-8"
+          >
+            <h2 class="text-xl font-semibold">Table of Contents</h2>
+            <div
+              class="mt-6 grid gap-3 sm:grid-cols-2 lg:grid-cols-3 text-sm font-semibold"
+            >
+              <a
+                href="#fundamentals"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Fundamentals</a
+              >
+              <a
+                href="#filtering"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Filtering & Sorting</a
+              >
+              <a
+                href="#aggregations"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Aggregations</a
+              >
+              <a
+                href="#joins"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Joins</a
+              >
+              <a
+                href="#subqueries"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Subqueries</a
+              >
+              <a
+                href="#set-operations"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Set Operations</a
+              >
+              <a
+                href="#modifying-data"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Modifying Data</a
+              >
+              <a
+                href="#table-management"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Table Management</a
+              >
+              <a
+                href="#transactions"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Transactions</a
+              >
+              <a
+                href="#views"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Views & Procedures</a
+              >
+              <a
+                href="#advanced"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Advanced Features</a
+              >
+              <a
+                href="#best-practices"
+                class="rounded-2xl border border-slate-200 dark:border-white/10 p-4 hover:border-brand-500 hover:bg-brand-500/5 transition"
+                >Best Practices</a
+              >
             </div>
           </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Basic Query Anatomy</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT column_list
+        </section>
+
+        <section
+          id="fundamentals"
+          class="max-w-6xl mx-auto mt-20"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 01
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Fundamentals</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Relational databases store data in tables (relations) made of rows
+                (records) and columns (attributes).
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-emerald-200 bg-emerald-50/80 dark:border-emerald-900 dark:bg-emerald-900/30 p-4 text-sm text-emerald-900 dark:text-emerald-50"
+            >
+              <p class="font-semibold">Tip</p>
+              <p class="mt-2">
+                Always specify column lists on INSERT/SELECT to avoid coupling to schema
+                order.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Data Types Snapshot</h3>
+              <div class="mt-4 grid grid-cols-2 gap-3 text-xs sm:text-sm">
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  <p class="font-semibold">Numeric</p>
+                  <p class="text-slate-600 dark:text-slate-300">
+                    INT, BIGINT, DECIMAL(p,s), FLOAT
+                  </p>
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  <p class="font-semibold">Character</p>
+                  <p class="text-slate-600 dark:text-slate-300">
+                    CHAR(n), VARCHAR(n), TEXT
+                  </p>
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  <p class="font-semibold">Temporal</p>
+                  <p class="text-slate-600 dark:text-slate-300">
+                    DATE, TIME, TIMESTAMP, INTERVAL
+                  </p>
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  <p class="font-semibold">Boolean & Misc</p>
+                  <p class="text-slate-600 dark:text-slate-300">
+                    BOOLEAN, UUID, JSON, ARRAY
+                  </p>
+                </div>
+              </div>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Basic Query Anatomy</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>SELECT column_list
 FROM   table_name
 WHERE  condition
 ORDER  BY column ASC
 LIMIT  10 OFFSET 0;</code></pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Clauses run conceptually in the order: FROM → WHERE → GROUP BY → HAVING → SELECT → ORDER BY → LIMIT.</p>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                Clauses run conceptually in the order: FROM → WHERE → GROUP BY → HAVING →
+                SELECT → ORDER BY → LIMIT.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="mt-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-          <h3 class="text-lg font-semibold">Example</h3>
-          <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT id, first_name, last_name, email
+          <div
+            class="mt-6 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+          >
+            <h3 class="text-lg font-semibold">Example</h3>
+            <pre
+              class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+            ><code>SELECT id, first_name, last_name, email
 FROM   customers
 WHERE  country = 'US'
    AND created_at &gt;= DATE '2025-01-01';</code></pre>
-        </div>
-      </section>
+          </div>
+        </section>
 
-      <section id="filtering" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 02</p>
-            <h2 class="mt-2 text-3xl font-semibold">Filtering & Sorting</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Fine-tune result sets with comparison operators, boolean logic, and pagination helpers.</p>
-          </div>
-          <div class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50">
-            <p class="font-semibold">Warning</p>
-            <p class="mt-2">Always pair LIMIT with ORDER BY for deterministic paging.</p>
-          </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
+        <section
+          id="filtering"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
             <div>
-              <h3 class="text-lg font-semibold">WHERE Logic</h3>
-              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT *
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 02
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Filtering & Sorting</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Fine-tune result sets with comparison operators, boolean logic, and
+                pagination helpers.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-amber-200 bg-amber-50/80 dark:border-amber-900 dark:bg-amber-900/30 p-4 text-sm text-amber-900 dark:text-amber-50"
+            >
+              <p class="font-semibold">Warning</p>
+              <p class="mt-2">
+                Always pair LIMIT with ORDER BY for deterministic paging.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4"
+            >
+              <div>
+                <h3 class="text-lg font-semibold">WHERE Logic</h3>
+                <pre
+                  class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>SELECT *
 FROM   orders
 WHERE  status IN ('pending','processing')
    AND total &gt;= 100
    AND NOT (country = 'CA' AND expedited = false);</code></pre>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold">Comparison Operators</h3>
-              <div class="mt-3 grid grid-cols-2 gap-2 text-xs sm:text-sm">
-                <span class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2">= : equality</span>
-                <span class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2">!= / &lt;&gt; : not equal</span>
-                <span class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2">&gt;, &gt;=, &lt;, &lt;= : numeric compare</span>
-                <span class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2">BETWEEN, LIKE, ILIKE</span>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold">Comparison Operators</h3>
+                <div class="mt-3 grid grid-cols-2 gap-2 text-xs sm:text-sm">
+                  <span
+                    class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2"
+                    >= : equality</span
+                  >
+                  <span
+                    class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2"
+                    >!= / &lt;&gt; : not equal</span
+                  >
+                  <span
+                    class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2"
+                    >&gt;, &gt;=, &lt;, &lt;= : numeric compare</span
+                  >
+                  <span
+                    class="rounded-xl border border-slate-200 dark:border-white/10 px-3 py-2"
+                    >BETWEEN, LIKE, ILIKE</span
+                  >
+                </div>
               </div>
             </div>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Ordering & Pagination</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT id, shipped_at, total
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Ordering & Pagination</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>SELECT id, shipped_at, total
 FROM   orders
 WHERE  shipped_at IS NOT NULL
 ORDER  BY shipped_at DESC, id ASC
 LIMIT  20 OFFSET 40; -- page 3 (0-index)</code></pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use keyset pagination for large datasets:<br />`WHERE (shipped_at &lt; :cursor_date) OR (shipped_at = :cursor_date AND id &lt; :cursor_id)`.</p>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                Use keyset pagination for large datasets:<br />`WHERE (shipped_at &lt;
+                :cursor_date) OR (shipped_at = :cursor_date AND id &lt; :cursor_id)`.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="aggregations" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 03</p>
-            <h2 class="mt-2 text-3xl font-semibold">Aggregations</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Aggregate functions crunch rows into summarized insights.</p>
+        <section
+          id="aggregations"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 03
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Aggregations</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Aggregate functions crunch rows into summarized insights.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-cyan-200 bg-cyan-50/80 dark:border-cyan-900 dark:bg-cyan-900/30 p-4 text-sm text-cyan-900 dark:text-cyan-50"
+            >
+              <p class="font-semibold">Note</p>
+              <p class="mt-2">
+                Every non-aggregated column in SELECT must appear in GROUP BY in standard
+                SQL.
+              </p>
+            </div>
           </div>
-          <div class="max-w-lg rounded-2xl border border-cyan-200 bg-cyan-50/80 dark:border-cyan-900 dark:bg-cyan-900/30 p-4 text-sm text-cyan-900 dark:text-cyan-50">
-            <p class="font-semibold">Note</p>
-            <p class="mt-2">Every non-aggregated column in SELECT must appear in GROUP BY in standard SQL.</p>
-          </div>
-        </div>
-        <div class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT  customer_id,
+          <div
+            class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+          >
+            <pre
+              class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+            ><code>SELECT  customer_id,
         COUNT(*)          AS order_count,
         SUM(total)        AS revenue,
         AVG(total)        AS avg_value,
@@ -222,37 +415,70 @@ FROM    orders
 GROUP   BY customer_id
 HAVING  SUM(total) &gt;= 5000
 ORDER   BY revenue DESC;</code></pre>
-          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">`HAVING` filters aggregated rows. Use window functions when you need aggregates alongside detail rows.</p>
-        </div>
-      </section>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+              `HAVING` filters aggregated rows. Use window functions when you need
+              aggregates alongside detail rows.
+            </p>
+          </div>
+        </section>
 
-      <section id="joins" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 04</p>
-            <h2 class="mt-2 text-3xl font-semibold">Joins</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Combine tables via matching keys to reveal relationships.</p>
-          </div>
-          <div class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50">
-            <p class="font-semibold">Reminder</p>
-            <p class="mt-2">Qualify column names (table.column) to avoid ambiguity and to help query planners use indexes.</p>
-          </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Join Matrix</h3>
-            <div class="mt-4 grid grid-cols-2 gap-3 text-xs">
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">INNER JOIN: matching rows only.</div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">LEFT JOIN: all left rows, nulls for missing right.</div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">RIGHT JOIN: mirror of LEFT.</div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">FULL OUTER: all rows from both.</div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">CROSS JOIN: Cartesian product.</div>
-              <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">SELF JOIN: join same table with aliases.</div>
+        <section
+          id="joins"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 04
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Joins</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Combine tables via matching keys to reveal relationships.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-rose-200 bg-rose-50/80 dark:border-rose-900 dark:bg-rose-900/30 p-4 text-sm text-rose-900 dark:text-rose-50"
+            >
+              <p class="font-semibold">Reminder</p>
+              <p class="mt-2">
+                Qualify column names (table.column) to avoid ambiguity and to help query
+                planners use indexes.
+              </p>
             </div>
           </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Example</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT o.id,
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Join Matrix</h3>
+              <div class="mt-4 grid grid-cols-2 gap-3 text-xs">
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  INNER JOIN: matching rows only.
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  LEFT JOIN: all left rows, nulls for missing right.
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  RIGHT JOIN: mirror of LEFT.
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  FULL OUTER: all rows from both.
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  CROSS JOIN: Cartesian product.
+                </div>
+                <div class="rounded-xl border border-slate-200 dark:border-white/10 p-3">
+                  SELF JOIN: join same table with aliases.
+                </div>
+              </div>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Example</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>SELECT o.id,
        o.total,
        c.company_name,
        s.name AS salesperson
@@ -260,26 +486,42 @@ FROM   orders AS o
 JOIN   customers AS c   ON c.id = o.customer_id
 LEFT JOIN sales_reps AS s ON s.id = o.sales_rep_id
 WHERE  o.created_at &gt;= CURRENT_DATE - INTERVAL '30 days';</code></pre>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="subqueries" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 05</p>
-            <h2 class="mt-2 text-3xl font-semibold">Subqueries</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Nest queries inside others to reuse logic or filter using derived sets.</p>
+        <section
+          id="subqueries"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 05
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Subqueries</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Nest queries inside others to reuse logic or filter using derived sets.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-purple-200 bg-purple-50/80 dark:border-purple-900 dark:bg-purple-900/30 p-4 text-sm text-purple-900 dark:text-purple-50"
+            >
+              <p class="font-semibold">Guideline</p>
+              <p class="mt-2">
+                Use CTEs for readability when subqueries become complex or reused multiple
+                times.
+              </p>
+            </div>
           </div>
-          <div class="max-w-lg rounded-2xl border border-purple-200 bg-purple-50/80 dark:border-purple-900 dark:bg-purple-900/30 p-4 text-sm text-purple-900 dark:text-purple-50">
-            <p class="font-semibold">Guideline</p>
-            <p class="mt-2">Use CTEs for readability when subqueries become complex or reused multiple times.</p>
-          </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Scalar & Table Subqueries</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT id,
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Scalar & Table Subqueries</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>SELECT id,
        total,
        (SELECT AVG(total) FROM orders) AS avg_all
 FROM   orders
@@ -296,10 +538,14 @@ FROM   (
   GROUP  BY customer_id
 ) AS stats
 WHERE  revenue &gt; 10000;</code></pre>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Correlated Subquery</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT c.id, c.company_name
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Correlated Subquery</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>SELECT c.id, c.company_name
 FROM   customers AS c
 WHERE  EXISTS (
   SELECT 1
@@ -315,20 +561,31 @@ WHERE  total = (
   FROM   orders
   WHERE  customer_id = o.customer_id
 );</code></pre>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="set-operations" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 06</p>
-            <h2 class="mt-2 text-3xl font-semibold">Set Operations</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Combine results vertically. Ensure column counts and types align.</p>
+        <section
+          id="set-operations"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 06
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Set Operations</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Combine results vertically. Ensure column counts and types align.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
-          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>-- UNION: distinct rows across queries
+          <div
+            class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4"
+          >
+            <pre
+              class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+            ><code>-- UNION: distinct rows across queries
 SELECT email FROM newsletter
 UNION
 SELECT email FROM customers;
@@ -347,61 +604,103 @@ SELECT product_id FROM promotions;
 SELECT id FROM customers
 EXCEPT
 SELECT customer_id FROM blacklist;</code></pre>
-          <p class="text-sm text-slate-600 dark:text-slate-300">Some engines use `MINUS` (Oracle) instead of `EXCEPT`. Wrap complex subqueries with parentheses when mixing operations.</p>
-        </div>
-      </section>
+            <p class="text-sm text-slate-600 dark:text-slate-300">
+              Some engines use `MINUS` (Oracle) instead of `EXCEPT`. Wrap complex
+              subqueries with parentheses when mixing operations.
+            </p>
+          </div>
+        </section>
 
-      <section id="modifying-data" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 07</p>
-            <h2 class="mt-2 text-3xl font-semibold">Modifying Data</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Change data using DML statements with guardrails.</p>
+        <section
+          id="modifying-data"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 07
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Modifying Data</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Change data using DML statements with guardrails.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-red-200 bg-red-50/80 dark:border-red-900 dark:bg-red-900/30 p-4 text-sm text-red-900 dark:text-red-50"
+            >
+              <p class="font-semibold">Safety</p>
+              <p class="mt-2">
+                Never run UPDATE/DELETE without a WHERE clause unless that's intentional.
+                Use transactions + backups.
+              </p>
+            </div>
           </div>
-          <div class="max-w-lg rounded-2xl border border-red-200 bg-red-50/80 dark:border-red-900 dark:bg-red-900/30 p-4 text-sm text-red-900 dark:text-red-50">
-            <p class="font-semibold">Safety</p>
-            <p class="mt-2">Never run UPDATE/DELETE without a WHERE clause unless that's intentional. Use transactions + backups.</p>
-          </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-3">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">INSERT</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>INSERT INTO products (name, price, in_stock)
+          <div class="mt-8 grid gap-6 lg:grid-cols-3">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">INSERT</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>INSERT INTO products (name, price, in_stock)
 VALUES ('Widget Mini', 49.00, true);
 
 INSERT INTO products (name, price)
 VALUES ('Widget Pro', 199.00),
        ('Widget Ultra', 299.00);</code></pre>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">UPDATE</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>UPDATE products
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">UPDATE</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>UPDATE products
 SET    price = price * 0.9,
        updated_at = NOW()
 WHERE  category = 'Clearance';</code></pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use RETURNING (Postgres) to fetch affected rows.</p>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">DELETE</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>DELETE FROM sessions
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                Use RETURNING (Postgres) to fetch affected rows.
+              </p>
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">DELETE</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>DELETE FROM sessions
 WHERE  last_seen &lt; NOW() - INTERVAL '30 days';</code></pre>
-            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Prefer archival tables for compliance before removal.</p>
+              <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+                Prefer archival tables for compliance before removal.
+              </p>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="table-management" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 08</p>
-            <h2 class="mt-2 text-3xl font-semibold">Table Management</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Define schema structure, indexes, and constraints carefully.</p>
+        <section
+          id="table-management"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 08
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Table Management</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Define schema structure, indexes, and constraints carefully.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Create & Alter</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>CREATE TABLE customers (
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Create & Alter</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>CREATE TABLE customers (
   id           SERIAL PRIMARY KEY,
   company_name VARCHAR(120) NOT NULL,
   email        VARCHAR(255) UNIQUE,
@@ -414,41 +713,63 @@ ALTER TABLE customers
 ADD COLUMN phone VARCHAR(32);
 
 DROP TABLE IF EXISTS temp_import;</code></pre>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
-            <div>
-              <h3 class="text-lg font-semibold">Indexes</h3>
-              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>CREATE INDEX idx_orders_customer_created
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4"
+            >
+              <div>
+                <h3 class="text-lg font-semibold">Indexes</h3>
+                <pre
+                  class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>CREATE INDEX idx_orders_customer_created
 ON orders (customer_id, created_at DESC);
 
 DROP INDEX idx_orders_customer_created;</code></pre>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold">Foreign Keys</h3>
-              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>ALTER TABLE orders
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold">Foreign Keys</h3>
+                <pre
+                  class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>ALTER TABLE orders
 ADD CONSTRAINT fk_orders_customer
 FOREIGN KEY (customer_id)
 REFERENCES customers(id)
 ON DELETE CASCADE;</code></pre>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="transactions" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 09</p>
-            <h2 class="mt-2 text-3xl font-semibold">Transactions</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Group statements into atomic units to maintain integrity.</p>
+        <section
+          id="transactions"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 09
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Transactions</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Group statements into atomic units to maintain integrity.
+              </p>
+            </div>
+            <div
+              class="max-w-lg rounded-2xl border border-lime-200 bg-lime-50/80 dark:border-lime-900 dark:bg-lime-900/30 p-4 text-sm text-lime-900 dark:text-lime-50"
+            >
+              <p class="font-semibold">Isolation</p>
+              <p class="mt-2">
+                Choose isolation level (`READ COMMITTED`, `SERIALIZABLE`, etc.) based on
+                concurrency requirements.
+              </p>
+            </div>
           </div>
-          <div class="max-w-lg rounded-2xl border border-lime-200 bg-lime-50/80 dark:border-lime-900 dark:bg-lime-900/30 p-4 text-sm text-lime-900 dark:text-lime-50">
-            <p class="font-semibold">Isolation</p>
-            <p class="mt-2">Choose isolation level (`READ COMMITTED`, `SERIALIZABLE`, etc.) based on concurrency requirements.</p>
-          </div>
-        </div>
-        <div class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-          <pre class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>BEGIN;
+          <div
+            class="mt-8 rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+          >
+            <pre
+              class="bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+            ><code>BEGIN;
   UPDATE accounts SET balance = balance - 500 WHERE id = 1;
   UPDATE accounts SET balance = balance + 500 WHERE id = 2;
   SAVEPOINT after_transfer;
@@ -456,22 +777,36 @@ ON DELETE CASCADE;</code></pre>
   -- if something fails later
   ROLLBACK TO after_transfer;
 COMMIT; -- or ROLLBACK;</code></pre>
-          <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">Use `SET TRANSACTION ISOLATION LEVEL` inside transactions to override defaults.</p>
-        </div>
-      </section>
-
-      <section id="views" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 10</p>
-            <h2 class="mt-2 text-3xl font-semibold">Views & Stored Procedures</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Encapsulate complex logic and reuse in clients.</p>
+            <p class="mt-3 text-sm text-slate-600 dark:text-slate-300">
+              Use `SET TRANSACTION ISOLATION LEVEL` inside transactions to override
+              defaults.
+            </p>
           </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <h3 class="text-lg font-semibold">Views</h3>
-            <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>CREATE OR REPLACE VIEW v_customer_revenue AS
+        </section>
+
+        <section
+          id="views"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 10
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Views & Stored Procedures</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Encapsulate complex logic and reuse in clients.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <h3 class="text-lg font-semibold">Views</h3>
+              <pre
+                class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+              ><code>CREATE OR REPLACE VIEW v_customer_revenue AS
 SELECT  c.id,
         c.company_name,
         SUM(o.total) AS total_revenue,
@@ -481,11 +816,15 @@ LEFT JOIN orders AS o ON o.customer_id = c.id
 GROUP   BY c.id, c.company_name;
 
 SELECT * FROM v_customer_revenue WHERE total_revenue &gt; 10000;</code></pre>
-          </div>
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
-            <div>
-              <h3 class="text-lg font-semibold">Stored Procedure (PostgreSQL)</h3>
-              <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>CREATE OR REPLACE FUNCTION award_loyalty(p_customer INTEGER)
+            </div>
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4"
+            >
+              <div>
+                <h3 class="text-lg font-semibold">Stored Procedure (PostgreSQL)</h3>
+                <pre
+                  class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>CREATE OR REPLACE FUNCTION award_loyalty(p_customer INTEGER)
 RETURNS VOID AS $$
 BEGIN
   INSERT INTO loyalty_points (customer_id, points)
@@ -496,37 +835,57 @@ END;
 $$ LANGUAGE plpgsql;
 
 SELECT award_loyalty(42);</code></pre>
-            </div>
-            <div>
-              <h3 class="text-lg font-semibold">Parameters & Result Sets</h3>
-              <p class="text-sm text-slate-600 dark:text-slate-300">Procedures/functions support IN / OUT params, cursors, and transaction control. Syntax varies by RDBMS (MySQL `DELIMITER`, SQL Server `CREATE PROCEDURE`).</p>
+              </div>
+              <div>
+                <h3 class="text-lg font-semibold">Parameters & Result Sets</h3>
+                <p class="text-sm text-slate-600 dark:text-slate-300">
+                  Procedures/functions support IN / OUT params, cursors, and transaction
+                  control. Syntax varies by RDBMS (MySQL `DELIMITER`, SQL Server `CREATE
+                  PROCEDURE`).
+                </p>
+              </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      <section id="advanced" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 11</p>
-            <h2 class="mt-2 text-3xl font-semibold">Advanced Features</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Modern SQL engines include analytical functions, JSON helpers, triggers, and diagnostic tools.</p>
+        <section
+          id="advanced"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 11
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Advanced Features</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Modern SQL engines include analytical functions, JSON helpers, triggers,
+                and diagnostic tools.
+              </p>
+            </div>
           </div>
-        </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="space-y-6">
-            <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-              <h3 class="text-lg font-semibold">Window Functions</h3>
-              <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT order_id,
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div class="space-y-6">
+              <div
+                class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+              >
+                <h3 class="text-lg font-semibold">Window Functions</h3>
+                <pre
+                  class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>SELECT order_id,
        customer_id,
        total,
        ROW_NUMBER() OVER (PARTITION BY customer_id ORDER BY created_at) AS order_rank,
        SUM(total) OVER (PARTITION BY customer_id ORDER BY created_at ROWS BETWEEN UNBOUNDED PRECEDING AND CURRENT ROW) AS running_total
 FROM   orders;</code></pre>
-            </div>
-            <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-              <h3 class="text-lg font-semibold">CTEs</h3>
-              <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>WITH monthly AS (
+              </div>
+              <div
+                class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+              >
+                <h3 class="text-lg font-semibold">CTEs</h3>
+                <pre
+                  class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>WITH monthly AS (
   SELECT DATE_TRUNC('month', created_at) AS month,
          SUM(total) AS revenue
   FROM   orders
@@ -536,12 +895,16 @@ SELECT month,
        revenue,
        LAG(revenue) OVER (ORDER BY month) AS prev_month
 FROM   monthly;</code></pre>
+              </div>
             </div>
-          </div>
-          <div class="space-y-6">
-            <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-              <h3 class="text-lg font-semibold">Triggers</h3>
-              <pre class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>CREATE OR REPLACE FUNCTION set_updated_at()
+            <div class="space-y-6">
+              <div
+                class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+              >
+                <h3 class="text-lg font-semibold">Triggers</h3>
+                <pre
+                  class="mt-4 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                ><code>CREATE OR REPLACE FUNCTION set_updated_at()
 RETURNS TRIGGER AS $$
 BEGIN
   NEW.updated_at := NOW();
@@ -552,11 +915,15 @@ $$ LANGUAGE plpgsql;
 CREATE TRIGGER trg_products_updated
 BEFORE UPDATE ON products
 FOR EACH ROW EXECUTE FUNCTION set_updated_at();</code></pre>
-            </div>
-            <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4">
-              <div>
-                <h3 class="text-lg font-semibold">JSON / Array Helpers (Postgres)</h3>
-                <pre class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"><code>SELECT data - 'deprecatedKey' AS cleaned
+              </div>
+              <div
+                class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 space-y-4"
+              >
+                <div>
+                  <h3 class="text-lg font-semibold">JSON / Array Helpers (Postgres)</h3>
+                  <pre
+                    class="mt-3 bg-slate-900 text-slate-100 rounded-2xl p-4 text-xs overflow-x-auto"
+                  ><code>SELECT data - 'deprecatedKey' AS cleaned
 FROM   products_json;
 
 SELECT jsonb_extract_path_text(meta, 'dimensions','width')
@@ -564,58 +931,108 @@ FROM   inventory_json;
 
 SELECT tags && ARRAY['featured'] AS is_featured
 FROM   articles;</code></pre>
+                </div>
+                <div>
+                  <h3 class="text-lg font-semibold">Performance</h3>
+                  <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
+                    <li>Use `EXPLAIN (ANALYZE, BUFFERS)` to inspect query plans.</li>
+                    <li>Create covering indexes for high-frequency filters.</li>
+                    <li>
+                      Avoid functions on indexed columns (`WHERE LOWER(email)` prevents
+                      index usage).
+                    </li>
+                  </ul>
+                </div>
               </div>
-              <div>
-                <h3 class="text-lg font-semibold">Performance</h3>
-                <ul class="text-sm text-slate-600 dark:text-slate-300 space-y-2">
-                  <li>Use `EXPLAIN (ANALYZE, BUFFERS)` to inspect query plans.</li>
-                  <li>Create covering indexes for high-frequency filters.</li>
-                  <li>Avoid functions on indexed columns (`WHERE LOWER(email)` prevents index usage).</li>
-                </ul>
+            </div>
+          </div>
+        </section>
+
+        <section
+          id="best-practices"
+          class="max-w-6xl mx-auto mt-24"
+        >
+          <div class="flex flex-wrap items-start justify-between gap-6">
+            <div>
+              <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">
+                Section 12
+              </p>
+              <h2 class="mt-2 text-3xl font-semibold">Best Practices</h2>
+              <p class="mt-3 text-base text-slate-600 dark:text-slate-300">
+                Consistency and clarity keep SQL maintainable.
+              </p>
+            </div>
+          </div>
+          <div class="mt-8 grid gap-6 lg:grid-cols-2">
+            <div
+              class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6"
+            >
+              <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
+                <li>
+                  <span class="font-semibold text-slate-900 dark:text-white"
+                    >Alias wisely:</span
+                  >
+                  use short, descriptive table aliases and column aliases for derived
+                  values.
+                </li>
+                <li>
+                  <span class="font-semibold text-slate-900 dark:text-white"
+                    >Avoid SELECT *:</span
+                  >
+                  list needed columns for performance and clarity.
+                </li>
+                <li>
+                  <span class="font-semibold text-slate-900 dark:text-white"
+                    >Index strategically:</span
+                  >
+                  monitor slow queries, add composite indexes for filter + sort columns.
+                </li>
+                <li>
+                  <span class="font-semibold text-slate-900 dark:text-white"
+                    >NULL handling:</span
+                  >
+                  prefer `COALESCE`, `IS NULL`, `IS NOT NULL` to avoid surprises.
+                </li>
+                <li>
+                  <span class="font-semibold text-slate-900 dark:text-white"
+                    >Transactions:</span
+                  >
+                  wrap multi-step changes, handle errors with rollbacks.
+                </li>
+              </ul>
+            </div>
+            <div class="space-y-4">
+              <div
+                class="rounded-2xl border border-teal-200 bg-teal-50/80 dark:border-teal-900 dark:bg-teal-900/30 p-4 text-sm text-teal-900 dark:text-teal-50"
+              >
+                <p class="font-semibold">Formatting</p>
+                <p class="mt-2">
+                  Uppercase SQL keywords, indent joins/conditions, and align ON clauses
+                  for scan-friendly queries.
+                </p>
+              </div>
+              <div
+                class="rounded-2xl border border-orange-200 bg-orange-50/80 dark:border-orange-900 dark:bg-orange-900/30 p-4 text-sm text-orange-900 dark:text-orange-50"
+              >
+                <p class="font-semibold">Monitoring</p>
+                <p class="mt-2">
+                  Track slow query logs, add query timeouts, and measure cardinality
+                  estimates after schema changes.
+                </p>
               </div>
             </div>
           </div>
-        </div>
-      </section>
+        </section>
+      </main>
 
-      <section id="best-practices" class="max-w-6xl mx-auto mt-24">
-        <div class="flex flex-wrap items-start justify-between gap-6">
-          <div>
-            <p class="text-xs uppercase tracking-[0.3em] text-brand-500 font-semibold">Section 12</p>
-            <h2 class="mt-2 text-3xl font-semibold">Best Practices</h2>
-            <p class="mt-3 text-base text-slate-600 dark:text-slate-300">Consistency and clarity keep SQL maintainable.</p>
-          </div>
+      <footer class="px-4 pb-16 sm:px-8 lg:px-16">
+        <div
+          class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4"
+        >
+          <p>SQL Cheatsheet · Updated 2026</p>
+          <p>Crafted with Tailwind CSS CDN · Dark-mode aware.</p>
         </div>
-        <div class="mt-8 grid gap-6 lg:grid-cols-2">
-          <div class="rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6">
-            <ul class="space-y-3 text-sm text-slate-600 dark:text-slate-300">
-              <li><span class="font-semibold text-slate-900 dark:text-white">Alias wisely:</span> use short, descriptive table aliases and column aliases for derived values.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">Avoid SELECT *:</span> list needed columns for performance and clarity.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">Index strategically:</span> monitor slow queries, add composite indexes for filter + sort columns.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">NULL handling:</span> prefer `COALESCE`, `IS NULL`, `IS NOT NULL` to avoid surprises.</li>
-              <li><span class="font-semibold text-slate-900 dark:text-white">Transactions:</span> wrap multi-step changes, handle errors with rollbacks.</li>
-            </ul>
-          </div>
-          <div class="space-y-4">
-            <div class="rounded-2xl border border-teal-200 bg-teal-50/80 dark:border-teal-900 dark:bg-teal-900/30 p-4 text-sm text-teal-900 dark:text-teal-50">
-              <p class="font-semibold">Formatting</p>
-              <p class="mt-2">Uppercase SQL keywords, indent joins/conditions, and align ON clauses for scan-friendly queries.</p>
-            </div>
-            <div class="rounded-2xl border border-orange-200 bg-orange-50/80 dark:border-orange-900 dark:bg-orange-900/30 p-4 text-sm text-orange-900 dark:text-orange-50">
-              <p class="font-semibold">Monitoring</p>
-              <p class="mt-2">Track slow query logs, add query timeouts, and measure cardinality estimates after schema changes.</p>
-            </div>
-          </div>
-        </div>
-      </section>
-    </main>
-
-    <footer class="px-4 pb-16 sm:px-8 lg:px-16">
-      <div class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4">
-        <p>SQL Cheatsheet · Updated 2026</p>
-        <p>Crafted with Tailwind CSS CDN · Dark-mode aware.</p>
-      </div>
-    </footer>
-  </div>
-</body>
+      </footer>
+    </div>
+  </body>
 </html>

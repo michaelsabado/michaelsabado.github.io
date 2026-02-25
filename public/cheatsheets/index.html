@@ -1,125 +1,232 @@
-<!DOCTYPE html>
-<html lang="en" class="scroll-smooth">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Cheatsheets Index</title>
-  <meta name="description" content="Quick access to all cheatsheets: Linux, Git, Vue, SQL, Docker, AWS, Laravel, and more." />
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap" rel="stylesheet" />
-  <script src="https://cdn.tailwindcss.com"></script>
-  <script>
-    tailwind.config = {
-      darkMode: 'media',
-      theme: {
-        extend: {
-          fontFamily: {
-            sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
-            mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
-          },
-          colors: {
-            brand: {
-              50: '#f0f9ff',
-              200: '#bae6fd',
-              500: '#0ea5e9',
-              600: '#0284c7',
-              900: '#0c4a6e',
+<!doctype html>
+<html
+  lang="en"
+  class="scroll-smooth"
+>
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1"
+    />
+    <title>Cheatsheets Index</title>
+    <meta
+      name="description"
+      content="Quick access to all cheatsheets: Linux, Git, Vue, SQL, Docker, AWS, Laravel, and more."
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.googleapis.com"
+    />
+    <link
+      rel="preconnect"
+      href="https://fonts.gstatic.com"
+      crossorigin
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=IBM+Plex+Mono:wght@400;500;600&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'media',
+        theme: {
+          extend: {
+            fontFamily: {
+              sans: ['Space Grotesk', 'system-ui', 'sans-serif'],
+              mono: ['IBM Plex Mono', 'ui-monospace', 'SFMono-Regular'],
             },
-            surface: {
-              light: '#f8fafc',
-              dark: '#0b1224',
+            colors: {
+              brand: {
+                50: '#f0f9ff',
+                200: '#bae6fd',
+                500: '#0ea5e9',
+                600: '#0284c7',
+                900: '#0c4a6e',
+              },
+              surface: {
+                light: '#f8fafc',
+                dark: '#0b1224',
+              },
             },
-          },
-          boxShadow: {
-            glow: '0 20px 70px rgba(14,165,233,0.25)',
+            boxShadow: {
+              glow: '0 20px 70px rgba(14,165,233,0.25)',
+            },
           },
         },
-      },
-    };
-  </script>
-  <style>
-    body { font-family: 'Space Grotesk', system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif; }
-    pre, code { font-family: 'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, monospace; }
-    pre {
-      max-width: 100%;
-      width: 100%;
-      box-sizing: border-box;
-      overflow-x: auto;
-    }
-    .grid > *, .flex > * {
-      min-width: 0;
-    }
-    @media (max-width: 640px) {
-      pre {
-        font-size: 0.7rem;
-        padding: 0.75rem;
       }
-    }
-  </style>
-</head>
-<body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
-  <div class="relative isolate overflow-hidden min-h-screen">
-    <div aria-hidden="true" class="pointer-events-none absolute inset-0">
-      <div class="absolute top-12 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"></div>
-      <div class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"></div>
-    </div>
+    </script>
+    <style>
+      body {
+        font-family:
+          'Space Grotesk',
+          system-ui,
+          -apple-system,
+          BlinkMacSystemFont,
+          'Segoe UI',
+          sans-serif;
+      }
+      pre,
+      code {
+        font-family:
+          'IBM Plex Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas,
+          monospace;
+      }
+      pre {
+        max-width: 100%;
+        width: 100%;
+        box-sizing: border-box;
+        overflow-x: auto;
+      }
+      .grid > *,
+      .flex > * {
+        min-width: 0;
+      }
+      @media (max-width: 640px) {
+        pre {
+          font-size: 0.7rem;
+          padding: 0.75rem;
+        }
+      }
+    </style>
+  </head>
+  <body class="bg-surface-light text-slate-900 dark:bg-surface-dark dark:text-slate-100">
+    <div class="relative isolate overflow-hidden min-h-screen">
+      <div
+        aria-hidden="true"
+        class="pointer-events-none absolute inset-0"
+      >
+        <div
+          class="absolute top-12 right-0 w-72 h-72 rounded-full bg-brand-500/20 blur-3xl"
+        ></div>
+        <div
+          class="absolute bottom-0 left-10 w-80 h-80 rounded-full bg-sky-300/20 blur-3xl"
+        ></div>
+      </div>
 
-    <header class="px-4 py-14 sm:px-8 lg:px-16">
-      <div class="max-w-5xl mx-auto text-center">
-        <span class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200">Cheatsheets · Hub</span>
-        <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">Cheatsheets</h1>
-        <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">Quick access to all your cheatsheets.</p>
-        <div class="mt-8 max-w-xl mx-auto">
-          <label class="sr-only" for="search">Search cheatsheets</label>
-          <div class="relative">
-            <input id="search" type="search" placeholder="Filter by name..." class="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 px-4 py-3 text-sm shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:focus:ring-brand-500" />
-            <div class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400">⌘K</div>
+      <header class="px-4 py-14 sm:px-8 lg:px-16">
+        <div class="max-w-5xl mx-auto text-center">
+          <span
+            class="inline-flex items-center gap-2 rounded-full border border-white/50 dark:border-white/20 bg-white/80 dark:bg-white/5 px-5 py-1 text-sm font-semibold text-brand-600 dark:text-brand-200"
+            >Cheatsheets · Hub</span
+          >
+          <h1 class="mt-6 text-3xl sm:text-5xl font-semibold tracking-tight">
+            Cheatsheets
+          </h1>
+          <p class="mt-4 text-lg sm:text-xl text-slate-600 dark:text-slate-200">
+            Quick access to all your cheatsheets.
+          </p>
+          <div class="mt-8 max-w-xl mx-auto">
+            <label
+              class="sr-only"
+              for="search"
+              >Search cheatsheets</label
+            >
+            <div class="relative">
+              <input
+                id="search"
+                type="search"
+                placeholder="Filter by name..."
+                class="w-full rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 px-4 py-3 text-sm shadow-sm focus:border-brand-500 focus:ring-2 focus:ring-brand-200 dark:focus:ring-brand-500"
+              />
+              <div
+                class="pointer-events-none absolute inset-y-0 right-4 flex items-center text-slate-400"
+              >
+                ⌘K
+              </div>
+            </div>
           </div>
         </div>
-      </div>
-    </header>
+      </header>
 
-    <main class="px-4 pb-20 sm:px-8 lg:px-16">
-      <section class="max-w-6xl mx-auto">
-        <div id="cards" class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3">
-          <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="linux">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-semibold">Linux Cheatsheet</h2>
-              <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">CLI</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Commands and workflows from beginner to advanced.</p>
-            <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="linux.html">Open cheatsheet →</a>
-          </article>
+      <main class="px-4 pb-20 sm:px-8 lg:px-16">
+        <section class="max-w-6xl mx-auto">
+          <div
+            id="cards"
+            class="grid gap-6 sm:grid-cols-2 xl:grid-cols-3"
+          >
+            <article
+              class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500"
+              data-name="linux"
+            >
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-semibold">Linux Cheatsheet</h2>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-300"
+                  >CLI</span
+                >
+              </div>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                Commands and workflows from beginner to advanced.
+              </p>
+              <a
+                class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500"
+                href="linux.html"
+                >Open cheatsheet →</a
+              >
+            </article>
 
-          <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="git">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-semibold">Git Cheatsheet</h2>
-              <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">VCS</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Full reference of Git commands, workflows, and best practices.</p>
-            <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="git.html">Open cheatsheet →</a>
-          </article>
+            <article
+              class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500"
+              data-name="git"
+            >
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-semibold">Git Cheatsheet</h2>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-300"
+                  >VCS</span
+                >
+              </div>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                Full reference of Git commands, workflows, and best practices.
+              </p>
+              <a
+                class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500"
+                href="git.html"
+                >Open cheatsheet →</a
+              >
+            </article>
 
-          <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="vue">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-semibold">Vue Cheatsheet</h2>
-              <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">Frontend</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Composition API, reactive references, template bindings, and more.</p>
-            <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="vue.html">Open cheatsheet →</a>
-          </article>
+            <article
+              class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500"
+              data-name="vue"
+            >
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-semibold">Vue Cheatsheet</h2>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-300"
+                  >Frontend</span
+                >
+              </div>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                Composition API, reactive references, template bindings, and more.
+              </p>
+              <a
+                class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500"
+                href="vue.html"
+                >Open cheatsheet →</a
+              >
+            </article>
 
-          <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="sql">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-semibold">SQL Cheatsheet</h2>
-              <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">Data</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Queries, joins, indexes, and advanced SQL operations.</p>
-            <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="sql.html">Open cheatsheet →</a>
-          </article>
+            <article
+              class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500"
+              data-name="sql"
+            >
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-semibold">SQL Cheatsheet</h2>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-300"
+                  >Data</span
+                >
+              </div>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                Queries, joins, indexes, and advanced SQL operations.
+              </p>
+              <a
+                class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500"
+                href="sql.html"
+                >Open cheatsheet →</a
+              >
+            </article>
 
-          <!-- <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="docker">
+            <!-- <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="docker">
             <div class="flex items-start justify-between">
               <h2 class="text-lg font-semibold">Docker Cheatsheet</h2>
               <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">DevOps</span>
@@ -137,50 +244,64 @@
             <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="aws.html">Open cheatsheet →</a>
           </article> -->
 
-          <article class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500" data-name="laravel">
-            <div class="flex items-start justify-between">
-              <h2 class="text-lg font-semibold">Laravel Cheatsheet</h2>
-              <span class="text-xs font-semibold text-brand-600 dark:text-brand-300">Backend</span>
-            </div>
-            <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">Project structure, routes, controllers, Blade, Eloquent, Artisan, and more.</p>
-            <a class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500" href="laravel.html">Open cheatsheet →</a>
-          </article>
+            <article
+              class="sheet-card rounded-2xl border border-slate-200 dark:border-white/10 bg-white/80 dark:bg-slate-900/60 p-6 shadow transition hover:-translate-y-1 hover:shadow-xl hover:border-brand-500"
+              data-name="laravel"
+            >
+              <div class="flex items-start justify-between">
+                <h2 class="text-lg font-semibold">Laravel Cheatsheet</h2>
+                <span class="text-xs font-semibold text-brand-600 dark:text-brand-300"
+                  >Backend</span
+                >
+              </div>
+              <p class="mt-2 text-sm text-slate-600 dark:text-slate-300">
+                Project structure, routes, controllers, Blade, Eloquent, Artisan, and
+                more.
+              </p>
+              <a
+                class="mt-4 inline-flex items-center text-sm font-semibold text-brand-600 dark:text-brand-300 hover:text-brand-500"
+                href="laravel.html"
+                >Open cheatsheet →</a
+              >
+            </article>
+          </div>
+        </section>
+      </main>
+
+      <footer class="px-4 pb-12 sm:px-8 lg:px-16">
+        <div
+          class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4"
+        >
+          <p>Cheatsheets Index · Updated 2026</p>
+          <p>Crafted by Michael Sabado</p>
         </div>
-      </section>
-    </main>
+      </footer>
+    </div>
 
-    <footer class="px-4 pb-12 sm:px-8 lg:px-16">
-      <div class="max-w-6xl mx-auto border-t border-white/40 dark:border-white/10 pt-8 text-sm text-slate-500 dark:text-slate-400 flex flex-wrap justify-between gap-4">
-        <p>Cheatsheets Index · Updated 2026</p>
-        <p>Crafted by Michael Sabado</p>
-      </div>
-    </footer>
-  </div>
+    <script>
+      const input = document.getElementById('search')
+      const cards = Array.from(document.querySelectorAll('.sheet-card'))
 
-  <script>
-    const input = document.getElementById('search');
-    const cards = Array.from(document.querySelectorAll('.sheet-card'));
-
-    const filter = (query) => {
-      const q = query.trim().toLowerCase();
-      cards.forEach((card) => {
-        const name = card.dataset.name || '';
-        const title = card.querySelector('h2')?.textContent.toLowerCase() || '';
-        const text = `${name} ${title}`;
-        const match = text.includes(q);
-        card.classList.toggle('hidden', q && !match);
-      });
-    };
-
-    input.addEventListener('input', (e) => filter(e.target.value));
-
-    // Keyboard focus shortcut (Command/Ctrl+K)
-    window.addEventListener('keydown', (e) => {
-      if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
-        e.preventDefault();
-        input.focus();
+      const filter = (query) => {
+        const q = query.trim().toLowerCase()
+        cards.forEach((card) => {
+          const name = card.dataset.name || ''
+          const title = card.querySelector('h2')?.textContent.toLowerCase() || ''
+          const text = `${name} ${title}`
+          const match = text.includes(q)
+          card.classList.toggle('hidden', q && !match)
+        })
       }
-    });
-  </script>
-</body>
+
+      input.addEventListener('input', (e) => filter(e.target.value))
+
+      // Keyboard focus shortcut (Command/Ctrl+K)
+      window.addEventListener('keydown', (e) => {
+        if ((e.metaKey || e.ctrlKey) && e.key.toLowerCase() === 'k') {
+          e.preventDefault()
+          input.focus()
+        }
+      })
+    </script>
+  </body>
 </html>
